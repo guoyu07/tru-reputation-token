@@ -1,0 +1,42 @@
+{
+  "name": "tru-reputation-token",
+  "version": "0.0.1",
+  "description": "Github repository for the Tru Reputation Token - part of the Tru Reputation Protocol",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start-testnet": "nohup testrpc --port 8546 --account='0x631795445bc9d15a37ef62ee1c1438fb5a0150cf4e01b86c0eab9ff6c312d308, 100000000000000000000' --account='0x74272d59224db40345fa59803cccdbc77738b89846146bd2652d49f475735f55, 100000000000000000000' --account='0xef9adeb8fda35f7468301f874b97a8043ec24eebd4ef38a5ff68ab001fede8ca, 100000000000000000000' > testnet.log &",
+    "stop-testnet": "kill $(pgrep node)",
+    "create-devnet": "geth --datadir tru-devnet init tru-devnet/genesis.json",
+    "create-devnet-account": "geth --datadir tru-devnet/ --password 'tru-devnet/pwd.sec' account new",
+    "start-devnet": "nohup geth --networkid 1066 --mine --datadir 'tru-devnet' --nodiscover --rpc --rpcport '8547' --rpccorsdomain '*' --nat 'any' --rpcapi 'eth,web3,personal,net' --unlock 0 --password 'tru-devnet/pwd.sec' --ipcpath '~/Library/Ethereum/geth.ipc' > devnet.log &",
+    "stop-devnet": "kill $(pgrep geth)",
+    "testnet-test": "truffle test --network=test",
+    "dev-test": "truffle test --network=development",
+    "ropsten-test": "truffle test --network=ropsten",
+    "mainnet-test": "truffle test --network=mainnet",
+    "clamp-devnet": "renice 20 $(pgrep geth)"
+  },
+  "author": "Tru Ltd",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TruLtd/tru-reputation-token.git"
+  },
+  "keywords": [
+    "Tru Reputation Protocol",
+    "Solidity",
+    "Tru Ltd",
+    "Tru Reputation Token",
+    "ERC-20"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/TruLtd/tru-reputation-token/issues"
+  },
+  "homepage": "https://github.com/TruLtd/tru-reputation-token#readme",
+  "dependencies": {
+    "zeppelin-solidity": "^1.3.0"
+  }
+}

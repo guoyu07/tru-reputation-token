@@ -1,0 +1,10 @@
+testnet.log
+devnet.log
+tru-devnet/accounts.json
+tru-devnet/pwd.sec
+tru-devnet/geth.ipc
+tru-devnet/geth/**
+tru-devnet/keystore/**
+node_modules/**
+
+devnet.log
