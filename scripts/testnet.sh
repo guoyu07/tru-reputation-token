@@ -40,7 +40,14 @@ start(){
   echo -e "\x1B[94mStarting Tru RPC Testnet...\x1B[0m"
   echo "" > $TESTNET_LOG;
   if [ "$SOLIDITY_COVERAGE" = true ]; then
-    nohup node_modules/.bin/testrpc-sc --port $TESTNET_PORT --accounts 10 > $TESTNET_LOG &
+    local TESTNET_ACCOUNTS=(
+      --account="0xb7e2749d15593f9d31230448488b0bf72911d1a19e6435b344a55c186ee0cd0b,10000000000000000000000000"
+      --account="0x672d338a17a3045f3dab93371e92d74b0d49ab7dbbc76168d960947d997e21fa,5000000000000000000000000"
+      --account="0x5c528f0383ee225e037b5087b2ee967a47660d9cd168e3c189331c1dfef0f43f,1000000000000000000000000"
+      --account="0x8937133809f1c758a09a80022266739fbc1852dd5c59924e8da7458c6b8f6590,1000000000000000000000000"
+      --account="0xb2bfd3c574e4a7c80b28ef1d3f6d557a53a546c4aa1cbd4e142e3fbe8af77564,1000000000000000000000000"
+    )
+    nohup node_modules/.bin/testrpc-sc --port $TESTNET_PORT --gasLimit 0xfffffffffff "${TESTNET_ACCOUNTS[@]}" > $TESTNET_LOG &
   else
     nohup node_modules/.bin/testrpc --port $TESTNET_PORT --accounts 10 > $TESTNET_LOG &
   fi
@@ -56,7 +63,7 @@ start(){
 
 stop() {
   sleep 1;
-  echo -e "\x1B[94mStopping Tru RPC Testnet...\x1B[0m"
+  echo -e "\x1B[93mStopping Tru RPC Testnet...\x1B[0m"
   if [[ ! -z $(check_state) ]]; then
     if [ "$SOLIDITY_COVERAGE" = true ]; then
       kill $(pgrep -f "testrpc-sc --port $TESTNET_PORT") > /dev/null 2>&1;
@@ -114,10 +121,11 @@ open_console(){
 
 coverage(){
   stop;
-  sleep 1;
+  sleep 5;
+  start;
+  sleep 5;
   node_modules/.bin/solidity-coverage;
-  test_tru;
-  sleep 1;
+  sleep 5;
   stop;
 }
 

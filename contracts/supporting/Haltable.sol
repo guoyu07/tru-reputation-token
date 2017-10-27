@@ -8,7 +8,7 @@
 
 pragma solidity ^0.4.15;
 
-import "zeppelin-solidity/contracts/ownership/Ownable.sol";
+import "./zeppelin/ownership/Ownable.sol";
 
 /*
  * Haltable

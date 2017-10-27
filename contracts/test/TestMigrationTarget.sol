@@ -8,9 +8,10 @@
 
 pragma solidity ^0.4.15;
 
-import 'zeppelin-solidity/contracts/math/SafeMath.sol';
+import '../supporting/zeppelin/math/SafeMath.sol';
+import '../supporting/zeppelin/contracts/MintableToken.sol';
 import "../supporting/UpgradeableToken.sol";
-import 'zeppelin-solidity/contracts/token/MintableToken.sol';
+
 
 /**
  * A sample token that is used as a migration testing target.
@@ -24,6 +25,8 @@ contract TestMigrationTarget is StandardToken, UpgradeAgent {
   UpgradeableToken public oldToken;
 
   uint public originalSupply;
+
+  event PayableHarness(address executor);
 
   function TestMigrationTarget(UpgradeableToken _oldToken) public {
     oldToken = _oldToken;
@@ -45,9 +48,8 @@ contract TestMigrationTarget is StandardToken, UpgradeAgent {
   }
 
   function() public payable {
-
+    PayableHarness(msg.sender);
     revert();
-
   }
 
 }

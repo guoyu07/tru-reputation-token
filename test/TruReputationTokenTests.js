@@ -168,6 +168,55 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + isUpgradeAgent);
   });
 
+  // TRU REPUTATION TOKEN - TEST CASE: Should fail to set empty UpgradeMaster
+  it('TRU REPUTATION TOKEN - TEST CASE: Should fail to set empty UpgradeMaster', async function() {
+    try {
+      await truToken.setUpgradeMaster(0x0)
+    } catch (error) {
+      const opErr = error.message.search('invalid opcode') >= 0;
+      assert(
+        opErr,
+        'Expected require, got ' + error + ' instead ',
+      )
+    }
+    let upgradeMaster = await truToken.upgradeMaster.call();
+
+    assert.equal(upgradeMaster,
+      accountOne,
+      'Is not upgradeMaster. EXPECTED RESULT: ' + accountOne + ';\
+        \nACTUAL RESULT: ' + upgradeMaster);
+  });
+
+  // TRU REPUTATION TOKEN - TEST CASE: Should fail to set UpgradeMaster if not already master
+  it('TRU REPUTATION TOKEN - TEST CASE: Should fail to set empty UpgradeMaster', async function() {
+    try {
+      await truToken.setUpgradeMaster(accountTwo, { from: accountTwo })
+    } catch (error) {
+      const opErr = error.message.search('invalid opcode') >= 0;
+      assert(
+        opErr,
+        'Expected require, got ' + error + ' instead ',
+      )
+    }
+    let upgradeMaster = await truToken.upgradeMaster.call();
+
+    assert.equal(upgradeMaster,
+      accountOne,
+      'Is not upgradeMaster. EXPECTED RESULT: ' + accountOne + ';\
+        \nACTUAL RESULT: ' + upgradeMaster);
+  });
+
+  // TRU REPUTATION TOKEN - TEST CASE: Should set UpgradeMaster if already master
+  it('TRU REPUTATION TOKEN - TEST CASE: Should set UpgradeMaster if already master', async function() {
+    await truToken.setUpgradeMaster(accountOne, { from: accountOne })
+    let upgradeMaster = await truToken.upgradeMaster.call();
+
+    assert.equal(upgradeMaster,
+      accountOne,
+      'Is not upgradeMaster. EXPECTED RESULT: ' + accountOne + ';\
+    \nACTUAL RESULT: ' + upgradeMaster);
+  });
+
   // TRU REPUTATION TOKEN - TEST CASE: Token should be able to set the upgrade
   it('TRU REPUTATION TOKEN - TEST CASE: Token should be able to set the upgrade', async function() {
     let uAgent = await truToken.getUpgradeState.call();
@@ -287,5 +336,25 @@ contract('TruReputationToken', function(accounts) {
       tokenMigration.address,
       'owner address does not match tokenMigration.address. EXPECTED RESULT: ' + tokenMigration.address + ';\
       \nACTUAL RESULT: ' + owner);
+  });
+
+  // TRU REPUTATION TOKEN - TEST CASE: TestMigrationTarget should revert on attempt to transfer to it
+  it('TRU REPUTATION TOKEN - TEST CASE: TestMigrationTarget should revert on attempt to transfer to it', async function() {
+    try {
+      await web3.eth.sendTransaction({ 'value': 10, 'from': accountOne, 'to': tokenMigration.address });
+    } catch (error) {
+      const opErr = error.message.search('invalid opcode') >= 0;
+      assert(
+        opErr,
+        'Expected require, got ' + error + ' instead ',
+      )
+    }
+
+    let migrationBalance = await truToken.balanceOf(tokenMigration.address);
+
+    assert.equal(migrationBalance,
+      0,
+      'Migration Balance is not empty. EXPECTED RESULT: 0;\
+        \nACTUAL RESULT: ' + migrationBalance);
   });
 });
