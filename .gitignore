@@ -6,5 +6,7 @@ tru-devnet/geth.ipc
 tru-devnet/geth/**
 tru-devnet/keystore/**
 node_modules/**
-
+build/**
+coverage/**
 devnet.log
+allFiredEvents
