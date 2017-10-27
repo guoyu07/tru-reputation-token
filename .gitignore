@@ -8,9 +8,6 @@ tru-devnet/keystore/**
 node_modules/**
 build/**
 contracts/supporting/zeppelin/**
-coverage/**
 devnet.log
 allFiredEvents
 coverage-testnet.log
-
-coverage.json

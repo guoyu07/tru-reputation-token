@@ -2,4 +2,7 @@
 
 # Tru Reputation Token
 
+[![Coverage Status](https://coveralls.io/repos/github/TruLtd/tru-reputation-token/badge.svg?branch=master)](https://coveralls.io/github/TruLtd/tru-reputation-token?branch=master)
+[![Build Status](https://travis-ci.org/TruLtd/tru-reputation-token.svg?branch=master)](https://travis-ci.org/TruLtd/tru-reputation-token)
+
 Github repository for source code of the Tru Reputation Token ERC-20 token.
