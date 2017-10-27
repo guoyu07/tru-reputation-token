@@ -76,6 +76,44 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + execBoard);
   });
 
+  // TRU REPUTATION TOKEN - TEST CASE: Only Exec Board account should be able to change Exec Board
+  it('TRU REPUTATION TOKEN - TEST CASE: Should be unable to assign an empty address as Exec Board', async function() {
+
+    try {
+      await truToken.changeBoardAddress(0x0, { from: execAccount });
+    } catch (error) {
+      const opErr = error.message.search('invalid opcode') >= 0;
+      assert(
+        opErr,
+        'Expected require, got ' + error + ' instead');
+    }
+    let execBoard = await truToken.EXEC_BOARD.call();
+
+    assert.equal(execBoard,
+      execAccount,
+      'Incorrect ExecBoard account for TruReputationToken. EXPECTED RESULT:' + execAccount + ';\
+          \nACTUAL RESULT: ' + execBoard);
+  });
+
+  // TRU REPUTATION TOKEN - TEST CASE: Only Exec Board account should be able to change Exec Board
+  it('TRU REPUTATION TOKEN - TEST CASE: Should be unable to assign an self as Exec Board', async function() {
+
+    try {
+      await truToken.changeBoardAddress(execAccount, { from: execAccount });
+    } catch (error) {
+      const opErr = error.message.search('invalid opcode') >= 0;
+      assert(
+        opErr,
+        'Expected require, got ' + error + ' instead');
+    }
+    let execBoard = await truToken.EXEC_BOARD.call();
+
+    assert.equal(execBoard,
+      execAccount,
+      'Incorrect ExecBoard account for TruReputationToken. EXPECTED RESULT:' + execAccount + ';\
+              \nACTUAL RESULT: ' + execBoard);
+  });
+
   // TRU REPUTATION TOKEN - TEST CASE: Token should have 0 total supply
   it('TRU REPUTATION TOKEN - TEST CASE: Token should have 0 total supply', async function() {
     let totalSupply = await truToken.totalSupply();
