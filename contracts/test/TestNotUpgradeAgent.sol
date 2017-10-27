@@ -1,11 +1,3 @@
-/**
- * This smart contract code is Copyright 2017 TokenMarket Ltd. For more information see https://tokenmarket.net
- *
- * Licensed under the Apache License, version 2.0: https://github.com/TokenMarketNet/ico/blob/master/LICENSE.txt
- *
- * Updated by Tru Ltd October 2017 to comply with Solidity 0.4.15 syntax and Best Practices
- */
-
 pragma solidity ^0.4.15;
 
 import '../supporting/zeppelin/math/SafeMath.sol';
@@ -18,13 +10,17 @@ import "../supporting/UpgradeableToken.sol";
  *
  * This is not an actual token, but just a stub used in testing.
  */
-contract TestMigrationTarget is StandardToken, UpgradeAgent {
+contract TestNotUpgradeAgent is StandardToken, UpgradeAgent {
 
   using SafeMath for uint;
 
   UpgradeableToken public oldToken;
 
   uint public originalSupply;
+
+  function isUpgradeAgent() public constant returns (bool) {
+    return false;
+  }
 
   function TestMigrationTarget(UpgradeableToken _oldToken) public {
     oldToken = _oldToken;

@@ -22,11 +22,10 @@ contract TruReputationToken is MintableToken, UpgradeableToken {
 
   function changeBoardAddress(address _newAddress) public onlyExecBoard {
     address oldAddress = EXEC_BOARD;
-    require(msg.sender == EXEC_BOARD);
     require(_newAddress != 0x0); 
-    require(_newAddress != EXEC_BOARD);
+    require(_newAddress != oldAddress);
     EXEC_BOARD = _newAddress;
-    ChangedExecBoardAddress(oldAddress, _newAddress, oldAddress);
+    ChangedExecBoardAddress(oldAddress, _newAddress, msg.sender);
   }
 
   // Supply Owner Upgrade Account at Contract Creation
