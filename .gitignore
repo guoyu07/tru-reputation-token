@@ -11,3 +11,4 @@ contracts/supporting/zeppelin/**
 devnet.log
 allFiredEvents
 coverage-testnet.log
+.vscode/**

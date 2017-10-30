@@ -39,17 +39,17 @@ check_net_state(){
 start(){
   echo -e "\x1B[94mStarting Tru RPC Testnet...\x1B[0m"
   echo "" > $TESTNET_LOG;
-  if [ "$SOLIDITY_COVERAGE" = true ]; then
-    local TESTNET_ACCOUNTS=(
-      --account="0xb7e2749d15593f9d31230448488b0bf72911d1a19e6435b344a55c186ee0cd0b,10000000000000000000000000"
+  local TESTNET_ACCOUNTS=(
+      --account="0xb7e2749d15593f9d31230448488b0bf72911d1a19e6435b344a55c186ee0cd0b,50000000000000000000000000"
       --account="0x672d338a17a3045f3dab93371e92d74b0d49ab7dbbc76168d960947d997e21fa,5000000000000000000000000"
-      --account="0x5c528f0383ee225e037b5087b2ee967a47660d9cd168e3c189331c1dfef0f43f,1000000000000000000000000"
-      --account="0x8937133809f1c758a09a80022266739fbc1852dd5c59924e8da7458c6b8f6590,1000000000000000000000000"
-      --account="0xb2bfd3c574e4a7c80b28ef1d3f6d557a53a546c4aa1cbd4e142e3fbe8af77564,1000000000000000000000000"
+      --account="0x5c528f0383ee225e037b5087b2ee967a47660d9cd168e3c189331c1dfef0f43f,5000000000000000000000000"
+      --account="0x8937133809f1c758a09a80022266739fbc1852dd5c59924e8da7458c6b8f6590,5000000000000000000000000"
+      --account="0xb2bfd3c574e4a7c80b28ef1d3f6d557a53a546c4aa1cbd4e142e3fbe8af77564,5000000000000000000000000"
     )
+  if [ "$SOLIDITY_COVERAGE" = true ]; then
     nohup node_modules/.bin/testrpc-sc --port $TESTNET_PORT --gasLimit 0xfffffffffff "${TESTNET_ACCOUNTS[@]}" > $TESTNET_LOG &
   else
-    nohup node_modules/.bin/testrpc --port $TESTNET_PORT --accounts 10 > $TESTNET_LOG &
+    nohup node_modules/.bin/testrpc --port $TESTNET_PORT "${TESTNET_ACCOUNTS[@]}" > $TESTNET_LOG &
   fi
 
   sleep 1;
@@ -80,6 +80,8 @@ stop() {
 }
 
 test_tru(){
+  stop;
+  start;
   echo -e "\x1B[94mStarting Tests on Tru RPC Testnet...\x1B[0m";
   if [[ ! -z $(check_state) ]]; then
     truffle test --network=$TESTNET_NAME;
@@ -155,10 +157,9 @@ case "$1" in
     coverage
     ;;
   (*)
-    echo -e "\x1B[97m\n================================================================================"
-    echo -e "                                 testnet.sh"
-    echo -e "================================================================================\n\x1B[0m"
+    echo -e "\x1B[94m\n================================================================================\n\x1B[96m                         TRU REPUTATION TOKEN\x1B[97m\n                               testnet.sh\x1B[94m\n================================================================================\n\x1B[0m"
     echo -e "\x1B[97mUSAGE:\x1B[0m\n"
+    echo -e "\x1B[97mAppend script with one of the following commands:\n\x1B[0m"
     echo -e "\x1B[92mstart\x1B[0m       \x1B[97mStarts the Tru RPC Testnet\x1B[0m"
     echo -e "\x1B[92mstop\x1B[0m        \x1B[97mStops the Tru RPC Testnet\x1B[0m"
     echo -e "\x1B[92mrestart\x1B[0m     \x1B[97mRestarts the Tru RPC Testnet\x1B[0m"
@@ -166,8 +167,7 @@ case "$1" in
     echo -e "\x1B[92mtest\x1B[0m        \x1B[97mRuns full Mocha Test Suite on Tru RPC Testnet\x1B[0m"
     echo -e "\x1B[92mmigrate\x1B[0m     \x1B[97mCompiles and migrates the Contract Suite to Tru RPC TestNet\x1B[0m"
     echo -e "\x1B[92mconsole\x1B[0m     \x1B[97mOpens the Truffle Console on Tru RPC Testnet\x1B[0m"
-    echo -e "\x1B[97m\n================================================================================\n\x1B[0m"
-    echo -e "\x1B[97m================================================================================\n\x1B[0m"
+    echo -e "\x1B[94m\n================================================================================\n\x1B[0m"
     exit 0
     ;;
 esac

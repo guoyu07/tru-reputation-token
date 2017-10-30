@@ -78,14 +78,13 @@ contract UpgradeableToken is StandardToken {
 
       uint256 senderBalance = balances[msg.sender];
       require(senderBalance > 0);
-      uint256 newSenderBalance = senderBalance.sub(value);
-      assert(newSenderBalance < senderBalance);
+      uint256 newSenderBalance = senderBalance.sub(value);      
+      uint256 newTotalSupply = totalSupply.sub(value);
+      
+      assert(newSenderBalance < senderBalance && newTotalSupply < totalSupply);
 
       balances[msg.sender] = newSenderBalance;
-
       // Take tokens out from circulation
-      uint256 newTotalSupply = totalSupply.sub(value);
-      assert(newTotalSupply < totalSupply);
       totalSupply = newTotalSupply;
 
       uint256 upgradedAmount = totalUpgraded.add(value);

@@ -1,12 +1,12 @@
 
 
 pragma solidity ^0.4.15;
-import './supporting/zeppelin/contracts/MintableToken.sol';
+import './supporting/TruMintableToken.sol';
 import './supporting/UpgradeableToken.sol';
 import './supporting/zeppelin/contracts/BurnableToken.sol';
 import './supporting/zeppelin/math/SafeMath.sol';
 
-contract TruReputationToken is MintableToken, UpgradeableToken {
+contract TruReputationToken is TruMintableToken, UpgradeableToken {
   
   string public constant name = "Tru Reputation Token";
   string public constant symbol = "TRU";

@@ -1,6 +1,6 @@
 {
   "name": "tru-reputation-token",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Github repository for the Tru Reputation Token - part of the Tru Reputation Protocol",
   "main": "truffle.js",
   "directories": {
@@ -23,10 +23,13 @@
     "restore-devnet": "./scripts/devnet.sh restore",
     "test-devnet": "./scripts/devnet.sh test",
     "test-ropsten": "./scripts/ropsten.sh test",
+    "gen-docs": "./scripts/build.sh generatedocs",
+    "open-docs": "open docs/build/html/index.html",
     "compile": "truffle compile",
     "coverage": "./scripts/coverage.sh generate",
     "clean": "rm -rf build/",
-    "postinstall": "./scripts/build.sh refresh"
+    "postinstall": "./scripts/build.sh refresh",
+    "test": "./scripts/testnet.sh test"
   },
   "author": "Tru Ltd",
   "repository": {

@@ -43,15 +43,13 @@ case "$1" in
     open_console
     ;;
   (*)
-    echo -e "\x1B[97m\n================================================================================"
-    echo -e "                                 ropsten.sh"
-    echo -e "================================================================================\n\x1B[0m"
+    echo -e "\x1B[94m\n================================================================================\n\x1B[96m                         TRU REPUTATION TOKEN\x1B[97m\n                               ropsten.sh\x1B[94m\n================================================================================\n\x1B[0m"
     echo -e "\x1B[97mUSAGE:\x1B[0m\n"
-    echo -e "\x1B[92mtest\x1B[0m        \x1B[97mRuns full Mocha Test Suite on Ropsten Testnet\x1B[0m"
+    echo -e "\x1B[97mAppend script with one of the following commands:\n\x1B[0m"
+    echo -e "\x1B[92mtest\x1B[0m           \x1B[97mRuns full Mocha Test Suite on Ropsten Testnet\x1B[0m"
     echo -e "\x1B[92mmigrate\x1B[0m        \x1B[97mCompiles and migrates the Contract Suite to Tru RPC TestNet\x1B[0m"
     echo -e "\x1B[92mconsole\x1B[0m        \x1B[97mOpens the Truffle Console on Tru RPC Testnet\x1B[0m"
-    echo -e "\x1B[97m\n================================================================================\n\x1B[0m"
-    echo -e "\x1B[97m================================================================================\n\x1B[0m"
+    echo -e "\x1B[94m\n================================================================================\n\x1B[0m"
     exit 0
     ;;
 esac

@@ -132,21 +132,19 @@ case "$1" in
     open_console
     ;;
   (*)
-    echo -e "\x1B[97m\n================================================================================"
-    echo -e "                                 devnet.sh"
-    echo -e "================================================================================\n\x1B[0m"
+    echo -e "\x1B[94m\n================================================================================\n\x1B[96m                         TRU REPUTATION TOKEN\x1B[97m\n                               devnet.sh\x1B[94m\n================================================================================\n\x1B[0m"
     echo -e "\x1B[97mUSAGE:\x1B[0m\n"
-    echo -e "\x1B[92mstart\x1B[0m       \x1B[97mStarts the Tru-Devnet\x1B[0m"
-    echo -e "\x1B[92mstop\x1B[0m        \x1B[97mStops the Tru-Devnet\x1B[0m"
-    echo -e "\x1B[92mcreate\x1B[0m      \x1B[97mGenerates the Tru-Devnet\x1B[0m"
-    echo -e "\x1B[92madd\x1B[0m         \x1B[97mAdds new account to the Tru-Devnet\x1B[0m"
-    echo -e "\x1B[92mlimit\x1B[0m       \x1B[97mDrops CPU priority of Tru-Devnet\x1B[0m"
-    echo -e "\x1B[92mrestore\x1B[0m     \x1B[97mRestores CPU priority of Tru-Devnet\x1B[0m"
-    echo -e "\x1B[92mtest\x1B[0m        \x1B[97mRuns full Mocha Test Suite on Tru RPC Testnet\x1B[0m"
+    echo -e "\x1B[97mAppend script with one of the following commands:\n\x1B[0m"
+    echo -e "\x1B[92mstart\x1B[0m          \x1B[97mStarts the Tru-Devnet\x1B[0m"
+    echo -e "\x1B[92mstop\x1B[0m           \x1B[97mStops the Tru-Devnet\x1B[0m"
+    echo -e "\x1B[92mcreate\x1B[0m         \x1B[97mGenerates the Tru-Devnet\x1B[0m"
+    echo -e "\x1B[92madd\x1B[0m            \x1B[97mAdds new account to the Tru-Devnet\x1B[0m"
+    echo -e "\x1B[92mlimit\x1B[0m          \x1B[97mDrops CPU priority of Tru-Devnet\x1B[0m"
+    echo -e "\x1B[92mrestore\x1B[0m        \x1B[97mRestores CPU priority of Tru-Devnet\x1B[0m"
+    echo -e "\x1B[92mtest\x1B[0m           \x1B[97mRuns full Mocha Test Suite on Tru RPC Testnet\x1B[0m"
     echo -e "\x1B[92mmigrate\x1B[0m        \x1B[97mCompiles and migrates the Contract Suite to Tru RPC TestNet\x1B[0m"
     echo -e "\x1B[92mconsole\x1B[0m        \x1B[97mOpens the Truffle Console on Tru RPC Testnet\x1B[0m"
-    echo -e "\x1B[97m\n================================================================================\n\x1B[0m"
-    echo -e "\x1B[97m================================================================================\n\x1B[0m"
+    echo -e "\x1B[94m\n================================================================================\n\x1B[0m"
     exit 0
     ;;
 esac

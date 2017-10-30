@@ -10,9 +10,12 @@ copy_dependencies(){
   cp node_modules/zeppelin-solidity/contracts/token/ERC20Basic.sol contracts/supporting/zeppelin/contracts
   cp node_modules/zeppelin-solidity/contracts/token/StandardToken.sol contracts/supporting/zeppelin/contracts
   cp node_modules/zeppelin-solidity/contracts/token/BurnableToken.sol contracts/supporting/zeppelin/contracts
-  cp node_modules/zeppelin-solidity/contracts/token/MintableToken.sol contracts/supporting/zeppelin/contracts
   cp node_modules/zeppelin-solidity/contracts/math/SafeMath.sol contracts/supporting/zeppelin/math
   cp node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol contracts/supporting/zeppelin/ownership
+  cp node_modules/zeppelin-solidity/test/helpers/increaseTime.js test/helpers/
+  cp node_modules/zeppelin-solidity/test/helpers/latestTime.js test/helpers/
+  cp node_modules/zeppelin-solidity/test/helpers/expectThrow.js test/helpers/
+  cp node_modules/zeppelin-solidity/test/helpers/EVMThrow.js test/helpers/
 }
 
 clean_dependencies(){
@@ -25,6 +28,12 @@ refresh_dependencies(){
   copy_dependencies;
 }
 
+generate_documentation(){
+  cd docs/
+  make html
+  cd ../
+}
+
 case "$1" in
   (build)
     copy_dependencies
@@ -35,16 +44,18 @@ case "$1" in
   (refresh)
     refresh_dependencies
     ;;
+  (generatedocs)
+    generate_documentation
+    ;;
   (*)
-    echo -e "\x1B[97m\n================================================================================"
-    echo -e "                                 build.sh"
-    echo -e "================================================================================\n\x1B[0m"
+    echo -e "\x1B[94m\n================================================================================\n\x1B[96m                         TRU REPUTATION TOKEN\x1B[97m\n                               build.sh\x1B[94m\n================================================================================\n\x1B[0m"
     echo -e "\x1B[97mUSAGE:\x1B[0m\n"
-    echo -e "\x1B[92mbuild\x1B[0m       \x1B[97mBuilds in Open-Zeppelin Depedencies\x1B[0m"
-    echo -e "\x1B[92mclean\x1B[0m        \x1B[97mCleans all Open-Zeppelin Dependencies\x1B[0m"
-    echo -e "\x1B[92mrefresh\x1B[0m     \x1B[97mRefreshes all Open-Zeppelin Dependencies\x1B[0m"
-    echo -e "\x1B[97m\n================================================================================\n\x1B[0m"
-    echo -e "\x1B[97m================================================================================\n\x1B[0m"
+    echo -e "\x1B[97mAppend script with one of the following commands:\n\x1B[0m"
+    echo -e "\x1B[92mbuild\x1B[0m           \x1B[97mBuilds in Open-Zeppelin Depedencies\x1B[0m"
+    echo -e "\x1B[92mclean\x1B[0m           \x1B[97mCleans all Open-Zeppelin Dependencies\x1B[0m"
+    echo -e "\x1B[92mrefresh\x1B[0m         \x1B[97mRefreshes all Open-Zeppelin Dependencies\x1B[0m"
+    echo -e "\x1B[92mgeneratedocs\x1B[0m    \x1B[97mGenerates RST Documentation for Tru Reputation Token\x1B[0m"
+    echo -e "\x1B[94m\n================================================================================\n\x1B[0m"
     exit 0
     ;;
 esac
