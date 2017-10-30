@@ -11,4 +11,7 @@ contracts/supporting/zeppelin/**
 devnet.log
 allFiredEvents
 coverage-testnet.log
+coverage/**
+coverage.json
 .vscode/**
+security-audit/**
