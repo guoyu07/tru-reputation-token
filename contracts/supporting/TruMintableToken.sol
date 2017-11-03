@@ -1,7 +1,7 @@
 pragma solidity ^0.4.15;
 
 import './ReleasableToken.sol';
-
+import './zeppelin/math/SafeMath.sol';
 /**
   * @title TruMintableToken
   * @dev Mintable Token - forked from Open-Zeppelin Mintable Token to include TokenMarket Ltd's ReleaseableToken's functionality
@@ -13,11 +13,18 @@ import './ReleasableToken.sol';
 
  contract TruMintableToken is ReleasableToken {
 
+  using SafeMath for uint256;
+  using SafeMath for uint;
+
    event Mint(address indexed _to, uint256 _amount);
 
    event MintFinished();
 
    bool public mintingFinished = false;
+
+   bool public preSaleComplete = false;
+
+   bool public saleComplete = false;
 
    modifier canMint() {
     require(!mintingFinished);
@@ -42,8 +49,12 @@ import './ReleasableToken.sol';
    * @dev Function to stop minting new tokens.
    * @return True if the operation was successful.
    */
-  function finishMinting() onlyOwner public returns (bool) {
-    mintingFinished = true;
+  function finishMinting(bool _presale, bool _sale) onlyOwner public returns (bool) {
+    preSaleComplete = _presale;
+    saleComplete = _sale;
+    if (_presale && _sale) {
+      mintingFinished = true;
+    }
     MintFinished();
     return true;
   }

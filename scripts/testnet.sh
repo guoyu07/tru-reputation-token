@@ -49,7 +49,7 @@ start(){
   if [ "$SOLIDITY_COVERAGE" = true ]; then
     nohup node_modules/.bin/testrpc-sc --port $TESTNET_PORT --gasLimit 0xfffffffffff "${TESTNET_ACCOUNTS[@]}" > $TESTNET_LOG &
   else
-    nohup node_modules/.bin/testrpc --port $TESTNET_PORT "${TESTNET_ACCOUNTS[@]}" > $TESTNET_LOG &
+    nohup node_modules/.bin/testrpc --port $TESTNET_PORT --gasLimit 0xfffffffffff "${TESTNET_ACCOUNTS[@]}" > $TESTNET_LOG &
   fi
 
   sleep 1;

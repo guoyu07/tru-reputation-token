@@ -1,5 +1,3 @@
-testnet.log
-devnet.log
 tru-devnet/accounts.json
 tru-devnet/pwd.sec
 tru-devnet/geth.ipc
@@ -7,11 +5,11 @@ tru-devnet/geth/**
 tru-devnet/keystore/**
 node_modules/**
 build/**
-contracts/supporting/zeppelin/**
 devnet.log
 allFiredEvents
-coverage-testnet.log
+*.log
 coverage/**
 coverage.json
 .vscode/**
 security-audit/**
+docs/**

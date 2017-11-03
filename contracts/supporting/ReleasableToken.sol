@@ -78,7 +78,7 @@ contract ReleasableToken is StandardToken, Ownable {
   }
 
   function transferFrom(address _from, address _to, uint _value) canTransfer(_from) returns (bool success) {
-    // Call StandardToken.transferForm()
+    // Call StandardToken.transferFrom()
     return super.transferFrom(_from, _to, _value);
   }
 

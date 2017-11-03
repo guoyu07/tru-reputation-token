@@ -5,8 +5,8 @@ const ERC20Basic = artifacts.require('./ERC20Basic.sol');
 const MockMigrationTarget = artifacts.require('./helpers/MockMigrationTarget.sol');
 const MockUpgradeableToken = artifacts.require('./helpers/MockUpgradeableToken.sol');
 const MockUpgradeAgent = artifacts.require('./helpers/MockUpgradeAgent.sol');
+import EVMThrow from './helpers/EVMThrow';
 import expectThrow from './helpers/expectThrow';
-import EVMThrow from './helpers/EVMThrow'
 
 require('chai')
   .use(require('chai-as-promised'))
@@ -16,23 +16,24 @@ require('chai')
 contract('TruReputationToken', function(accounts) {
   var truToken;
   let tokenMigration;
-  let mintAmount = 100;
+  let mintAmount = 100 * 10 ** 18;
   let accountOne = accounts[0];
   let accountTwo = accounts[1];
   let execAccount = accounts[2];
   let execAccountTwo = accounts[3];
   let accountFive = accounts[4];
-  let upgradeAmount = 50;
-  let diffBalance = mintAmount - upgradeAmount;
+  let upgradeAmount;
+  let diffBalance;
+  let currentSupply;
 
-  // TEST CASE: Token should have correct symbols and description
-  it('TEST CASE: Token should have correct symbols and description', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 01: Token should have correct symbols and description
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 01: Token should have correct symbols and description', async function() {
 
     truToken = await TruReputationToken.new(accountOne);
     let name = await truToken.name.call();
     let symbol = await truToken.symbol.call();
     let decimals = await truToken.decimals.call();
-    let execBoard = await truToken.EXEC_BOARD.call();
+    let execBoard = await truToken.execBoard.call();
 
     assert.equal(name,
       'Tru Reputation Token',
@@ -52,11 +53,11 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + execBoard);
   });
 
-  // TEST CASE: Owner should be able to assign Exec Board Account once
-  it('TEST CASE: Owner should be able to assign Exec Board Account once', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 02: Owner should be able to assign Exec Board Account once
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 02: Owner should be able to assign Exec Board Account once', async function() {
 
     await truToken.changeBoardAddress(execAccount);
-    let execBoard = await truToken.EXEC_BOARD.call();
+    let execBoard = await truToken.execBoard.call();
 
     assert.equal(execBoard,
       execAccount,
@@ -64,11 +65,11 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + execBoard);
   });
 
-  // TEST CASE: Only Exec Board account should be able to change Exec Board
-  it('TEST CASE: Only Exec Board account should be able to change Exec Board', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 03: Only Exec Board account should be able to change Exec Board
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 03: Only Exec Board account should be able to change Exec Board', async function() {
 
     await truToken.changeBoardAddress(accountTwo, { from: accountOne }).should.be.rejectedWith(EVMThrow);
-    let execBoard = await truToken.EXEC_BOARD.call();
+    let execBoard = await truToken.execBoard.call();
 
     assert.equal(execBoard,
       execAccount,
@@ -76,11 +77,11 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + execBoard);
   });
 
-  // TEST CASE: Only Exec Board account should be able to change Exec Board
-  it('TEST CASE: Should be unable to assign an empty address as Exec Board', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 04: Only Exec Board account should be able to change Exec Board
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 04: Should be unable to assign an empty address as Exec Board', async function() {
 
     await truToken.changeBoardAddress(0x0, { from: execAccount }).should.be.rejectedWith(EVMThrow);
-    let execBoard = await truToken.EXEC_BOARD.call();
+    let execBoard = await truToken.execBoard.call();
 
     assert.equal(execBoard,
       execAccount,
@@ -88,11 +89,11 @@ contract('TruReputationToken', function(accounts) {
           \nACTUAL RESULT: ' + execBoard);
   });
 
-  // TEST CASE: Only Exec Board account should be able to change Exec Board
-  it('TEST CASE: Should be unable to assign an self as Exec Board', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 05: Only Exec Board account should be able to change Exec Board
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 05: Should be unable to assign an self as Exec Board', async function() {
 
     await truToken.changeBoardAddress(execAccount, { from: execAccount }).should.be.rejectedWith(EVMThrow);
-    let execBoard = await truToken.EXEC_BOARD.call();
+    let execBoard = await truToken.execBoard.call();
 
     assert.equal(execBoard,
       execAccount,
@@ -100,11 +101,11 @@ contract('TruReputationToken', function(accounts) {
               \nACTUAL RESULT: ' + execBoard);
   });
 
-  // TEST CASE: Exec Board should be able to assign different Exec Board Account
-  it('TEST CASE: Exec Board should be able to assign different Exec Board Account', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 06: Exec Board should be able to assign different Exec Board Account
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 06: Exec Board should be able to assign different Exec Board Account', async function() {
 
     await truToken.changeBoardAddress(execAccountTwo, { from: execAccount });
-    let execBoard = await truToken.EXEC_BOARD.call();
+    let execBoard = await truToken.execBoard.call();
 
     assert.equal(execBoard,
       execAccountTwo,
@@ -112,8 +113,8 @@ contract('TruReputationToken', function(accounts) {
         \nACTUAL RESULT: ' + execBoard);
   });
 
-  // TEST CASE: Token should have 0 total supply
-  it('TEST CASE: Token should have 0 total supply', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 07: Token should have 0 total supply
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 07: Token should have 0 total supply', async function() {
     let totalSupply = await truToken.totalSupply();
 
     assert.equal(totalSupply,
@@ -122,29 +123,29 @@ contract('TruReputationToken', function(accounts) {
       \n ACTUAL RESULT: ' + totalSupply);
   });
 
-   // TEST CASE: Only Tru Reputation Token owner can set the Release Agent
-  it('TEST CASE: Only Tru Reputation Token owner can set the Release Agent', async function(){
-    
-    await truToken.setReleaseAgent(accounts[3], {from: accounts[3]}).should.be.rejectedWith(EVMThrow);
+  // TRUREPUTATIONTOKENTESTS TEST CASE 08: Only Tru Reputation Token owner can set the Release Agent
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 08: Only Tru Reputation Token owner can set the Release Agent', async function() {
+
+    await truToken.setReleaseAgent(accounts[3], { from: accounts[3] }).should.be.rejectedWith(EVMThrow);
     let agent = await truToken.releaseAgent.call();
 
-    assert.equal(agent, 
-    0x0,
-    'Incorrect Release agent set for TruReputationToken. EXPECTED RESULT: 0x0;\
+    assert.equal(agent,
+      0x0,
+      'Incorrect Release agent set for TruReputationToken. EXPECTED RESULT: 0x0;\
     \nACTUAL RESULT: ' + agent);
   });
 
-  // TEST CASE: Owner can set transferAgent
-  it('TEST CASE: Owner can set transferAgent', async function(){
-    await truToken.setTransferAgent(execAccount, true, {from: accountOne})
+  // TRUREPUTATIONTOKENTESTS TEST CASE 09: Owner can set transferAgent
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 09: Owner can set transferAgent', async function() {
+    await truToken.setTransferAgent(execAccount, true, { from: accountOne })
 
     let transferAgent = await truToken.transferAgents(execAccount);
 
     assert.equal(transferAgent,
       true,
       'Incorrect Transfer Agent Set. Expected: true. Got ' + transferAgent);
-    
-    await truToken.setTransferAgent(execAccountTwo, true, {from: accountTwo}).should.be.rejectedWith(EVMThrow);
+
+    await truToken.setTransferAgent(execAccountTwo, true, { from: accountTwo }).should.be.rejectedWith(EVMThrow);
 
     let notAgent = await truToken.transferAgents(execAccountTwo);
 
@@ -153,8 +154,8 @@ contract('TruReputationToken', function(accounts) {
       'Incorrect Transfer Agent Set. Expected: false. Got ' + notAgent);
   });
 
-  // TEST CASE: mintingFinished should be false after construction
-  it('TEST CASE: mintingFinished should be false after construction', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 10: mintingFinished should be false after construction
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 10: mintingFinished should be false after construction', async function() {
     let mintingFinished = await truToken.mintingFinished();
 
     assert.equal(mintingFinished,
@@ -163,13 +164,63 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + mintingFinished);
   });
 
-  // TEST CASE: Should fail to deploy new Upgrade Token with no tokens
-  it('TEST CASE: Should fail to deploy new Upgrade Token with no tokens', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 11: Should fail to deploy new Upgrade Token with no tokens
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 11: Should fail to deploy new Upgrade Token with no tokens', async function() {
     await MockMigrationTarget.new(truToken.address).should.be.rejectedWith(EVMThrow);
   });
 
-  // TEST CASE: Should mint 100 tokens in a supplied address
-  it('TEST CASE: Should mint 100 tokens in a supplied address', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 12: Should mint a token with 10^18 decimal places
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 12:  Should mint a token with 10^18 decimal places', async function() {
+    let largestFract = 1 * 10 ** 17;
+    let ten = 10;
+    let one = 1;
+    let mintAmt = largestFract + ten + one;
+    const result = await truToken.mint(accountOne, mintAmt);
+    let balance = await truToken.balanceOf(accountOne);
+    let supply = await truToken.totalSupply();
+
+    assert.equal(result.logs[0].event,
+      'Mint',
+      'Incorrect Event. EXPECTED RESULT: Mint;\
+      \nACTUAL RESULT: ' + result.logs[0].event);
+
+    assert.equal(result.logs[0].args._to.valueOf(),
+      accountOne,
+      'Incorrect address to send new Tokens to. EXPECTED RESULT: ' + accountOne + ';\
+      \nACTUAL RESULT: ' + result.logs[0].args._to.valueOf());
+
+    assert.equal(result.logs[0].args._amount.valueOf(),
+      mintAmt,
+      'Incorrect amount of new Tokens to mint. EXPECTED RESULT: ' + mintAmt + ';\
+      \nACTUAL RESULT: ' + result.logs[0].args._amount.valueOf());
+
+    assert.equal(result.logs[1].event,
+      'Transfer',
+      'Incorrect Event. EXPECTED RESULT: Mint; Transfer Value: ' + result.logs[1].event);
+
+    assert.equal(result.logs[1].args.from.valueOf(),
+      0x0,
+      'Incorrect address for sending tokens. EXPECTED RESULT: ' + 0x0 + '\
+      \nACTUAL RESULT: ' + result.logs[1].args.from.valueOf());
+
+    assert.equal(balance,
+      mintAmt,
+      'Balance of accounts[0] does not match minted amount. EXPECTED RESULT: ' + mintAmt + ';\
+      \nACTUAL RESULT: ' + balance);
+
+    assert.equal(supply,
+      mintAmt,
+      'Total supply does not match minted amount. EXPECTED RESULT: ' + mintAmt + ';\
+      \nACTUAL RESULT: ' + supply);
+    currentSupply = largestFract + ten + one;
+  });
+
+  // TRUREPUTATIONTOKENTESTS TEST CASE 13: Should mint 100 tokens in a supplied address
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 13: Should mint 100 tokens in a supplied address', async function() {
+    let largestFract = 1 * 10 ** 17;
+    let ten = 10;
+    let one = 1;
+    currentSupply = currentSupply + mintAmount;
     const result = await truToken.mint(accountOne, mintAmount);
     let balance = await truToken.balanceOf(accountOne);
     let supply = await truToken.totalSupply();
@@ -199,21 +250,21 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + result.logs[1].args.from.valueOf());
 
     assert.equal(balance,
-      mintAmount,
-      'Balance of accounts[0] does not match minted amount. EXPECTED RESULT: ' + mintAmount + ';\
+      currentSupply,
+      'Balance of accounts[0] does not match minted amount. EXPECTED RESULT: ' + currentSupply + ';\
       \nACTUAL RESULT: ' + balance);
 
     assert.equal(supply,
-      mintAmount,
-      'Total supply does not match minted amount. EXPECTED RESULT: ' + mintAmount + ';\
+      currentSupply,
+      'Total supply does not match minted amount. EXPECTED RESULT: ' + currentSupply + ';\
       \nACTUAL RESULT: ' + supply);
-      
+
   });
 
-  // TEST CASE: Should fail to mint after calling finishedMinting
-  it('TEST CASE: Should fail to mint after calling finishMinting', async function() {
-    
-    await truToken.finishMinting();
+  // TRUREPUTATIONTOKENTESTS TEST CASE 14: Should fail to mint after calling finishedMinting
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 14: Should fail to mint after calling finishMinting', async function() {
+
+    await truToken.finishMinting(true, true);
     let mFinished = await truToken.mintingFinished();
 
     assert.equal(mFinished,
@@ -223,8 +274,8 @@ contract('TruReputationToken', function(accounts) {
     await truToken.mint(accountOne, mintAmount).should.be.rejectedWith(EVMThrow);
   });
 
-  // TEST CASE: Token should have correct Upgrade Agent
-  it('TEST CASE: Token should have correct Upgrade Agent', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 15: Token should have correct Upgrade Agent
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 15: Token should have correct Upgrade Agent', async function() {
     let uAgent = await truToken.upgradeMaster.call();
 
     assert.equal(uAgent,
@@ -233,15 +284,15 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + uAgent);
   });
 
-  // TEST CASE: Should deploy new Upgrade Token
-  it('TEST CASE: Should deploy new Upgrade Token', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 16: Should deploy new Upgrade Token
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 16: Should deploy new Upgrade Token', async function() {
     tokenMigration = await MockMigrationTarget.new(truToken.address)
     let orgTokenSupply = await tokenMigration.originalSupply.call();
     let isUpgradeAgent = await tokenMigration.isUpgradeAgent.call();
 
     assert.equal(orgTokenSupply,
-      mintAmount,
-      'New token supply does not match the original. EXPECTED RESULT: ' + mintAmount + ';\
+      currentSupply,
+      'New token supply does not match the original. EXPECTED RESULT: ' + currentSupply + ';\
       \nACTUAL RESULT: ' + orgTokenSupply);
     assert.equal(isUpgradeAgent,
       true,
@@ -249,9 +300,9 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + isUpgradeAgent);
   });
 
-  // TEST CASE: Should fail to set empty UpgradeMaster
-  it('TEST CASE: Should fail to set empty UpgradeMaster', async function() {
-    
+  // TRUREPUTATIONTOKENTESTS TEST CASE 17: Should fail to set empty UpgradeMaster
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 17: Should fail to set empty UpgradeMaster', async function() {
+
     await truToken.setUpgradeMaster(0x0).should.be.rejectedWith(EVMThrow);
     let upgradeMaster = await truToken.upgradeMaster.call();
 
@@ -261,9 +312,9 @@ contract('TruReputationToken', function(accounts) {
         \nACTUAL RESULT: ' + upgradeMaster);
   });
 
-  // TEST CASE: Should fail to set UpgradeMaster if not already master
-  it('TEST CASE: Should fail to set UpgradeMaster if not already master', async function() {
-    
+  // TRUREPUTATIONTOKENTESTS TEST CASE 18: Should fail to set UpgradeMaster if not already master
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 18: Should fail to set UpgradeMaster if not already master', async function() {
+
     await truToken.setUpgradeMaster(accountTwo, { from: accountTwo }).should.be.rejectedWith(EVMThrow);
     let upgradeMaster = await truToken.upgradeMaster.call();
 
@@ -273,8 +324,8 @@ contract('TruReputationToken', function(accounts) {
         \nACTUAL RESULT: ' + upgradeMaster);
   });
 
-  // TEST CASE: Should set UpgradeMaster if already master
-  it('TEST CASE: Should set UpgradeMaster if already master', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 19: Should set UpgradeMaster if already master
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 19: Should set UpgradeMaster if already master', async function() {
     await truToken.setUpgradeMaster(accountOne, { from: accountOne })
     let upgradeMaster = await truToken.upgradeMaster.call();
 
@@ -284,8 +335,8 @@ contract('TruReputationToken', function(accounts) {
     \nACTUAL RESULT: ' + upgradeMaster);
   });
 
-  // TEST CASE: Token should be able to set the upgrade
-  it('TEST CASE: Token should be able to set the upgrade', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 20: Token should be able to set the upgrade
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 20: Token should be able to set the upgrade', async function() {
     let uAgent = await truToken.getUpgradeState.call();
 
     assert.equal(uAgent.toString(),
@@ -294,9 +345,9 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + uAgent.toString());
   });
 
-  // TEST CASE: Token should not upgrade without an upgrade agent set
-  it('TEST CASE: Token should not upgrade without an upgrade agent set', async function() {
-    
+  // TRUREPUTATIONTOKENTESTS TEST CASE 21: Token should not upgrade without an upgrade agent set
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 21: Token should not upgrade without an upgrade agent set', async function() {
+
     await truToken.upgrade(150, { from: accountOne }).should.be.rejectedWith(EVMThrow);
     let uAgent = await truToken.getUpgradeState.call();
     assert.equal(uAgent.toString(),
@@ -305,9 +356,9 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + uAgent.toString());
   });
 
-  // TEST CASE: Should not set an upgrade agent with empty address
-  it('TEST CASE: Should not set an upgrade agent with empty address', async function() {
-    
+  // TRUREPUTATIONTOKENTESTS TEST CASE 22: Should not set an upgrade agent with empty address
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 22: Should not set an upgrade agent with empty address', async function() {
+
     await truToken.setUpgradeAgent(0x0, { from: accountOne }).should.be.rejectedWith(EVMThrow);
     let readyState = await truToken.getUpgradeState.call();
     assert.equal(readyState.toString(),
@@ -316,45 +367,44 @@ contract('TruReputationToken', function(accounts) {
     \nACTUAL RESULT: ' + readyState.toString());
   });
 
-  // TEST CASE: Should not set an upgrade agent with a Token that is not allowed to upgrade
-  it('TEST CASE: Should not set an upgrade agent with a Token that is not allowed to upgrade', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 23: Should not set an upgrade agent with a Token that is not allowed to upgrade
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 23: Should not set an upgrade agent with a Token that is not allowed to upgrade', async function() {
     let mockToken = await MockUpgradeableToken.new(accountOne);
-    
+
     let mockTokenName = await mockToken.name.call();
     let mockTokenSymbol = await mockToken.symbol.call();
     let mockTokenDecimals = await mockToken.decimals.call();
-    
+
     // Verify Mock Token initialized ok
-    assert.equal(mockTokenName, 
-      'Mock Upgradeable Token', 
+    assert.equal(mockTokenName,
+      'Mock Upgradeable Token',
       'Incorrect result. EXPECTED RESULT: Mock Upgradeable Token;\
       \nACTUAL RESULT: ' + mockTokenName);
-    assert.equal(mockTokenSymbol, 
-      'MUT', 
+    assert.equal(mockTokenSymbol,
+      'MUT',
       'Incorrect result. EXPECTED RESULT: MUT;\
       \nACTUAL RESULT: ' + mockTokenSymbol);
-    assert.equal(mockTokenDecimals, 
-      18, 
+    assert.equal(mockTokenDecimals,
+      18,
       'Incorrect result. EXPECTED RESULT: 18;\
       \nACTUAL RESULT: ' + mockTokenDecimals);
-    
+
     await mockToken.setUpgradeAgent(tokenMigration.address, { from: accountOne }).should.be.rejectedWith(EVMThrow);
     let readyState = await mockToken.getUpgradeState.call();
     assert.equal(readyState.toString(),
       '1',
       'Incorrect result. EXPECTED RESULT: 1;\
-  \nACTUAL RESULT: ' + readyState.toString());
+   \nACTUAL RESULT: ' + readyState.toString());
   });
 
-
-  // TEST CASE: Should set an upgrade agent that is not an upgrade agent
-  it('TEST CASE: Should set an upgrade agent that is not an upgrade agent', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 24: Should set an upgrade agent that is not an upgrade agent
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 24: Should set an upgrade agent that is not an upgrade agent', async function() {
     let notMigration = await MockUpgradeAgent.new(truToken.address, { from: accountOne })
     let orgTokenSupply = await notMigration.originalSupply.call();
     let isUpgradeAgent = await notMigration.isUpgradeAgent.call();
-    
+
     await truToken.setUpgradeAgent(notMigration.address, { from: accountOne }).should.be.rejectedWith(EVMThrow);
-    
+
     let readyState = await truToken.getUpgradeState.call();
 
     assert.equal(readyState.toString(),
@@ -362,8 +412,9 @@ contract('TruReputationToken', function(accounts) {
       'Incorrect result. EXPECTED RESULT: 2;\
       \nACTUAL RESULT: ' + readyState.toString());
   });
-  // TEST CASE: Should set an upgrade agent
-  it('TEST CASE: Should set an upgrade agent', async function() {
+
+  // TRUREPUTATIONTOKENTESTS TEST CASE 25: Should set an upgrade agent
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 25: Should set an upgrade agent', async function() {
     await truToken.setUpgradeAgent(tokenMigration.address, { from: accountOne })
     let readyState = await truToken.getUpgradeState.call();
 
@@ -373,8 +424,8 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + readyState.toString());
   });
 
-  // TEST CASE: Only Token own can set upgrade
-  it('TEST CASE: Only Token owner can set upgrade', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 26: Only Token own can set upgrade
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 26: Only Token owner can set upgrade', async function() {
 
     await truToken.setUpgradeAgent(tokenMigration.address, { from: accountTwo }).should.be.rejectedWith(EVMThrow);
     let agent = await truToken.upgradeAgent.call();
@@ -385,9 +436,9 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + agent);
   });
 
-  // TEST CASE: Token should not upgrade with an empty upgrade amount
-  it('TEST CASE: Token should not upgrade with an empty upgrade amount', async function() {
-    
+  // TRUREPUTATIONTOKENTESTS TEST CASE 27: Token should not upgrade with an empty upgrade amount
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 27: Token should not upgrade with an empty upgrade amount', async function() {
+
     await truToken.upgrade(0, { from: accountOne }).should.be.rejectedWith(EVMThrow);
     let upgradeState = await truToken.getUpgradeState.call();
     assert.equal(upgradeState.toString(),
@@ -396,10 +447,10 @@ contract('TruReputationToken', function(accounts) {
     \nACTUAL RESULT: ' + upgradeState.toString());
   });
 
-  // TEST CASE: Token should not upgrade from an account without tokens
-  it('TEST CASE: Token should not upgrade from an account without tokens', async function() {
-    
-    await truToken.upgrade(upgradeAmount, { from: accounts[3] }).should.be.rejectedWith(EVMThrow);
+  // TRUREPUTATIONTOKENTESTS TEST CASE 28: Token should not upgrade from an account without tokens
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 28: Token should not upgrade from an account without tokens', async function() {
+
+    await truToken.upgrade(150, { from: accounts[3] }).should.be.rejectedWith(EVMThrow);
 
     let upgradeState = await truToken.getUpgradeState.call();
     assert.equal(upgradeState.toString(),
@@ -408,10 +459,14 @@ contract('TruReputationToken', function(accounts) {
     \nACTUAL RESULT: ' + upgradeState.toString());
   });
 
-  // TEST CASE: Token should not upgrade with an amount greater than the supply
-  it('TEST CASE: Token should not upgrade with an amount greater than the supply', async function() {
-    
-    await truToken.upgrade(150, { from: accountOne }).should.be.rejectedWith(EVMThrow);
+  // TRUREPUTATIONTOKENTESTS TEST CASE 29: Token should not upgrade with an amount greater than the supply
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 29: Token should not upgrade with an amount greater than the supply', async function() {
+
+    let totalSupply = await truToken.totalSupply.call();
+    upgradeAmount = totalSupply / 2;
+    diffBalance = totalSupply - upgradeAmount;
+    let greaterThanSupply = totalSupply + (150 * 10 ** 18);
+    await truToken.upgrade(greaterThanSupply, { from: accountOne }).should.be.rejectedWith(EVMThrow);
 
     let upgradeState = await truToken.getUpgradeState.call();
     assert.equal(upgradeState.toString(),
@@ -420,8 +475,8 @@ contract('TruReputationToken', function(accounts) {
     \nACTUAL RESULT: ' + upgradeState.toString());
   });
 
-  // TEST CASE: Should upgrade the token
-  it('TEST CASE: Should upgrade the token', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 30: Should upgrade the token
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 30: Should upgrade the token', async function() {
 
     await truToken.upgrade(upgradeAmount, { from: accountOne })
     let tokenSupply = await truToken.totalSupply.call();
@@ -463,9 +518,9 @@ contract('TruReputationToken', function(accounts) {
 
   });
 
-  // TEST CASE: Should only upgrade the specified amount of tokens
-  it('TEST CASE: Should not allow an upgrade in parallel to another', async function() {
-    
+  // TRUREPUTATIONTOKENTESTS TEST CASE 31: Should only upgrade the specified amount of tokens
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 31: Should not allow an upgrade in parallel to another', async function() {
+
     await truToken.upgrade(upgradeAmount).should.be.rejectedWith(EVMThrow);
 
     let supply = await truToken.totalSupply.call();
@@ -476,11 +531,11 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + supply);
   });
 
-  // TEST CASE: Upgrade Agent should not be changed after the upgrade has started
-  it('TEST CASE: Upgrade Agent should not be changed after the upgrade has started', async function() {
-    
+  // TRUREPUTATIONTOKENTESTS TEST CASE 32: Upgrade Agent should not be changed after the upgrade has started
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 32: Upgrade Agent should not be changed after the upgrade has started', async function() {
+
     await truToken.setUpgradeAgent(truToken.address, { from: accountOne }).should.be.rejectedWith(EVMThrow);
-    
+
     let owner = await truToken.upgradeAgent.call();
     assert.equal(owner,
       tokenMigration.address,
@@ -488,8 +543,8 @@ contract('TruReputationToken', function(accounts) {
       \nACTUAL RESULT: ' + owner);
   });
 
-  // TEST CASE: MockMigrationTarget should revert on attempt to transfer to it
-  it('TEST CASE: MockMigrationTarget should revert on attempt to transfer to it', async function() {
+  // TRUREPUTATIONTOKENTESTS TEST CASE 33: MockMigrationTarget should revert on attempt to transfer to it
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 33: MockMigrationTarget should revert on attempt to transfer to it', async function() {
 
     try {
       await web3.eth.sendTransaction({ 'value': 10, 'from': accountOne, 'to': tokenMigration.address });
