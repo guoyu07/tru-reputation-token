@@ -1,1 +1,3 @@
-export default 'invalid opcode'
+'use strict';
+
+export default 'invalid opcode';

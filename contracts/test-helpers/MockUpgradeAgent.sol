@@ -1,16 +1,18 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.18;
 
-import '../../contracts/supporting/zeppelin/math/SafeMath.sol';
-import '../../contracts/supporting/TruMintableToken.sol';
-import "../../contracts/supporting/UpgradeableToken.sol";
-
+import "../supporting/zeppelin/math/SafeMath.sol";
+import "../supporting/UpgradeAgent.sol";
+import "../supporting/TruAddress.sol";
+import "../supporting/TruMintableToken.sol";
+import "../supporting/UpgradeableToken.sol";
+import "../TruReputationToken.sol";
 
 /**
  * A sample token that is used as a migration testing target.
  *
  * This is not an actual token, but just a stub used in testing.
  */
-contract MockUpgradeAgent is StandardToken, UpgradeAgent {
+contract MockUpgradeAgent is TruReputationToken, UpgradeAgent {
 
   using SafeMath for uint;
 
@@ -18,7 +20,7 @@ contract MockUpgradeAgent is StandardToken, UpgradeAgent {
 
   uint public originalSupply;
 
-  function isUpgradeAgent() public constant returns (bool) {
+  function isUpgradeAgent() public pure returns (bool) {
     return false;
   }
 

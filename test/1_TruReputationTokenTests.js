@@ -126,7 +126,8 @@ contract('TruReputationToken', function(accounts) {
   // TRUREPUTATIONTOKENTESTS TEST CASE 08: Only Tru Reputation Token owner can set the Release Agent
   it('TRUREPUTATIONTOKENTESTS TEST CASE 08: Only Tru Reputation Token owner can set the Release Agent', async function() {
 
-    await truToken.setReleaseAgent(accounts[3], { from: accounts[3] }).should.be.rejectedWith(EVMThrow);
+    await truToken.setReleaseAgent(execAccountTwo, { from: execAccountTwo }).should.be.rejectedWith(EVMThrow);
+
     let agent = await truToken.releaseAgent.call();
 
     assert.equal(agent,
@@ -180,7 +181,7 @@ contract('TruReputationToken', function(accounts) {
     let supply = await truToken.totalSupply();
 
     assert.equal(result.logs[0].event,
-      'Mint',
+      'Minted',
       'Incorrect Event. EXPECTED RESULT: Mint;\
       \nACTUAL RESULT: ' + result.logs[0].event);
 
@@ -226,7 +227,7 @@ contract('TruReputationToken', function(accounts) {
     let supply = await truToken.totalSupply();
 
     assert.equal(result.logs[0].event,
-      'Mint',
+      'Minted',
       'Incorrect Event. EXPECTED RESULT: Mint;\
       \nACTUAL RESULT: ' + result.logs[0].event);
 
@@ -259,19 +260,37 @@ contract('TruReputationToken', function(accounts) {
       'Total supply does not match minted amount. EXPECTED RESULT: ' + currentSupply + ';\
       \nACTUAL RESULT: ' + supply);
 
+    await truToken.mint(accountOne, 0, { from: accountOne }).should.be.rejectedWith(EVMThrow);
+    await truToken.mint(0, web3.toWei(1, 'ether'), { from: accountOne }).should.be.rejectedWith(EVMThrow);
+    await truToken.mint(accountOne, web3.toWei(1, 'ether'), { from: 0x0 }).should.be.rejectedWith('invalid address');
+
   });
 
   // TRUREPUTATIONTOKENTESTS TEST CASE 14: Should fail to mint after calling finishedMinting
   it('TRUREPUTATIONTOKENTESTS TEST CASE 14: Should fail to mint after calling finishMinting', async function() {
 
-    await truToken.finishMinting(true, true);
-    let mFinished = await truToken.mintingFinished();
+    await truToken.finishMinting(true, true).should.be.rejectedWith(EVMThrow);
+    await truToken.finishMinting(false, true).should.be.rejectedWith(EVMThrow);
 
-    assert.equal(mFinished,
-      true,
+    // Close the Pre Sale
+    await truToken.finishMinting(true, false);
+
+    // Close the Crowdsale and Finalise Minting
+    await truToken.finishMinting(false, true);
+
+    let mFinished = await truToken.mintingFinished();
+    await truToken.setReleaseAgent(accountOne, { from: accountOne });
+    await truToken.releaseTokenTransfer();
+
+    // Should be unable to set Release Agent after Token released
+    await truToken.setReleaseAgent(accountOne, { from: accountOne }).should.be.rejectedWith(EVMThrow);
+
+    assert.isTrue(mFinished,
       'Incorrect finishedMinting result. EXPECTED RESULT: true;\
       \nACTUAL RESULT: ' + mFinished);
+
     await truToken.mint(accountOne, mintAmount).should.be.rejectedWith(EVMThrow);
+
   });
 
   // TRUREPUTATIONTOKENTESTS TEST CASE 15: Token should have correct Upgrade Agent
@@ -294,8 +313,7 @@ contract('TruReputationToken', function(accounts) {
       currentSupply,
       'New token supply does not match the original. EXPECTED RESULT: ' + currentSupply + ';\
       \nACTUAL RESULT: ' + orgTokenSupply);
-    assert.equal(isUpgradeAgent,
-      true,
+    assert.isTrue(isUpgradeAgent,
       'Is not Upgrade Agent. EXPECTED RESULT: true;\
       \nACTUAL RESULT: ' + isUpgradeAgent);
   });
@@ -564,4 +582,45 @@ contract('TruReputationToken', function(accounts) {
       'Migration Balance is not empty. EXPECTED RESULT: 0;\
         \nACTUAL RESULT: ' + migrationBalance);
   });
+
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 34: increaseApproval & decreaseApproval should increase & decrease approved allowance', async function() {
+    let allowance = await truToken.allowance(accountOne, accountTwo);
+    assert.equal(allowance, 0,
+      'Allowance Test #1: is not 0 TRU. EXPECTED RESULT: 0;\n\
+      ACTUAL RESULT: ' + allowance);
+    let aOneBal = await truToken.balanceOf(accountOne)
+    let aTwoBal = await truToken.balanceOf(accountTwo)
+
+
+    await truToken.approve(accountTwo, web3.toWei(1, 'ether'), { from: accountOne });
+    allowance = await truToken.allowance(accountOne, accountTwo);
+    assert.equal(allowance, web3.toWei(1, 'ether'),
+      'Allowance Test #2: is not 1 TRU. EXPECTED RESULT: 1 TRU;\n\
+      ACTUAL RESULT: ' + web3.fromWei(allowance, 'ether'));
+
+    await truToken.increaseApproval(accountTwo, web3.toWei(1, 'ether'), { from: accountOne });
+    allowance = await truToken.allowance(accountOne, accountTwo);
+    assert.equal(allowance, web3.toWei(2, 'ether'),
+      'Allowance Test #3: is not 2 TRU. EXPECTED RESULT: 2 TRU;\n\
+      ACTUAL RESULT: ' + web3.toWei(allowance, 'ether'));
+    await truToken.decreaseApproval(accountTwo, web3.toWei(1, 'ether'), { from: accountOne });
+    allowance = await truToken.allowance(accountOne, accountTwo);
+    assert.equal(allowance, web3.toWei(1, 'ether'),
+      'Allowance Test #4: is not 1 TRU. EXPECTED RESULT: 1 TRU;\n\
+        ACTUAL RESULT: ' + web3.toWei(allowance, 'ether'));
+
+    await truToken.decreaseApproval(accountTwo, web3.toWei(2, 'ether'), { from: accountOne });
+    allowance = await truToken.allowance(accountOne, accountTwo);
+    assert.equal(allowance, web3.toWei(0, 'ether'),
+      'Allowance Test #5: is not 0 TRU. EXPECTED RESULT: 0 TRU;\n\
+      ACTUAL RESULT: ' + web3.toWei(allowance, 'ether'));
+  });
+
+  it('TRUREPUTATIONTOKENTESTS TEST CASE 35: transferFrom should fail with invalid values', async function() {
+
+    await truToken.approve(accountTwo, web3.toWei(1, 'ether'), { from: accountOne });
+    await truToken.transferFrom(accountOne, 0x0, web3.toWei(1, 'ether')).should.be.rejectedWith(EVMThrow);
+    await truToken.transferFrom(accountOne, accountTwo, web3.toWei(100, 'ether')).should.be.rejectedWith(EVMThrow);
+    await truToken.decreaseApproval(accountTwo, web3.toWei(2, 'ether'), { from: accountOne });
+  })
 });

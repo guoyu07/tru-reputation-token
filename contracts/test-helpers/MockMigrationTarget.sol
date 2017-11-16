@@ -6,21 +6,24 @@
  * Updated by Tru Ltd October 2017 to comply with Solidity 0.4.15 syntax and Best Practices
  */
 
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.18;
 
-import '../../contracts/supporting/zeppelin/math/SafeMath.sol';
-import '../../contracts/supporting/TruMintableToken.sol';
-import "../../contracts/supporting/UpgradeableToken.sol";
-
+import "../supporting/UpgradeAgent.sol";
+import "../supporting/TruAddress.sol";
+import "../supporting/TruMintableToken.sol";
+import "../supporting/UpgradeableToken.sol";
+import "../supporting/zeppelin/math/SafeMath.sol";
+import "../TruReputationToken.sol";
 
 /**
  * A sample token that is used as a migration testing target.
  *
  * This is not an actual token, but just a stub used in testing.
  */
-contract MockMigrationTarget is StandardToken, UpgradeAgent {
+contract MockMigrationTarget is TruReputationToken, UpgradeAgent {
 
   using SafeMath for uint;
+  using SafeMath for uint256;
 
   UpgradeableToken public oldToken;
 

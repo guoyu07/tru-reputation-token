@@ -1,9 +1,9 @@
 WARNING:root:You are using an untested version of z3. 4.5.0 is the officially tested version
 WARNING:root:You are using solc version 0.4.18, The latest supported version is 0.4.17
-INFO:root:Contract contracts/TruPreSale.sol:TruPreSale:
+INFO:root:Contract contracts/TruCrowdSale.sol:TruCrowdSale:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
-INFO:oyente.symExec: EVM code coverage: 85.9%
+INFO:oyente.symExec: EVM code coverage: 86.2%
 INFO:oyente.symExec: Callstack bug: False
 INFO:oyente.symExec: Money concurrency bug: False
 INFO:oyente.symExec: Time dependency bug: False

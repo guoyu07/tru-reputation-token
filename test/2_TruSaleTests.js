@@ -52,8 +52,8 @@ contract('TruPreSale', function(accounts) {
   let psEndTime;
   let _msWallet = accounts[0];
 
-  // PRESALETESTS TEST CASE 01: Cannot deploy TruPreSale with incorrect variables
-  it('PRESALETESTS TEST CASE 01: Cannot deploy TruPreSale with incorrect variables', async function() {
+  // TRUSALETESTS TEST CASE 01: Cannot deploy TruPreSale with incorrect variables
+  it('TRUSALETESTS TEST CASE 01: Cannot deploy TruPreSale with incorrect variables', async function() {
 
     psStartTime = currentTime + 6000000;
     psEndTime = psStartTime + 6000000;
@@ -74,8 +74,8 @@ contract('TruPreSale', function(accounts) {
   });
 
 
-  // PRESALETESTS TEST CASE 02: TruPreSale and TruReputationToken are deployed
-  it('PRESALETESTS TEST CASE 02: TruPreSale and TruReputationToken are deployed', async function() {
+  // TRUSALETESTS TEST CASE 02: TruPreSale and TruReputationToken are deployed
+  it('TRUSALETESTS TEST CASE 02: TruPreSale and TruReputationToken are deployed', async function() {
     psInst = await TruPreSale.new(psStartTime, psEndTime, truToken.address);
     tokenSupply = await truToken.totalSupply.call();
     psAddress = psInst.address;
@@ -91,8 +91,8 @@ contract('TruPreSale', function(accounts) {
   });
 
 
-  // PRESALETESTS TEST CASE 03: Fallback function should revert
-  it('PRESALETESTS TEST CASE 03: Fallback function should revert', async function() {
+  // TRUSALETESTS TEST CASE 03: Fallback function should revert
+  it('TRUSALETESTS TEST CASE 03: Fallback function should revert', async function() {
     try {
       await web3.eth.sendTransaction({ from: acctOne, to: psAddress, value: web3.toWei(1, 'ether') })
     } catch (error) {
@@ -105,8 +105,8 @@ contract('TruPreSale', function(accounts) {
     }
   });
 
-  // PRESALETESTS TEST CASE 04: Pre-Sale hard variables are as expected
-  it('PRESALETESTS TEST CASE 04: Pre-Sale hard variables are as expected', async function() {
+  // TRUSALETESTS TEST CASE 04: Pre-Sale hard variables are as expected
+  it('TRUSALETESTS TEST CASE 04: Pre-Sale hard variables are as expected', async function() {
     psMinPurchase = await psInst.minimumAmount.call();
     psMaxPurchase = await psInst.maxAmount.call();
     psCap = await psInst.cap.call();
@@ -127,8 +127,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + web3.fromWei(psCap, 'ether'));
   });
 
-  // PRESALETESTS TEST CASE 05: Set Release Agent for TruReputationToken
-  it('PRESALETESTS TEST CASE 05: Set Release Agent for TruReputationToken', async function() {
+  // TRUSALETESTS TEST CASE 05: Set Release Agent for TruReputationToken
+  it('TRUSALETESTS TEST CASE 05: Set Release Agent for TruReputationToken', async function() {
     await truToken.setReleaseAgent(psAddress, { from: acctOne });
     let agent = await truToken.releaseAgent.call();
 
@@ -138,8 +138,10 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + agent);
   });
 
-  // PRESALETESTS TEST CASE 06: Transfer TruReputationToken ownership to Pre-Sale
-  it('PRESALETESTS TEST CASE 06: Transfer TruReputationToken ownership to Pre-Sale', async function() {
+  // TRUSALETESTS TEST CASE 06: Transfer TruReputationToken ownership to Pre-Sale
+  it('TRUSALETESTS TEST CASE 06: Transfer TruReputationToken ownership to Pre-Sale', async function() {
+    await truToken.transferOwnership(0x0, { from: acctOne }).should.be.rejectedWith(EVMThrow);
+
     await truToken.transferOwnership(psAddress);
 
     let tokenOwner = await truToken.owner.call();
@@ -155,8 +157,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + psOwner);
   });
 
-  // PRESALETESTS TEST CASE 07: Can Add Purchaser to Purchaser Whitelist
-  it('PRESALETESTS TEST CASE 07: Can Add Purchaser to Purchaser Whitelist', async function() {
+  // TRUSALETESTS TEST CASE 07: Can Add Purchaser to Purchaser Whitelist
+  it('TRUSALETESTS TEST CASE 07: Can Add Purchaser to Purchaser Whitelist', async function() {
     var wlWatch = psInst.UpdateWhitelist();
     await psInst.updateWhitelist(acctThree, true);
     var watchResult = wlWatch.get();
@@ -184,8 +186,8 @@ contract('TruPreSale', function(accounts) {
 
   });
 
-  // PRESALETESTS TEST CASE 08: Can Remove Purchaser from Purchaser Whitelist
-  it('PRESALETESTS TEST CASE 08: Can Remove Purchaser from Purchaser Whitelist', async function() {
+  // TRUSALETESTS TEST CASE 08: Can Remove Purchaser from Purchaser Whitelist
+  it('TRUSALETESTS TEST CASE 08: Can Remove Purchaser from Purchaser Whitelist', async function() {
 
     var wlWatch = psInst.UpdateWhitelist();
     await psInst.updateWhitelist(acctThree, false);
@@ -208,8 +210,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + watchResult[0].args._purchaserAddress);
   });
 
-  // PRESALETESTS TEST CASE 09: Cannot purchase before start of Pre-Sale
-  it('PRESALETESTS TEST CASE 09: Cannot purchase before start of Pre-Sale', async function() {
+  // TRUSALETESTS TEST CASE 09: Cannot purchase before start of Pre-Sale
+  it('TRUSALETESTS TEST CASE 09: Cannot purchase before start of Pre-Sale', async function() {
 
     await psInst.buy({ from: acctTwo, value: oneEth }).should.be.rejectedWith(EVMThrow);
 
@@ -222,9 +224,11 @@ contract('TruPreSale', function(accounts) {
        ACTUAL RESULT: ' + fundsRaised + ' ETH');
   });
 
-  // PRESALETESTS TEST CASE 10: Cannot purchase below minimum purchase amount
-  it('PRESALETESTS TEST CASE 10: Cannot purchase below minimum purchase amount', async function() {
+  // TRUSALETESTS TEST CASE 10: Cannot purchase below minimum purchase amount
+  it('TRUSALETESTS TEST CASE 10: Cannot purchase below minimum purchase amount', async function() {
     await psInst.buy({ from: acctTwo, value: halfEth }).should.be.rejectedWith(EVMThrow)
+    await psInst.buy({ from: acctOne, value: web3.toWei(100, 'wei') }).should.be.rejectedWith(EVMThrow)
+
     let fundsRaised = await psInst.weiRaised.call();
     let fundsRaisedEth = web3.fromWei(fundsRaised, 'ether');
 
@@ -234,8 +238,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + fundsRaised + ' Wei');
   });
 
-  // PRESALETESTS TEST CASE 11: Cannot purchase above maximum purchase amount if not on Whitelist
-  it('PRESALETESTS TEST CASE 11: Cannot purchase above maximum purchase amount if not on Whitelist', async function() {
+  // TRUSALETESTS TEST CASE 11: Cannot purchase above maximum purchase amount if not on Whitelist
+  it('TRUSALETESTS TEST CASE 11: Cannot purchase above maximum purchase amount if not on Whitelist', async function() {
     let duringPreSale = psStartTime + 3000000;
     await increaseTimeTo(duringPreSale);
     await psInst.buy({ from: acctTwo, value: fiftyOneEth }).should.be.rejectedWith(EVMThrow)
@@ -261,8 +265,8 @@ contract('TruPreSale', function(accounts) {
     );
   });
 
-  // PRESALETESTS TEST CASE 12: Can purchase above maximum purchase amount if on Whitelist
-  it('PRESALETESTS TEST CASE 12: Can purchase above maximum purchase amount if on Whitelist', async function() {
+  // TRUSALETESTS TEST CASE 12: Can purchase above maximum purchase amount if on Whitelist
+  it('TRUSALETESTS TEST CASE 12: Can purchase above maximum purchase amount if on Whitelist', async function() {
     await psInst.updateWhitelist(acctTwo, true);
 
     await psInst.buy({ from: acctTwo, value: fiftyOneEth })
@@ -287,8 +291,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + adjustedSupply.toFormat(0) + ' TRU');
   });
 
-  // PRESALETESTS TEST CASE 13: Can halt Pre-Sale in an emergency
-  it('PRESALETESTS TEST CASE 13: Can halt Pre-Sale in an emergency', async function() {
+  // TRUSALETESTS TEST CASE 13: Can halt Pre-Sale in an emergency
+  it('TRUSALETESTS TEST CASE 13: Can halt Pre-Sale in an emergency', async function() {
     await psInst.halt({ from: acctOne });
     await psInst.buy({ from: acctOne, value: oneEth }).should.be.rejectedWith(EVMThrow);
     let fundsRaised = await psInst.weiRaised.call();
@@ -317,6 +321,9 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + normalisedSupply.toFormat(0));
 
     await psInst.unhalt({ from: acctOne })
+
+    // Repeated attempts to unhalt should fail
+    await psInst.unhalt({ from: acctOne }).should.be.rejectedWith(EVMThrow);
     let haltStatusTwo = await psInst.halted.call();
 
     assert.equal(haltStatusTwo,
@@ -325,12 +332,13 @@ contract('TruPreSale', function(accounts) {
          ACTUAL RESULT: ' + haltStatus);
   });
 
-  // PRESALETESTS TEST CASE 14: Tokens cannot be transferred before Pre-Sale is finalised
-  it('PRESALETESTS TEST CASE 14: Tokens cannot be transferred before Pre-Sale is finalised', async function() {
+  // TRUSALETESTS TEST CASE 14: Tokens cannot be transferred before Pre-Sale is finalised
+  it('TRUSALETESTS TEST CASE 14: Tokens cannot be transferred before Pre-Sale is finalised', async function() {
 
     let acctThreeOrgBalance = await truToken.balanceOf(acctThree);
     let transferAmount = web3.toWei(pSaleRate, 'ether')
     await truToken.transfer(acctThree, transferAmount, { from: acctOne }).should.be.rejectedWith(EVMThrow);
+    await truToken.transfer(0x0, transferAmount, { from: acctOne }).should.be.rejectedWith(EVMThrow);
     let acctThreeBalance = await truToken.balanceOf(acctThree);
 
     assert.isTrue(acctThreeBalance.equals(acctThreeOrgBalance),
@@ -339,8 +347,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + web3.fromWei(acctThreeBalance, 'ether') + ' TRU');
   });
 
-  // PRESALETESTS TEST CASE 15: Only nominated Release Agent can make Tokens transferable
-  it('PRESALETESTS TEST CASE 15: Only nominated Release Agent can make Tokens transferable', async function() {
+  // TRUSALETESTS TEST CASE 15: Only nominated Release Agent can make Tokens transferable
+  it('TRUSALETESTS TEST CASE 15: Only nominated Release Agent can make Tokens transferable', async function() {
     // Verify token is not in released state
     let tokensTransferable = await truToken.released.call();
 
@@ -358,10 +366,12 @@ contract('TruPreSale', function(accounts) {
       false,
       'Incorrect Released State for TruReputationToken. EXPECTED RESULT: false\
         ACTUAL RESULT: ' + tokensTransferable);
+
+    await truToken.setTransferAgent(acctOne, true, { from: acctOne }).should.be.rejectedWith(EVMThrow);
   });
 
-  // PRESALETESTS TEST CASE 16: Only Token Owner can mint Tokens
-  it('PRESALETESTS TEST CASE 16: Only Token Owner can mint Tokens', async function() {
+  // TRUSALETESTS TEST CASE 16: Only Token Owner can mint Tokens
+  it('TRUSALETESTS TEST CASE 16: Only Token Owner can mint Tokens', async function() {
     let originalSupply = await truToken.totalSupply.call();
     await truToken.mint(psAddress, 20000, { from: acctOne }).should.be.rejectedWith(EVMThrow);
 
@@ -373,8 +383,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + web3.fromWei(tokenSupply.toNumber(), 'ether') + ' TRU');
   });
 
-  // PRESALETESTS TEST CASE 17: Has correct Purchaser count
-  it('PRESALETESTS TEST CASE 17: Has correct Purchaser count', async function() {
+  // TRUSALETESTS TEST CASE 17: Has correct Purchaser count
+  it('TRUSALETESTS TEST CASE 17: Has correct Purchaser count', async function() {
     let noOfPurchasers = await psInst.purchaserCount.call();
     assert.equal(noOfPurchasers.toNumber(),
       2,
@@ -383,8 +393,8 @@ contract('TruPreSale', function(accounts) {
         ACTUAL RESULT: ' + noOfPurchasers.toNumber());
   });
 
-  // PRESALETESTS TEST CASE 18: Cannot buy more than cap
-  it('PRESALETESTS TEST CASE 18: Cannot buy more than cap', async function() {
+  // TRUSALETESTS TEST CASE 18: Cannot buy more than cap
+  it('TRUSALETESTS TEST CASE 18: Cannot buy more than cap', async function() {
     let preRaisedFunds = await psInst.weiRaised.call();
 
     let moreThanCap = web3.toWei(13000, 'ether');
@@ -399,8 +409,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + web3.toWei(postRaisedFunds.toNumber(), 'ether'));
   });
 
-  // PRESALETESTS TEST CASE 19: PreSale owner cannot finalise a Pre-Sale before it ends
-  it('PRESALETESTS TEST CASE 19: PreSale owner cannot finalise a Pre-Sale before it ends', async function() {
+  // TRUSALETESTS TEST CASE 19: PreSale owner cannot finalise a Pre-Sale before it ends
+  it('TRUSALETESTS TEST CASE 19: PreSale owner cannot finalise a Pre-Sale before it ends', async function() {
     let isComplete = await psInst.isCompleted.call();
 
     assert.isFalse(isComplete,
@@ -416,8 +426,8 @@ contract('TruPreSale', function(accounts) {
               ACTUAL RESULT: ' + isCompleteTwo);
   });
 
-  // PRESALETESTS TEST CASE 20: Cannot buy with invalid address
-  it('PRESALETESTS TEST CASE 20: Cannot buy with invalid address', async function() {
+  // TRUSALETESTS TEST CASE 20: Cannot buy with invalid address
+  it('TRUSALETESTS TEST CASE 20: Cannot buy with invalid address', async function() {
     let invalidAddr = acctFive;
     invalidAddr = 0x0;
     try {
@@ -433,13 +443,13 @@ contract('TruPreSale', function(accounts) {
     await psInst.buyTruTokens(invalidAddr, { from: acctFive, value: oneEth }).should.be.rejectedWith(EVMThrow);
   });
 
-  // PRESALETESTS TEST CASE 21: Cannot buy 0 amount
-  it('PRESALETESTS TEST CASE 21: Cannot buy 0 amount', async function() {
+  // TRUSALETESTS TEST CASE 21: Cannot buy 0 amount
+  it('TRUSALETESTS TEST CASE 21: Cannot buy 0 amount', async function() {
     await psInst.buy({ from: acctThree, value: 0 }).should.be.rejectedWith(EVMThrow);
   });
 
-  // PRESALETESTS TEST CASE 22: Can buy repeatedly from the same address
-  it('PRESALETESTS TEST CASE 22: Can buy repeatedly from the same address', async function() {
+  // TRUSALETESTS TEST CASE 22: Can buy repeatedly from the same address
+  it('TRUSALETESTS TEST CASE 22: Can buy repeatedly from the same address', async function() {
     let oldSupply = await truToken.totalSupply.call();
     await psInst.updateWhitelist(acctFour, true);
     let acctFourBal = await truToken.balanceOf(acctFour);
@@ -465,8 +475,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + web3.fromWei(acctFourBal.toNumber(), 'ether') + ' TRU');
   });
 
-  // PRESALETESTS TEST CASE 23: Can buy up to the cap on the Pre-Sale
-  it('PRESALETESTS TEST CASE 23: Can buy up to the cap on the Pre-Sale', async function() {
+  // TRUSALETESTS TEST CASE 23: Can buy up to the cap on the Pre-Sale
+  it('TRUSALETESTS TEST CASE 23: Can buy up to the cap on the Pre-Sale', async function() {
     let raisedFunds = await psInst.weiRaised.call();
     let raisedEth = new BigNumber(web3.fromWei(raisedFunds, 'ether'));
 
@@ -512,9 +522,9 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + web3.fromWei(tokenSupply.toNumber(), 'ether') + ' TRU');
   });
 
-  // PRESALETESTS TEST CASE 24: Cannot buy once the cap is reached on the Pre-Sale
-  it('PRESALETESTS TEST CASE 24: Cannot buy once the cap is reached on the Pre-Sale', async function() {
-    await psInst.buy({ from: acctOne, value: 1 }).should.be.rejectedWith(EVMThrow);
+  // TRUSALETESTS TEST CASE 24: Cannot buy once the cap is reached on the Pre-Sale
+  it('TRUSALETESTS TEST CASE 24: Cannot buy once the cap is reached on the Pre-Sale', async function() {
+    await psInst.buy({ from: acctOne, value: 1000 }).should.be.rejectedWith(EVMThrow);
 
     let raisedFunds = await psInst.weiRaised.call();
     tokenSupply = await truToken.totalSupply.call();
@@ -533,8 +543,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + adjustedSupply.toFormat(0) + ' TRU');
   });
 
-  // PRESALETESTS TEST CASE 25: Cannot buy once Pre-Sale has ended
-  it('PRESALETESTS TEST CASE 25: Cannot buy once Pre-Sale has ended', async function() {
+  // TRUSALETESTS TEST CASE 25: Cannot buy once Pre-Sale has ended
+  it('TRUSALETESTS TEST CASE 25: Cannot buy once Pre-Sale has ended', async function() {
     let psStartTimeTwo = web3.eth.getBlock('pending').timestamp + 6000000;
     let psEndTimeTwo = psStartTimeTwo + 6000000;
     // Setup up second Pre-Sale and Token Instance
@@ -575,8 +585,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + adjustNewBalance.toFormat(18));
   });
 
-  // PRESALETESTS TEST CASE 26: PreSale owner can finalise the Pre-Sale
-  it('PRESALETESTS TEST CASE 26: PreSale owner can finalise the Pre-Sale', async function() {
+  // TRUSALETESTS TEST CASE 26: PreSale owner can finalise the Pre-Sale
+  it('TRUSALETESTS TEST CASE 26: PreSale owner can finalise the Pre-Sale', async function() {
     await psInst.finalise({ from: acctOne });
 
     let totalTokens = new BigNumber(web3.toWei(30000000, 'ether'));
@@ -621,8 +631,8 @@ contract('TruPreSale', function(accounts) {
 
   });
 
-  // PRESALETESTS TEST CASE 27: Cannot finalise a finalised Pre-Sale
-  it('PRESALETESTS TEST CASE 27: Cannot finalise a finalised Pre-Sale', async function() {
+  // TRUSALETESTS TEST CASE 27: Cannot finalise a finalised Pre-Sale
+  it('TRUSALETESTS TEST CASE 27: Cannot finalise a finalised Pre-Sale', async function() {
     let isComplete = await psInst.isCompleted.call();
 
     assert.isTrue(isComplete,
@@ -641,8 +651,8 @@ contract('TruPreSale', function(accounts) {
           ACTUAL RESULT: ' + isCompleteTwo);
   });
 
-  // PRESALETESTS TEST CASE 28: Minted TruReputationToken cannot be transferred yet
-  it('PRESALETESTS TEST CASE 28: Minted TruReputationToken cannot be transferred yet', async function() {
+  // TRUSALETESTS TEST CASE 28: Minted TruReputationToken cannot be transferred yet
+  it('TRUSALETESTS TEST CASE 28: Minted TruReputationToken cannot be transferred yet', async function() {
     let isReleased = await truToken.released.call();
     assert.isFalse(isReleased,
       'Incorrect Pre-Sale Release Status. \n\
@@ -714,8 +724,8 @@ contract('TruCrowdSale', function(accounts) {
 
   let _msWallet = accounts[0];
 
-  // CROWDSALETESTS TEST CASE 01: Cannot deploy TruCrowdSale with incorrect variables
-  it('CROWDSALETESTS TEST CASE 01: Cannot deploy TruCrowdSale with incorrect variables', async function() {
+  // TRUSALETESTS TEST CASE 29: Cannot deploy TruCrowdSale with incorrect variables
+  it('TRUSALETESTS TEST CASE 29: Cannot deploy TruCrowdSale with incorrect variables', async function() {
     psStartTime = currentTime + 6000000;
     psEndTime = psStartTime + 6000000;
     sStartTime = psEndTime + 6000000;
@@ -725,17 +735,20 @@ contract('TruCrowdSale', function(accounts) {
     let expiredTS = 1509336360;
 
     // Should fail to create CrowdSale with expired startTime
-    await TruCrowdSale.new(expiredTS, psEndTime, tempToken.address).should.be.rejectedWith(EVMThrow);
+    await TruCrowdSale.new(expiredTS, psEndTime, tempToken.address, preSaleCap).should.be.rejectedWith(EVMThrow);
 
     // Should fail to create CrowdSale with endTime before startTime
-    await TruCrowdSale.new(psEndTime, psStartTime, tempToken.address).should.be.rejectedWith(EVMThrow);
+    await TruCrowdSale.new(psEndTime, psStartTime, tempToken.address, preSaleCap).should.be.rejectedWith(EVMThrow);
 
     // Should fail to create CrowdSale with invalid Tru Token
-    await TruCrowdSale.new(psStartTime, psEndTime, 0x0).should.be.rejectedWith(EVMThrow);
+    await TruCrowdSale.new(psStartTime, psEndTime, 0x0, preSaleCap).should.be.rejectedWith(EVMThrow);
+
+    // Should fail to create CrowdSale with invalid Current Raise
+    await TruCrowdSale.new(psStartTime, psEndTime, 0x0, -1).should.be.rejectedWith(EVMThrow);
   });
 
-  // CROWDSALETESTS TEST CASE 02: TruPreSale, TruCrowdSale and TruReputationToken are deployed
-  it('CROWDSALETESTS TEST CASE 02: TruPreSale and TruReputationToken are deployed', async function() {
+  // TRUSALETESTS TEST CASE 30: TruPreSale and TruReputationToken are deployed
+  it('TRUSALETESTS TEST CASE 30: TruPreSale and TruReputationToken are deployed', async function() {
     truToken = await TruReputationToken.new();
     tokenSupply = await truToken.totalSupply.call();
     preInst = await TruPreSale.new(psStartTime, psEndTime, truToken.address);
@@ -749,8 +762,8 @@ contract('TruCrowdSale', function(accounts) {
         ACTUAL RESULT: ' + tokenSupply);
   });
 
-  // CROWDSALETESTS TEST CASE 03: Simulate completed PreSale and transition to CrowdSale
-  it('CROWDSALETESTS TEST CASE 03: Simulate completed PreSale and transition to CrowdSale', async function() {
+  // TRUSALETESTS TEST CASE 31: Simulate completed PreSale and transition to CrowdSale
+  it('TRUSALETESTS TEST CASE 31: Simulate completed PreSale and transition to CrowdSale', async function() {
     await truToken.setReleaseAgent(psAddress, { from: acctOne });
     await truToken.transferOwnership(psAddress);
     let tokenOwner = await truToken.owner.call();
@@ -777,7 +790,9 @@ contract('TruCrowdSale', function(accounts) {
 
     let tokenBal = await truToken.totalSupply.call();
 
-    sInst = await TruCrowdSale.new(sStartTime, sEndTime, truToken.address, tokenBal);
+    let currentRaised = await preInst.weiRaised.call();
+
+    sInst = await TruCrowdSale.new(sStartTime, sEndTime, truToken.address, tokenBal, currentRaised);
     sAddress = sInst.address;
 
     saleRate = await sInst.saleRate.call();
@@ -787,8 +802,8 @@ contract('TruCrowdSale', function(accounts) {
       Returning as ' + saleRate.toFormat(0));
   });
 
-  // CROWDSALETESTS TEST CASE 04: Fallback function should revert
-  it('CROWDSALETESTS TEST CASE 04: Fallback function should revert', async function() {
+  // TRUSALETESTS TEST CASE 32: Fallback function should revert
+  it('TRUSALETESTS TEST CASE 32: Fallback function should revert', async function() {
     try {
       await web3.eth.sendTransaction({ from: acctOne, to: sAddress, value: web3.toWei(1, 'ether') })
     } catch (error) {
@@ -801,8 +816,8 @@ contract('TruCrowdSale', function(accounts) {
     }
   });
 
-  // CROWDSALETESTS TEST CASE 05: CrowdSale hard variables are as expected
-  it('CROWDSALETESTS TEST CASE 05: CrowdSale hard variables are as expected', async function() {
+  // TRUSALETESTS TEST CASE 33: CrowdSale hard variables are as expected
+  it('TRUSALETESTS TEST CASE 33: CrowdSale hard variables are as expected', async function() {
     let minimumPurchase = await sInst.minimumAmount.call();
     let maxPurchase = await sInst.maxAmount.call();
     let cap = await sInst.cap.call();
@@ -827,8 +842,8 @@ contract('TruCrowdSale', function(accounts) {
       ACTUAL RESULT: ' + web3.fromWei(cap, 'ether'));
   });
 
-  // CROWDSALETESTS TEST CASE 06: Transfer TruReputationToken ownership to CrowdSale
-  it('CROWDSALETESTS TEST CASE 06: Transfer TruReputationToken ownership to CrowdSale', async function() {
+  // TRUSALETESTS TEST CASE 34: Transfer TruReputationToken ownership to CrowdSale
+  it('TRUSALETESTS TEST CASE 34: Transfer TruReputationToken ownership to CrowdSale', async function() {
     await truToken.setReleaseAgent(sAddress, { from: acctOne });
     await truToken.transferOwnership(sAddress);
     let tokenOwner = await truToken.owner.call();
@@ -847,8 +862,8 @@ contract('TruCrowdSale', function(accounts) {
     postPSBal = await truToken.totalSupply.call();
   })
 
-  // CROWDSALETESTS TEST CASE 07: Can Add Purchaser to Purchaser Whitelist
-  it('CROWDSALETESTS TEST CASE 07: Can Add Purchaser to Purchaser Whitelist', async function() {
+  // TRUSALETESTS TEST CASE 35: Can Add Purchaser to CrowdSale Purchaser Whitelist
+  it('TRUSALETESTS TEST CASE 35: Can Add Purchaser to CrowdSale Purchaser Whitelist', async function() {
     var wlWatch = sInst.UpdateWhitelist();
     await sInst.updateWhitelist(acctThree, true);
     var watchResult = wlWatch.get();
@@ -875,8 +890,8 @@ contract('TruCrowdSale', function(accounts) {
       ACTUAL RESULT: ' + whiteListed);
   });
 
-  // CROWDSALETESTS TEST CASE 08: Can Remove Purchaser from Purchaser Whitelist
-  it('CROWDSALETESTS TEST CASE 08: Can Remove Purchaser from Purchaser Whitelist', async function() {
+  // TRUSALETESTS TEST CASE 36: Can Remove Purchaser from CrowdSale Purchaser Whitelist
+  it('TRUSALETESTS TEST CASE 36: Can Remove Purchaser from CrowdSale Purchaser Whitelist', async function() {
     var wlWatch = sInst.UpdateWhitelist();
     await sInst.updateWhitelist(acctThree, false);
     var watchResult = wlWatch.get();
@@ -898,8 +913,8 @@ contract('TruCrowdSale', function(accounts) {
       ACTUAL RESULT: ' + watchResult[0].args._purchaserAddress);
   });
 
-  // CROWDSALETESTS TEST CASE 09: Cannot purchase before start of CrowdSale
-  it('CROWDSALETESTS TEST CASE 09: Cannot purchase before start of CrowdSale', async function() {
+  // TRUSALETESTS TEST CASE 37: Cannot purchase before start of CrowdSale
+  it('TRUSALETESTS TEST CASE 37: Cannot purchase before start of CrowdSale', async function() {
     await sInst.buy({ from: acctTwo, value: oneEth }).should.be.rejectedWith(EVMThrow);
 
     let fundsRaised = await sInst.weiRaised.call();
@@ -911,8 +926,8 @@ contract('TruCrowdSale', function(accounts) {
       ACTUAL RESULT: ' + fundsRaised + ' ETH');
   });
 
-  // CROWDSALETESTS TEST CASE 10: Cannot purchase below minimum purchase amount
-  it('CROWDSALETESTS TEST CASE 10: Cannot purchase below minimum purchase amount', async function() {
+  // TRUSALETESTS TEST CASE 38: Cannot purchase below minimum purchase amount
+  it('TRUSALETESTS TEST CASE 38: Cannot purchase below minimum purchase amount', async function() {
     await sInst.buy({ from: acctTwo, value: halfEth }).should.be.rejectedWith(EVMThrow)
     let fundsRaised = await sInst.weiRaised.call();
     let fundsRaisedEth = web3.fromWei(fundsRaised, 'ether');
@@ -923,8 +938,8 @@ contract('TruCrowdSale', function(accounts) {
       ACTUAL RESULT: ' + web3.fromWei(fundsRaised.toNumber(), 'ether') + ' ETH');
   });
 
-  // CROWDSALETESTS TEST CASE 11: Cannot purchase above maximum purchase amount if not on Whitelist
-  it('CROWDSALETESTS TEST CASE 11: Cannot purchase above maximum purchase amount if not on Whitelist', async function() {
+  // TRUSALETESTS TEST CASE 39: Cannot purchase above maximum purchase amount if not on CrowdSale Whitelist
+  it('TRUSALETESTS TEST CASE 39: Cannot purchase above maximum purchase amount if not on CrowdSale Whitelist', async function() {
     let duringSale = sStartTime + 3000000;
     await increaseTimeTo(duringSale);
     await sInst.buy({ from: acctTwo, value: fiftyOneEth }).should.be.rejectedWith(EVMThrow)
@@ -950,9 +965,8 @@ contract('TruCrowdSale', function(accounts) {
     );
   });
 
-
-  // CROWDSALETESTS TEST CASE 12: Can purchase above maximum purchase amount if on Whitelist
-  it('CROWDSALETESTS TEST CASE 12: Can purchase above maximum purchase amount if on Whitelist', async function() {
+  // TRUSALETESTS TEST CASE 40: Can purchase above maximum purchase amount if on CrowdSale Whitelist
+  it('TRUSALETESTS TEST CASE 40: Can purchase above maximum purchase amount if on CrowdSale Whitelist', async function() {
     let newSold = saleRate.mul(51);
     estSold = estSold.add(newSold);
 
@@ -980,9 +994,10 @@ contract('TruCrowdSale', function(accounts) {
 
   });
 
-  // CROWDSALETESTS TEST CASE 13: Can halt CrowdSale in an emergency
-  it('CROWDSALETESTS TEST CASE 13: Can halt CrowdSale in an emergency', async function() {
+  // TRUSALETESTS TEST CASE 41: Can halt CrowdSale in an emergency
+  it('TRUSALETESTS TEST CASE 41: Can halt CrowdSale in an emergency', async function() {
     await sInst.halt({ from: acctOne });
+
     await sInst.buy({ from: acctOne, value: oneEth }).should.be.rejectedWith(EVMThrow);
     let fundsRaised = await sInst.weiRaised.call();
 
@@ -1017,8 +1032,8 @@ contract('TruCrowdSale', function(accounts) {
      ACTUAL RESULT: ' + haltStatus);
   });
 
-  // CROWDSALETESTS TEST CASE 14: Tokens cannot be transferred before CrowdSale is finalised
-  it('CROWDSALETESTS TEST CASE 14: Tokens cannot be transferred before CrowdSale is finalised', async function() {
+  // TRUSALETESTS TEST CASE 42: Tokens cannot be transferred before CrowdSale is finalised
+  it('TRUSALETESTS TEST CASE 42: Tokens cannot be transferred before CrowdSale is finalised', async function() {
     let acctThreeOrgBalance = await truToken.balanceOf(acctThree);
 
     await truToken.transfer(acctThree, 1250, { from: acctOne }).should.be.rejectedWith(EVMThrow);
@@ -1030,8 +1045,8 @@ contract('TruCrowdSale', function(accounts) {
       ACTUAL RESULT: ' + acctThreeBalance.toFormat(0));
   });
 
-  // CROWDSALETESTS TEST CASE 15: Only nominated Release Agent can make Tokens transferable
-  it('CROWDSALETESTS TEST CASE 15: Only nominated Release Agent can make Tokens transferable', async function() {
+  // TRUSALETESTS TEST CASE 43: Only nominated Release Agent can make Tokens transferable
+  it('TRUSALETESTS TEST CASE 43: Only nominated Release Agent can make Tokens transferable', async function() {
     // Verify token is not in released state
     let tokensTransferable = await truToken.released.call();
 
@@ -1051,8 +1066,8 @@ contract('TruCrowdSale', function(accounts) {
         ACTUAL RESULT: ' + tokensTransferable);
   });
 
-  // CROWDSALETESTS TEST CASE 16: Only Token Owner can mint Tokens
-  it('CROWDSALETESTS TEST CASE 16: Only Token Owner can mint Tokens', async function() {
+  // TRUSALETESTS TEST CASE 44: Only Token Owner can mint Tokens
+  it('TRUSALETESTS TEST CASE 44: Only Token Owner can mint Tokens', async function() {
     await truToken.mint(sAddress, 20000, { from: acctOne }).should.be.rejectedWith(EVMThrow);
 
     let newTokenSupply = await truToken.totalSupply.call();
@@ -1062,16 +1077,16 @@ contract('TruCrowdSale', function(accounts) {
         ACTUAL RESULT: ' + newTokenSupply.toFormat(0));
   });
 
-  // CROWDSALETESTS TEST CASE 17: Has correct Purchaser count
-  it('CROWDSALETESTS TEST CASE 17: Has correct Purchaser count', async function() {
+  // TRUSALETESTS TEST CASE 45: CrowdSale has correct Purchaser count
+  it('TRUSALETESTS TEST CASE 45: CrowdSale has correct Purchaser count', async function() {
     let noOfPurchasers = await sInst.purchaserCount.call();
     assert.isTrue(noOfPurchasers.equals(2),
       'Incorrect number of purchasers for CrowdSale. EXPECTED RESULT: 2\
     ACTUAL RESULT: ' + noOfPurchasers.toFormat(0));
   });
 
-  // CROWDSALETESTS TEST CASE 18: Cannot buy more than cap
-  it('CROWDSALETESTS TEST CASE 18: Cannot buy more than cap', async function() {
+  // TRUSALETESTS TEST CASE 46: Cannot buy more than CrowdSale cap
+  it('TRUSALETESTS TEST CASE 46: Cannot buy more than CrowdSale cap', async function() {
     let preRaisedFunds = await sInst.weiRaised.call();
     let tenEthValue = new BigNumber(web3.toWei(10, 'ether'))
     let moreThanCap = saleCap.add(tenEthValue);
@@ -1084,8 +1099,8 @@ contract('TruCrowdSale', function(accounts) {
           ACTUAL RESULT: ' + web3.toWei(postRaisedFunds.toNumber()));
   });
 
-  // CROWDSALETESTS TEST CASE 19: CrowdSale owner cannot finalise a CrowdSale before it ends
-  it('CROWDSALETESTS TEST CASE 19: CrowdSale owner cannot finalise a CrowdSale before it ends', async function() {
+  // TRUSALETESTS TEST CASE 47: CrowdSale owner cannot finalise a CrowdSale before it ends
+  it('TRUSALETESTS TEST CASE 47: CrowdSale owner cannot finalise a CrowdSale before it ends', async function() {
     let isComplete = await sInst.isCompleted.call();
 
     assert.isFalse(isComplete,
@@ -1101,8 +1116,8 @@ contract('TruCrowdSale', function(accounts) {
           ACTUAL RESULT: ' + isCompleteTwo);
   });
 
-  // CROWDSALETESTS TEST CASE 20: Cannot buy with invalid address
-  it('CROWDSALETESTS TEST CASE 20: Cannot buy with invalid address', async function() {
+  // TRUSALETESTS TEST CASE 48: Cannot buy from CrowdSale with invalid address
+  it('TRUSALETESTS TEST CASE 48: Cannot buy from CrowdSale with invalid address', async function() {
     let invalidAddr = acctFive;
     invalidAddr = 0x0;
     try {
@@ -1118,13 +1133,13 @@ contract('TruCrowdSale', function(accounts) {
     await sInst.buyTruTokens(invalidAddr, { from: acctFive, value: oneEth }).should.be.rejectedWith(EVMThrow);
   });
 
-  // CROWDSALETESTS TEST CASE 21: Cannot buy 0 amount
-  it('CROWDSALETESTS TEST CASE 21: Cannot buy 0 amount', async function() {
+  // TRUSALETESTS TEST CASE 49: Cannot buy 0 amount from CrowdSale
+  it('TRUSALETESTS TEST CASE 49: Cannot buy 0 amount from CrowdSale', async function() {
     await sInst.buy({ from: acctThree, value: 0 }).should.be.rejectedWith(EVMThrow);
   });
 
-  // CROWDSALETESTS TEST CASE 22: Can buy repeatedly from the same address
-  it('CROWDSALETESTS TEST CASE 22: Can buy repeatedly from the same address', async function() {
+  // TRUSALETESTS TEST CASE 50: Can buy repeatedly from the same address
+  it('TRUSALETESTS TEST CASE 50: Can buy repeatedly from the same address', async function() {
     let oldSupply = await truToken.totalSupply.call();
     oldSupply = web3.fromWei(oldSupply, 'ether');
 
@@ -1158,8 +1173,8 @@ contract('TruCrowdSale', function(accounts) {
 
   });
 
-  // CROWDSALETESTS TEST CASE 23: Can buy up to the cap on the CrowdSale
-  it('CROWDSALETESTS TEST CASE 23: Can buy up to the cap on the CrowdSale', async function() {
+  // TRUSALETESTS TEST CASE 51: Can buy up to the cap on the CrowdSale
+  it('TRUSALETESTS TEST CASE 51: Can buy up to the cap on the CrowdSale', async function() {
     let raisedFunds = await sInst.weiRaised.call();
     let raisedEth = new BigNumber(web3.fromWei(raisedFunds, 'ether'));
 
@@ -1208,8 +1223,8 @@ contract('TruCrowdSale', function(accounts) {
 
   });
 
-  // CROWDSALETESTS TEST CASE 24: Cannot buy once the cap is reached on the CrowdSale
-  it('CROWDSALETESTS TEST CASE 24: Cannot buy once the cap is reached on the CrowdSale', async function() {
+  // TRUSALETESTS TEST CASE 52: Cannot buy once the cap is reached on the CrowdSale
+  it('TRUSALETESTS TEST CASE 52: Cannot buy once the cap is reached on the CrowdSale', async function() {
     await sInst.buy({ from: acctOne, value: web3.toWei(1, 'ether') }).should.be.rejectedWith(EVMThrow);
 
     let raisedFunds = await sInst.weiRaised.call();
@@ -1227,8 +1242,8 @@ contract('TruCrowdSale', function(accounts) {
       ACTUAL RESULT:' + web3.fromWei(soldTokens.toNumber(), 'ether') + ' ETH');
   });
 
-  // CROWDSALETESTS TEST CASE 25: CrowdSale owner can finalise the CrowdSale
-  it('CROWDSALETESTS TEST CASE 25: CrowdSale owner can finalise the CrowdSale', async function() {
+  // TRUSALETESTS TEST CASE 53: CrowdSale owner can finalise the CrowdSale
+  it('TRUSALETESTS TEST CASE 53: CrowdSale owner can finalise the CrowdSale', async function() {
 
     // Only the Owner should be able to finalise the sale
     await sInst.finalise({ from: acctTwo }).should.be.rejectedWith(EVMThrow);
@@ -1281,8 +1296,8 @@ contract('TruCrowdSale', function(accounts) {
       ACTUAL RESULT: ' + web3.fromWei(tokenBalance.toNumber(), 'ether') + ' TRU');
   });
 
-  // CROWDSALETESTS TEST CASE 26: Cannot buy once CrowdSale has ended
-  it('CROWDSALETESTS TEST CASE 26: Cannot buy once CrowdSale has ended', async function() {
+  // TRUSALETESTS TEST CASE 54: Cannot buy once CrowdSale has ended
+  it('TRUSALETESTS TEST CASE 54: Cannot buy once CrowdSale has ended', async function() {
     let psStartTimeTwo = web3.eth.getBlock('pending').timestamp + 6000000;
     let psEndTimeTwo = psStartTimeTwo + 6000000;
     let duringPreSale = psStartTimeTwo + 3000000;
@@ -1303,9 +1318,10 @@ contract('TruCrowdSale', function(accounts) {
     let psEnded = await psInstTwo.hasEnded.call();
     await psInstTwo.finalise({ from: acctOne });
     let truTokenSupplyTwo = await truTokenTwo.totalSupply.call();
+    let currentRaised = await psInstTwo.weiRaised.call();
 
     // Start Second Crowdsale
-    let csInstTwo = await TruCrowdSale.new(sStartTimeTwo, sEndTimeTwo, truTokenTwo.address, truTokenSupplyTwo);
+    let csInstTwo = await TruCrowdSale.new(sStartTimeTwo, sEndTimeTwo, truTokenTwo.address, truTokenSupplyTwo, currentRaised);
     let csAddressTwo = csInstTwo.address;
     await truTokenTwo.setReleaseAgent(csAddressTwo, { from: acctOne });
     await truTokenTwo.transferOwnership(csAddressTwo);
@@ -1315,10 +1331,8 @@ contract('TruCrowdSale', function(accounts) {
     csInstTwo.buy({ from: acctFive, value: oneEth }).should.be.rejectedWith(EVMThrow);
   });
 
-
-
-  // CROWDSALETESTS TEST CASE 27: Cannot finalise a finalised CrowdSale
-  it('CROWDSALETESTS TEST CASE 27: Cannot finalise a finalised CrowdSale', async function() {
+  // TRUSALETESTS TEST CASE 55: Cannot finalise a finalised CrowdSale
+  it('TRUSALETESTS TEST CASE 55: Cannot finalise a finalised CrowdSale', async function() {
     let isComplete = await sInst.isCompleted.call();
     assert.isTrue(isComplete,
       'Incorrect Post-Sale Completion Status. \n\
@@ -1334,8 +1348,8 @@ contract('TruCrowdSale', function(accounts) {
       ACTUAL RESULT: ' + isCompleteTwo);
   });
 
-  // CROWDSALETESTS TEST CASE 28: Minted TruReputationToken can be transferred
-  it('CROWDSALETESTS TEST CASE 28: Minted TruReputationToken can be transferred', async function() {
+  // TRUSALETESTS TEST CASE 56: Minted TruReputationToken can be transferred
+  it('TRUSALETESTS TEST CASE 56: Minted TruReputationToken can be transferred', async function() {
     let isReleased = await truToken.released.call();
     assert.isTrue(isReleased,
       'Incorrect Post-CrowdSale Release Status. \n\
@@ -1375,5 +1389,40 @@ contract('TruCrowdSale', function(accounts) {
     assert.isTrue(newAcctTwoBal.equals(estTwoBal), 'Balances do not match');
 
     await truToken.releaseTokenTransfer().should.be.rejectedWith(EVMThrow);
+  });
+
+  // TRUSALETESTS TEST CASE 57: CrowdSale has higher cap if PreSale did not hit cap
+  it('TRUSALETESTS TEST CASE 57: CrowdSale has higher cap if PreSale did not hit cap', async function() {
+    let psStartTimeThree = web3.eth.getBlock('pending').timestamp + 6000000;
+    let psEndTimeThree = psStartTimeThree + 6000000;
+    let duringPreSale = psStartTimeThree + 3000000;
+
+    let sStartTimeThree = psEndTimeThree + 6000000;
+    let sEndTimeThree = sStartTimeThree + 6000000;
+
+    let truTokenThree = await TruReputationToken.new();
+    let psInstThree = await TruPreSale.new(psStartTimeThree, psEndTimeThree, truTokenThree.address);
+    let psAddressThree = psInstThree.address;
+    await truTokenThree.setReleaseAgent(psAddressThree, { from: acctOne });
+    await truTokenThree.transferOwnership(psAddressThree);
+
+    await increaseTimeTo(duringPreSale);
+    await psInstThree.updateWhitelist(acctThree, true);
+    await psInstThree.buy({ from: acctThree, value: web3.toWei(10000, 'ether') });
+    let afterEnd = psEndTimeThree + 50000;
+    await increaseTimeTo(afterEnd);
+    let psEnded = await psInstThree.hasEnded.call();
+    await psInstThree.finalise({ from: acctOne });
+    let truTokenSupplyThree = await truTokenThree.totalSupply.call();
+    let currentRaised = await psInstThree.weiRaised.call();
+
+    // Start Second Crowdsale
+    let csInstThree = await TruCrowdSale.new(sStartTimeThree, sEndTimeThree, truTokenThree.address, truTokenSupplyThree, currentRaised);
+    let csAddressThree = csInstThree.address;
+    let threeCap = await csInstThree.cap.call();
+    assert.isTrue(threeCap.equals(web3.toWei(122000, 'ether')),
+      'Cap is not as expected. \n\
+    EXPECTED RESULT: 122,000 ETH; \n\
+    ACTUAL RESULT: ' + web3.fromWei(threeCap, 'ether') + ' ETH');
   });
 });

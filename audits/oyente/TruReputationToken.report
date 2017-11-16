@@ -3,7 +3,7 @@ WARNING:root:You are using solc version 0.4.18, The latest supported version is 
 INFO:root:Contract contracts/TruReputationToken.sol:TruReputationToken:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
-INFO:oyente.symExec: EVM code coverage: 97.8%
+INFO:oyente.symExec: EVM code coverage: 96.8%
 INFO:oyente.symExec: Callstack bug: False
 INFO:oyente.symExec: Money concurrency bug: False
 INFO:oyente.symExec: Time dependency bug: False

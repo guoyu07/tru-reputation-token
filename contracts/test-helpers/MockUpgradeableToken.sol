@@ -1,5 +1,5 @@
-pragma solidity ^0.4.15;
-import '../../contracts/supporting/UpgradeableToken.sol';
+pragma solidity ^0.4.18;
+import "../supporting/UpgradeableToken.sol";
 
 contract MockUpgradeableToken is UpgradeableToken {
 

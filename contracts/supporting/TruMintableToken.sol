@@ -1,62 +1,84 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.18;
 
-import './ReleasableToken.sol';
-import './zeppelin/math/SafeMath.sol';
 /**
   * @title TruMintableToken
-  * @dev Mintable Token - forked from Open-Zeppelin Mintable Token to include TokenMarket Ltd's ReleaseableToken's functionality
-  * @dev Based off of Open-Zeppelin's Mintable Token (https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/contracts/token/MintableToken.sol)
-  * @dev Based off of TokenMarket's ReleasableToken (https://github.com/TokenMarketNet/ico/blob/master/contracts/ReleasableToken.sol).
-  * @dev Updated by Tru Ltd October 2017 to comply with Solidity 0.4.15 syntax and Best Practices
+  * @dev Mintable Token - forked from Open-Zeppelin Mintable Token to include 
+  * TokenMarket Ltd's ReleaseableToken's functionality
+  * @dev Based off of Open-Zeppelin's Mintable Token 
+  * (https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/contracts/token/MintableToken.sol)
+  * @dev Based off of TokenMarket's ReleasableToken 
+  * (https://github.com/TokenMarketNet/ico/blob/master/contracts/ReleasableToken.sol).
+  * @dev Updated by Tru Ltd October 2017 to comply with Solidity 0.4.18 syntax and Best Practices
   * @author Ian Bray
  */
 
- contract TruMintableToken is ReleasableToken {
+import "./zeppelin/math/SafeMath.sol";
+import "./TruAddress.sol";
+import "./ReleasableToken.sol";
 
-  using SafeMath for uint256;
-  using SafeMath for uint;
 
-   event Mint(address indexed _to, uint256 _amount);
+contract TruMintableToken is ReleasableToken {
+    
+    using SafeMath for uint256;
+    using SafeMath for uint;
 
-   event MintFinished();
+    event Minted(address indexed _to, uint256 _amount);
 
-   bool public mintingFinished = false;
+    event PreSaleComplete();
 
-   bool public preSaleComplete = false;
+    event SaleComplete();
 
-   bool public saleComplete = false;
+    event MintFinished();
 
-   modifier canMint() {
-    require(!mintingFinished);
-    _;
-  }
+    bool public mintingFinished = false;
 
-  /**
-   * @dev Function to mint tokens
-   * @param _to The address that will receive the minted tokens.
-   * @param _amount The amount of tokens to mint.
-   * @return A boolean that indicates if the operation was successful.
-   */
-  function mint(address _to, uint256 _amount) onlyOwner canMint public returns (bool) {
-    totalSupply = totalSupply.add(_amount);
-    balances[_to] = balances[_to].add(_amount);
-    Mint(_to, _amount);
-    Transfer(0x0, _to, _amount);
-    return true;
-  }
+    bool public preSaleComplete = false;
 
-  /**
-   * @dev Function to stop minting new tokens.
-   * @return True if the operation was successful.
-   */
-  function finishMinting(bool _presale, bool _sale) onlyOwner public returns (bool) {
-    preSaleComplete = _presale;
-    saleComplete = _sale;
-    if (_presale && _sale) {
-      mintingFinished = true;
+    bool public saleComplete = false;
+
+    modifier canMint() {
+        require(!mintingFinished);
+        _;
     }
-    MintFinished();
-    return true;
-  }
 
- }
+    /**
+     * @dev Function to mint tokens
+     * @param _to The address that will receive the minted tokens.
+     * @param _amount The amount of tokens to mint.
+     * @return A boolean that indicates if the operation was successful.
+    */
+    function mint(address _to, uint256 _amount) public onlyOwner canMint returns (bool) {
+        require(_amount > 0);
+        require(TruAddress.isValidAddress(_to) == true);
+    
+        totalSupply = totalSupply.add(_amount);
+        balances[_to] = balances[_to].add(_amount);
+        Minted(_to, _amount);
+        Transfer(0x0, _to, _amount);
+        return true;
+    }
+
+    /**
+     * @dev Function to stop minting new tokens.
+     * @return True if the operation was successful.
+    */
+    function finishMinting(bool _presale, bool _sale) public onlyOwner returns (bool) {
+        // Require at least one argument to be true
+        require(_sale != _presale);
+
+        // If _presale is true, require _sale to be false and mark the Pre Sale as Complete
+        if (_presale == true) {
+            preSaleComplete = true;
+            PreSaleComplete();
+            return true;
+        }
+
+        // Else, require preSaleComplete to be true and mark the CrowdSale as Complete
+        require(preSaleComplete == true);
+        saleComplete = true;
+        SaleComplete();
+        mintingFinished = true;
+        MintFinished();
+        return true;
+    }
+}

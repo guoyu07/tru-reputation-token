@@ -4,23 +4,26 @@
  * Licensed under the Apache License, version 2.0: https://github.com/TokenMarketNet/ico/blob/master/LICENSE.txt
  */
 
-pragma solidity ^0.4.15;
-
 /**
  * Upgrade agent interface inspired by Lunyr.
  *
  * Upgrade agent transfers tokens to a new contract.
  * Upgrade agent itself can be the token contract, or just a middle man contract doing the heavy lifting.
+ * @dev Based off of TokenMarket's UpgradeAgent (https://github.com/TokenMarketNet/ico/blob/master/contracts/UpgradeAgent.sol).
+ * @dev Updated by Tru Ltd November 2017 to comply with Solidity 0.4.18 syntax and Best Practices
  */
+
+pragma solidity ^0.4.18;
+
+
 contract UpgradeAgent {
+    
+    uint public originalSupply;
 
-  uint public originalSupply;
+    /** Interface marker */
+    function isUpgradeAgent() public pure returns (bool) {
+        return true;
+    }
 
-  /** Interface marker */
-  function isUpgradeAgent() public constant returns (bool) {
-    return true;
-  }
-
-  function upgradeFrom(address _from, uint256 _value) public;
-
+    function upgradeFrom(address _from, uint256 _value) public;
 }

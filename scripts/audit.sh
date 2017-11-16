@@ -5,9 +5,14 @@
 
 function oyente_contracts(){
   PRESALEREP=$(oyente -s contracts/TruPreSale.sol 2>&1)
+  CROWDSALEREP=$(oyente -s contracts/TruCrowdSale.sol 2>&1)
   TOKENREP=$(oyente -s contracts/TruReputationToken.sol 2>&1)
+  
   echo 'Generating Oyente Audit on TruPreSale.sol...'
   echo $PRESALEREP > audits/oyente/TruPreSale.report
+
+  echo 'Generating Oyente Audit on TruCrowdSale.sol...'
+  echo $CROWDSALEREP > audits/oyente/TruCrowdSale.report
 
   echo 'Generating Oyente Audit on TruReputationToken.sol...'
   echo $TOKENREP > audits/oyente/TruReputationToken.report
@@ -15,11 +20,16 @@ function oyente_contracts(){
   # Reformat Reports
    sed -i -e 's/ WARNING/\'$'\nWARNING/g' audits/oyente/TruPreSale.report
    sed -i -e 's/ INFO/\'$'\nINFO/g' audits/oyente/TruPreSale.report
+
+   sed -i -e 's/ WARNING/\'$'\nWARNING/g' audits/oyente/TruCrowdSale.report
+   sed -i -e 's/ INFO/\'$'\nINFO/g' audits/oyente/TruCrowdSale.report
+   
    sed -i -e 's/ WARNING/\'$'\nWARNING/g' audits/oyente/TruReputationToken.report
    sed -i -e 's/ INFO/\'$'\nINFO/g' audits/oyente/TruReputationToken.report
 
    rm audits/oyente/TruReputationToken.report-e
    rm audits/oyente/TruPreSale.report-e
+   rm audits/oyente/TruCrowdSale.report-e
 
 }
 
