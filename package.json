@@ -1,6 +1,6 @@
 {
   "name": "tru-reputation-token",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Github repository for the Tru Reputation Token - part of the Tru Reputation Protocol",
   "main": "truffle.js",
   "directories": {
@@ -13,20 +13,16 @@
     "test-testnet": "./scripts/testnet.sh test",
     "migrate-testnet": "./scripts/testnet.sh migrate",
     "console-testnet": "./scripts/testnet.sh console",
-    "create-devnet": "./scripts/devnet.sh create",
     "migrate-devnet": "./scripts/devnet.sh migrate",
     "console-devnet": "./scripts/devnet.sh console",
-    "add-devnet-acct": "./scripts/devnet.sh add",
-    "start-devnet": "./scripts/devnet.sh stop",
-    "stop-devnet": "./scripts/devnet.sh stop",
-    "limit-devnet": "./scripts/devnet.sh limit",
-    "restore-devnet": "./scripts/devnet.sh restore",
-    "test-devnet": "./scripts/devnet.sh test",
-    "test-rinkeby": "./scripts/rinkeby.sh test",
     "compile": "truffle compile",
     "coverage": "./scripts/coverage.sh generate",
     "clean": "rm -rf build/",
-    "test": "./scripts/testnet.sh test"
+    "test": "./scripts/testnet.sh test",
+    "flatten": "./scripts/flattensrc.sh flatten",
+    "flattentrt": "./scripts/flattensrc.sh flattentrt",
+    "flattentps": "./scripts/flattensrc.sh flattentps",
+    "flattentcs": "./scripts/flattensrc.sh flattentcs"
   },
   "author": "Tru Ltd",
   "repository": {
@@ -56,13 +52,14 @@
     "chai-as-promised": "^7.1.1",
     "chai-bignumber": "^2.0.2",
     "coveralls": "^3.0.0",
-    "ethereumjs-testrpc": "^4.1.3",
+    "ethereumjs-testrpc": "^6.0.3",
     "fuzzer": "^0.2.1",
-    "solidity-coverage": "^0.2.7",
+    "solidity-coverage": "^0.4.2",
     "truffle": "^4.0.1",
-    "zeppelin-solidity": "^1.3.0"
+    "zeppelin-solidity": "^1.3.0",
+    "dotenv": "^4.0.0",
+    "jshint": "^2.9.5",
+    "solidity-static-analysis": "^1.1.0"
   },
-  "dependencies": {
-    "jshint": "^2.9.5"
-  }
+  "dependencies": {}
 }

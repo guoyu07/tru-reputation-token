@@ -20,11 +20,13 @@ pragma solidity ^0.4.18;
  * Originally envisioned in FirstBlood ICO contract.
  */
 
-import "./zeppelin/ownership/Ownable.sol";
+import "./Ownable.sol";
 
 
 contract Haltable is Ownable {
     bool public halted;
+
+    event HaltStatus(bool _status);
 
     modifier stopInEmergency {
         require(!halted);
@@ -39,10 +41,12 @@ contract Haltable is Ownable {
     // called by the owner on emergency, triggers stopped state
     function halt() external onlyOwner {
         halted = true;
+        HaltStatus(halted);
     }
 
     // called by the owner on end of emergency, returns to normal state
     function unhalt() external onlyOwner onlyInEmergency {
         halted = false;
+        HaltStatus(halted);
     }
 }

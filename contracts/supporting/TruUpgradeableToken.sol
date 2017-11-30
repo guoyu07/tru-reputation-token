@@ -15,14 +15,13 @@ pragma solidity ^0.4.18;
  * First envisioned by Golem and Lunyr projects.
  */
 
-import "./zeppelin/contracts/ERC20.sol";
-import "./zeppelin/contracts/StandardToken.sol";
-import "./zeppelin/math/SafeMath.sol";
-import "./UpgradeAgent.sol";
+import "./SafeMath.sol";
+import "./StandardToken.sol";
 import "./TruAddress.sol";
+import "./UpgradeAgent.sol";
 
 
-contract UpgradeableToken is StandardToken {
+contract TruUpgradeableToken is StandardToken {
 
     using SafeMath for uint256;
     using SafeMath for uint;
@@ -39,7 +38,7 @@ contract UpgradeableToken is StandardToken {
     /**
      * Upgrade states.
      *
-     * - NotAllowed: The child contract has not reached a condition where the upgrade can bgun
+     * - NotAllowed: The child contract has not reached a condition where the upgrade can begin
      * - WaitingForAgent: Token allows upgrade, but we don't have a new agent yet
      * - ReadyToUpgrade: The agent is set, but not a single token has been upgraded yet
      * - Upgrading: Upgrade agent is set and the balance holders can upgrade their tokens
@@ -48,7 +47,7 @@ contract UpgradeableToken is StandardToken {
     enum UpgradeState {Unknown, NotAllowed, WaitingForAgent, ReadyToUpgrade, Upgrading}
 
     /**
-     * Somebody has upgraded some of his tokens.
+     * 
     */
     event Upgrade(address indexed _from, address indexed _to, uint256 _value);
 
@@ -59,67 +58,59 @@ contract UpgradeableToken is StandardToken {
 
     event NewUpgradedAmount(uint256 originalBalance, uint256 newBalance);
     
+    // @notice Modifier to only allow the Upgrade Master to execute the function
+    modifier onlyUpgradeMaster() {
+        require(msg.sender == upgradeMaster);
+        _;
+    }
+
     /**
-     * Do not allow construction without upgrade master set.
+     * Constructor
     */
-    function UpgradeableToken(address _upgradeMaster) public {
+    function TruUpgradeableToken(address _upgradeMaster) public {
+        require(TruAddress.isValidAddress(_upgradeMaster) == true);
         upgradeMaster = _upgradeMaster;
     }
 
     /**
      * Allow the token holder to upgrade some of their tokens to a new contract.
     */
-    function upgrade(uint256 value) public {
-        
+    function upgrade(uint256 _value) public {
         UpgradeState state = getUpgradeState();
-        // Require the Upgrade State is either .ReadyToUpgrade or .Upgrading
         require((state == UpgradeState.ReadyToUpgrade) || (state == UpgradeState.Upgrading));
-      
-        // Validate input value.
-        require(value > 0);
+        require(_value > 0);
+        require(balances[msg.sender] >= _value);
+
+        uint256 upgradedAmount = totalUpgraded.add(_value);
 
         uint256 senderBalance = balances[msg.sender];
-        require(senderBalance > 0);
-        uint256 newSenderBalance = senderBalance.sub(value);      
-        uint256 newTotalSupply = totalSupply.sub(value);
-
+        uint256 newSenderBalance = senderBalance.sub(_value);      
+        uint256 newTotalSupply = totalSupply.sub(_value);
         balances[msg.sender] = newSenderBalance;
-        // Take tokens out from circulation
-        totalSupply = newTotalSupply;
-
-        uint256 upgradedAmount = totalUpgraded.add(value);
-        assert(upgradedAmount == value);
+        totalSupply = newTotalSupply;        
         NewUpgradedAmount(totalUpgraded, newTotalSupply);
         totalUpgraded = upgradedAmount;
-
         // Upgrade agent reissues the tokens
-        upgradeAgent.upgradeFrom(msg.sender, value);
-        Upgrade(msg.sender, upgradeAgent, value);
+        upgradeAgent.upgradeFrom(msg.sender, _value);
+        Upgrade(msg.sender, upgradeAgent, _value);
     }
 
     /**
      * Set an upgrade agent that handles
     */
-    function setUpgradeAgent(address agent) external {
-        require(TruAddress.isValidAddress(agent) == true);
-    
+    function setUpgradeAgent(address _agent) public onlyUpgradeMaster {
+        require(TruAddress.isValidAddress(_agent) == true);
         require(canUpgrade());
-
-        // Only a master can designate the next agent
-        require(msg.sender == upgradeMaster);
-      
-        // Upgrade has already begun for an agent
         require(getUpgradeState() != UpgradeState.Upgrading);
 
-        upgradeAgent = UpgradeAgent(agent);
+        UpgradeAgent newUAgent = UpgradeAgent(_agent);
 
-        // Bad interface
-        require(upgradeAgent.isUpgradeAgent());
-
-        // Make sure that token supplies match in source and target
-        require(upgradeAgent.originalSupply() == totalSupply);
+        require(newUAgent.isUpgradeAgent());
+        require(newUAgent.originalSupply() == totalSupply);
 
         UpgradeAgentSet(upgradeAgent);
+
+        upgradeAgent = newUAgent;
     }
 
     /**
@@ -128,7 +119,7 @@ contract UpgradeableToken is StandardToken {
     function getUpgradeState() public constant returns(UpgradeState) {
         if (!canUpgrade())
             return UpgradeState.NotAllowed;
-        else if (address(upgradeAgent) == 0x0)
+        else if (TruAddress.isValidAddress(upgradeAgent) == false)
             return UpgradeState.WaitingForAgent;
         else if (totalUpgraded == 0)
             return UpgradeState.ReadyToUpgrade;
@@ -141,10 +132,9 @@ contract UpgradeableToken is StandardToken {
      *
      * This allows us to set a new owner for the upgrade mechanism.
     */
-    function setUpgradeMaster(address master) public {
-        require(TruAddress.isValidAddress(master) == true);
-        require(msg.sender == upgradeMaster);
-        upgradeMaster = master;
+    function setUpgradeMaster(address _master) public onlyUpgradeMaster {
+        require(TruAddress.isValidAddress(_master) == true);
+        upgradeMaster = _master;
     }
 
     /**

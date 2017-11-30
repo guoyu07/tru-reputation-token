@@ -92,20 +92,23 @@ stop() {
 test_tru(){
   stop;
   start;
-  echo -e "\x1B[94mStarting Tests on Tru RPC Testnet...\x1B[0m";
+  local START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "\x1B[95mStarting Tests on Tru RPC Testnet \x1B[97m$START_TIME\x1B[0m";
   if [[ ! -z $(check_state) ]]; then
-    truffle test --network=$TESTNET_NAME;
+    env FUZZLOOPS="1000" truffle test --network=$TESTNET_NAME;
   else
     start;
-    truffle test --network=$TESTNET_NAME;
+    env FUZZLOOPS="1000" truffle test --network=$TESTNET_NAME;
   fi
+  local END_TIME=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "\x1B[95mTests Completed on Tru RPC Testnet \x1B[97m$END_TIME\x1B[0m";
 }
 
 restart_testnet(){
 
   if [[ ! -z $(check_state) ]]; then
     stop;
-    sleep 1;
+    sleep 2;
     start;
   else
     start;
@@ -132,11 +135,15 @@ open_console(){
 }
 
 coverage(){
+  local START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "\x1B[95mStarting Tru-Reputation-Token Coverage Tests \x1B[97m$START_TIME\x1B[0m";
   start;
   sleep 5;
-  node_modules/.bin/solidity-coverage;
+  env FUZZLOOPS="10" node_modules/.bin/solidity-coverage;
   sleep 5;
   stop;
+  local END_TIME=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "\x1B[95mCompleted Tru-Reputation-Token Coverage Tests \x1B[97m$END_TIME\x1B[0m";
 }
 
 case "$1" in

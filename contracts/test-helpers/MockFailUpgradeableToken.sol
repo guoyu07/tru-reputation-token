@@ -2,7 +2,7 @@ pragma solidity ^0.4.18;
 import "../supporting/TruUpgradeableToken.sol";
 
 
-contract MockUpgradeableToken is TruUpgradeableToken {
+contract MockFailUpgradeableToken is TruUpgradeableToken {
 
   bool public upgradeable = false;
   string public constant name = "Mock Upgradeable Token";
@@ -13,7 +13,7 @@ contract MockUpgradeableToken is TruUpgradeableToken {
      return upgradeable;
   }
 
-  function MockUpgradeableToken() TruUpgradeableToken(msg.sender) public {
+  function MockFailUpgradeableToken() TruUpgradeableToken(0x0) public {
     totalSupply = totalSupply.add(100);
   }
 

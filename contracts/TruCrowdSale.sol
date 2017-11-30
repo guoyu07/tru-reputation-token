@@ -2,25 +2,25 @@ pragma solidity ^0.4.18;
 
 /**
   * @title Tru Reputation Token Crowdsale
-  * @dev Tru Reputation Protocol ICO Crowdsale contract based on Open Zeppelin and 
+  * @dev Tru Reputation Protocol Crowdsale contract based on Open Zeppelin and 
   * TokenMarket. This CrowdSale is modified to include the following features:
   * - Crowdsale time period
   * - Discount at 10%
   * - Completion function can be called by owner to close minting, and enable transferring Tokens
   * @author Ian Bray
 */
-import "../TruReputationToken.sol";
-import "../supporting/TruSale.sol";
-import "../supporting/zeppelin/math/SafeMath.sol";
+import "./TruReputationToken.sol";
+import "./TruSale.sol";
+import "./supporting/SafeMath.sol";
 
 
 contract TruCrowdSale is TruSale {
     
     using SafeMath for uint256;
   
-    // @notice Cap on Pre-Sale and CrowdSale in Wei (Ξ132,000) (132000 x POWER(10,18))
+    // @notice Cap on Pre-Sale and CrowdSale in Wei (Ξ88,000) (88000 x POWER(10,18))
     // is updated when constructed to remove sold amount in the Pre-Sale
-    uint256 public totalCap = 132000 * 10**18;
+    uint256 public constant TOTALCAP = 88000 * 10**18;
 
     uint256 private existingSupply;
 
@@ -33,18 +33,18 @@ contract TruCrowdSale is TruSale {
         uint256 _startTime, 
         uint256 _endTime, 
         address _token, 
+        address _saleWallet,
         uint256 _currentSupply, 
-        uint256 _currentRaise) public TruSale(_startTime, _endTime, _token) 
-        {
-      
+        uint256 _currentRaise) public TruSale(_startTime, _endTime, _token, _saleWallet)
+    {
             isPreSale = false;
             isCrowdSale = true;
-            uint256 remainingCap = totalCap.sub(_currentRaise);
+            uint256 remainingCap = TOTALCAP.sub(_currentRaise);
             cap = remainingCap;
             existingSupply = _currentSupply;
-        }
+    }
 
-    // @dev Internal Function to finalise the Presale in accordance with the Pre-ICO terms
+    // @dev Internal Function to finalise the CrowdSale in accordance with the Pre-Sale terms
     function finalise() public onlyOwner {
         require(!isCompleted);
         require(hasEnded());
@@ -55,7 +55,7 @@ contract TruCrowdSale is TruSale {
         isCompleted = true;
     }
 
-    // @dev Function to complete Presale. Doubles the sold amount and transfers it to the  Multisig wallet
+    // @dev Function to complete CrowdSale. Doubles the sold amount and transfers it to the  Multisig wallet
     function completion() internal {
      
         // Double sold pool to allocate to Tru Resource Pools

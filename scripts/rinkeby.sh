@@ -11,12 +11,12 @@ TESTNET_LOG="../devnet.log"
 
 test_tru(){
   echo -e "\x1B[94mStarting Tests on Tru RPC Testnet...\x1B[0m"
-  ../truffle test --network=ropsten
+  truffle test --network=ropsten
 }
 
 
 migrate(){
-  ../truffle migrate --network=ropsten
+  truffle migrate --network=ropsten
 }
 
 open_console(){

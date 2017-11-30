@@ -1,10 +1,10 @@
 pragma solidity ^0.4.18;
 
-import "../supporting/zeppelin/math/SafeMath.sol";
+import "../supporting/SafeMath.sol";
 import "../supporting/UpgradeAgent.sol";
 import "../supporting/TruAddress.sol";
 import "../supporting/TruMintableToken.sol";
-import "../supporting/UpgradeableToken.sol";
+import "../supporting/TruUpgradeableToken.sol";
 import "../TruReputationToken.sol";
 
 /**
@@ -16,7 +16,7 @@ contract MockUpgradeAgent is TruReputationToken, UpgradeAgent {
 
   using SafeMath for uint;
 
-  UpgradeableToken public oldToken;
+  TruUpgradeableToken public oldToken;
 
   uint public originalSupply;
 
@@ -24,7 +24,7 @@ contract MockUpgradeAgent is TruReputationToken, UpgradeAgent {
     return false;
   }
 
-  function MockUpgradeAgent(UpgradeableToken _oldToken) public {
+  function MockUpgradeAgent(TruUpgradeableToken _oldToken) public {
     oldToken = _oldToken;
     originalSupply = oldToken.totalSupply();
     require(originalSupply != 0);

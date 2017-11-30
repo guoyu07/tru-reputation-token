@@ -5,7 +5,7 @@ pragma solidity 0.4.18;
   * @dev Tru Address - Library of helper functions surrounding the Address type in Solidity
   * @author Ian Bray
  */
-import "./zeppelin/math/SafeMath.sol";
+import "./SafeMath.sol";
 
 
 library TruAddress {
@@ -17,7 +17,7 @@ library TruAddress {
     // (that is is 20 bytes long and it is not empty or 0x0)
     function isValidAddress(address input) public pure returns (bool) {
         uint addrLength = addressLength(input);
-        return ((addrLength == 20) && (input != 0x0));
+        return ((addrLength == 20) && (input != address(0)));
     }
 
     // @notice Function convert a Address to a String

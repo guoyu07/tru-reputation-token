@@ -13,3 +13,6 @@ coverage.json
 .vscode/**
 security-audit/**
 *.notyet
+RUNBOOKS.md
+.node-xmlhttprequest-sync-81390
+docs/build/**

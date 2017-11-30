@@ -3,13 +3,14 @@
 # This script is Copyright 2017 Tru Ltd. For more information see https://tru.ltd
 # Licensed under the Apache License, version 2.0: https://github.com/TruLtd/tru-reputation-token/blob/master/LICENSE.txt
 
-DEVNET_NETWORK_ID="1066"
-DEVNET_PORT="8547"
 DEVNET_DATA_DIR="../tru-devnet"
 DEVNET_PWD_FILE="../tru-devnet/pwd.sec"
-DEVNET_LOG="../devnet.log"
 GETH_IPCPATH="~/Library/Ethereum/geth.ipc"
 DEVNET_GENESIS_JSON="../tru-devnet/genesis.json"
+DEVNET_NETWORK_ID="1066"
+DEVNET_PORT="8547"
+DEVNET_LOG="devnet.log"
+DEVNET_NAME="devnet"
 
 check_state(){
   local PSID=$(pgrep -f "tru-devnet")
@@ -36,7 +37,9 @@ check_net_state(){
 }
 
 start(){
-
+  local DEVNET_ACCOUNTS=(
+    "0x627306090abaB3A6e1400e9345bC60c78a8BEf57"
+  )
   echo -e "\x1B[94mStarting Tru-Devnet...\x1B[0m"
   nohup geth --networkid $DEVNET_NETWORK_ID --mine --datadir $DEVNET_DATA_DIR --nodiscover --rpc --rpcport $DEVNET_PORT --rpccorsdomain '*' --nat 'any' --rpcapi 'eth,web3,personal,net' --unlock 0 --password $DEVNET_PWD_FILE --ipcpath $GETH_IPCPATH > $DEVNET_LOG & > /dev/null
 
@@ -88,16 +91,19 @@ unclamp_devnet(){
 }
 
 test_tru(){
-  echo -e "\x1B[94mStarting Tests on Tru Devnet...\x1B[0m"
-  ../truffle test --network=devnet
+  local START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "\x1B[95mStarting Tests on Tru RPC Devnet \x1B[97m$START_TIME\x1B[0m";
+  env FUZZLOOPS="1000" truffle test --network=$DEVNET_NAME;
+  local END_TIME=$(date '+%Y-%m-%d %H:%M:%S')
+  echo -e "\x1B[95mTests Completed on Tru RPC Devnet \x1B[97m$END_TIME\x1B[0m";
 }
 
 migrate(){
-  ../truffle migrate --network=devnet
+  truffle migrate --network=devnet
 }
 
 open_console(){
-  ../truffle console --network=devnet
+  truffle console --network=devnet
 }
 
 case "$1" in

@@ -6,14 +6,14 @@ pragma solidity ^0.4.18;
   * @author Ian Bray
 */
 
-
+import "./supporting/SafeMath.sol";
 import "./supporting/TruAddress.sol";
 import "./supporting/TruMintableToken.sol";
-import "./supporting/UpgradeableToken.sol";
-import "./supporting/zeppelin/math/SafeMath.sol";
+import "./supporting/TruUpgradeableToken.sol";
 
 
-contract TruReputationToken is TruMintableToken, UpgradeableToken {
+contract TruReputationToken is TruMintableToken, TruUpgradeableToken {
+
     using SafeMath for uint256;
     using SafeMath for uint;
 
@@ -29,7 +29,7 @@ contract TruReputationToken is TruMintableToken, UpgradeableToken {
     // @notice Address of the TruAdvisoryBoard Contract
     address public execBoard = 0x0;
 
-    event ChangedExecBoardAddress(address oldAddress, address newAddress, address executor);
+    event ChangedExecBoardAddress(address oldAddress, address newAddress);
 
     // @notice Modifier to only allow the Tru Advisory Board MultiSig Wallet to execute the function
     modifier onlyExecBoard() {
@@ -38,9 +38,9 @@ contract TruReputationToken is TruMintableToken, UpgradeableToken {
     }
 
     // Constructor for Token
-    function TruReputationToken() public UpgradeableToken(msg.sender) {
+    function TruReputationToken() public TruUpgradeableToken(msg.sender) {
         execBoard = msg.sender;
-        ChangedExecBoardAddress(0x0, msg.sender, msg.sender);
+        ChangedExecBoardAddress(0x0, msg.sender);
     }
 
     // @notice Function to change the address of the TruAdvisoryBoard Contract
@@ -48,13 +48,17 @@ contract TruReputationToken is TruMintableToken, UpgradeableToken {
     // @dev Can only be executed by the Current TruAdvisoryBoard Contract
     function changeBoardAddress(address _newAddress) public onlyExecBoard {
         require(TruAddress.isValidAddress(_newAddress) == true);
+        require(_newAddress != execBoard);
         address oldAddress = execBoard;
-        require(_newAddress != oldAddress);
         execBoard = _newAddress;
-        ChangedExecBoardAddress(oldAddress, _newAddress, msg.sender);
+        ChangedExecBoardAddress(oldAddress, _newAddress);
     }
 
     function canUpgrade() public constant returns(bool) {
         return released && super.canUpgrade();
+    }
+
+    function setUpgradeMaster(address master) public onlyOwner {
+        super.setUpgradeMaster(master);
     }
 }

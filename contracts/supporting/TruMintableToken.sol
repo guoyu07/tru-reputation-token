@@ -4,15 +4,16 @@ pragma solidity ^0.4.18;
   * @title TruMintableToken
   * @dev Mintable Token - forked from Open-Zeppelin Mintable Token to include 
   * TokenMarket Ltd's ReleaseableToken's functionality
-  * @dev Based off of Open-Zeppelin's Mintable Token 
+  * @dev Based off of zeppelin-solidity's Mintable Token 
   * (https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/contracts/token/MintableToken.sol)
   * @dev Based off of TokenMarket's ReleasableToken 
   * (https://github.com/TokenMarketNet/ico/blob/master/contracts/ReleasableToken.sol).
   * @dev Updated by Tru Ltd October 2017 to comply with Solidity 0.4.18 syntax and Best Practices
+  * and to meet requirements of the Tru Reputation Token
   * @author Ian Bray
  */
 
-import "./zeppelin/math/SafeMath.sol";
+import "./SafeMath.sol";
 import "./TruAddress.sol";
 import "./ReleasableToken.sol";
 
@@ -22,19 +23,19 @@ contract TruMintableToken is ReleasableToken {
     using SafeMath for uint256;
     using SafeMath for uint;
 
-    event Minted(address indexed _to, uint256 _amount);
-
-    event PreSaleComplete();
-
-    event SaleComplete();
-
-    event MintFinished();
-
     bool public mintingFinished = false;
 
     bool public preSaleComplete = false;
 
     bool public saleComplete = false;
+
+    event Minted(address indexed _to, uint256 _amount);
+
+    event MintFinished();
+    
+    event PreSaleComplete();
+
+    event SaleComplete();
 
     modifier canMint() {
         require(!mintingFinished);

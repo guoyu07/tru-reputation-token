@@ -11,8 +11,8 @@ pragma solidity ^0.4.18;
 import "../supporting/UpgradeAgent.sol";
 import "../supporting/TruAddress.sol";
 import "../supporting/TruMintableToken.sol";
-import "../supporting/UpgradeableToken.sol";
-import "../supporting/zeppelin/math/SafeMath.sol";
+import "../supporting/TruUpgradeableToken.sol";
+import "../supporting/SafeMath.sol";
 import "../TruReputationToken.sol";
 
 /**
@@ -25,11 +25,11 @@ contract MockMigrationTarget is TruReputationToken, UpgradeAgent {
   using SafeMath for uint;
   using SafeMath for uint256;
 
-  UpgradeableToken public oldToken;
+  TruUpgradeableToken public oldToken;
 
   uint public originalSupply;
 
-  function MockMigrationTarget(UpgradeableToken _oldToken) public {
+  function MockMigrationTarget(TruUpgradeableToken _oldToken) public {
     oldToken = _oldToken;
     originalSupply = oldToken.totalSupply();
     require(originalSupply != 0);
