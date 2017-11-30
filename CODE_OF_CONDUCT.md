@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://tru.ltd">
+    <img src="https://tru.ltd/images/logos/tru-V2.jpg" alt="Tru Ltd" height="100px"/>
+  </a>
+</p>
+
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge
