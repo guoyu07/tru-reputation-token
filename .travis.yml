@@ -8,6 +8,6 @@ install:
    - npm install -g ethereumjs-testrpc
    - npm install
 script:
-   - npm run coverage
+   - npm test
 after_script:
-   - cat coverage/lcov.info | node_modules/.bin/coveralls
+   - npm run coverage && cat coverage/lcov.info | node_modules/.bin/coveralls

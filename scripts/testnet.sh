@@ -95,10 +95,10 @@ test_tru(){
   local START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
   echo -e "\x1B[95mStarting Tests on Tru RPC Testnet \x1B[97m$START_TIME\x1B[0m";
   if [[ ! -z $(check_state) ]]; then
-    env FUZZLOOPS="1000" truffle test --network=$TESTNET_NAME;
+    env FUZZLOOPS="10" truffle test --network=$TESTNET_NAME;
   else
     start;
-    env FUZZLOOPS="1000" truffle test --network=$TESTNET_NAME;
+    env FUZZLOOPS="10" truffle test --network=$TESTNET_NAME;
   fi
   local END_TIME=$(date '+%Y-%m-%d %H:%M:%S')
   echo -e "\x1B[95mTests Completed on Tru RPC Testnet \x1B[97m$END_TIME\x1B[0m";

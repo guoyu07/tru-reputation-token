@@ -39,6 +39,5 @@ contract MockSupportToken is StandardToken {
         balances[_from] = balances[_from].add(100);
         super.transferFrom(_from, msg.sender, 100);
         TransferHappened();
-
     }
 }

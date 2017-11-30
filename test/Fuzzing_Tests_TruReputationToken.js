@@ -2300,24 +2300,7 @@ contract('TruReputationToken', function(accounts) {
   }).timeout(timeoutDuration);
 
   it('FUZZING TESTS - TRUREPUTATIONTOKEN - TEST CASE 23: Fuzz test performing a large volume of transferFrom() transactions of 1 TRU between accounts', async function() {
-    /*for (var i = loopStart; i < loopEnd; i++) {
-      let pass = i - loopStart + 1;
-
-      if (isEven(pass)) {
-        // TEST CASE 23 - Test #1a
-        await truToken.approve(acctOne, oneTru, { from: acctTwo });
-
-        // TEST CASE 23 - Test #2a
-        await truToken.transferFrom(acctTwo, acctOne, oneTru, { from: acctOne })
-      } else {
-        // TEST CASE 23 - Test #1b
-        await truToken.approve(acctTwo, oneTru, { from: acctOne });
-
-        // TEST CASE 23 - Test #2b
-        await truToken.transferFrom(acctOne, acctTwo, oneTru, { from: acctTwo })
-      }
-    }*/
-
+    
     let tToken = await TruReputationToken.new({ from: acctOne });
     await tToken.mint(acctOne, maximumTru, { from: acctOne });
     await tToken.mint(acctTwo, maximumTru, { from: acctOne });
@@ -2330,8 +2313,8 @@ contract('TruReputationToken', function(accounts) {
     for (var i = loopStart; i < loopEnd; i++) {
       let pass = i - loopStart + 1;
 
-      let actOneBal = await tToken.balanceOf(acctOne);
-      let actTwoBal = await tToken.balanceOf(acctTwo);
+      let actOneBal = await tToken.balanceOf.call(acctOne);
+      let actTwoBal = await tToken.balanceOf.call(acctTwo);
 
       if (actOneBal.greaterThan(actTwoBal)) {
         await tToken.transfer(acctTwo, oneTru, { from: acctOne });
@@ -2353,8 +2336,8 @@ contract('TruReputationToken', function(accounts) {
     for (var i = loopStart; i < loopEnd; i++) {
       let pass = i - loopStart + 1;
 
-      let actOneBal = await tToken.balanceOf(acctOne);
-      let actTwoBal = await tToken.balanceOf(acctTwo);
+      let actOneBal = await tToken.balanceOf.call(acctOne);
+      let actTwoBal = await tToken.balanceOf.call(acctTwo);
 
       if (actOneBal.greaterThan(actTwoBal)) {
         await tToken.transfer(acctTwo, maximumTru, { from: acctOne });
@@ -2376,8 +2359,8 @@ contract('TruReputationToken', function(accounts) {
     for (var i = loopStart; i < loopEnd; i++) {
       let pass = i - loopStart + 1;
 
-      let actOneBal = await tToken.balanceOf(acctOne);
-      let actTwoBal = await tToken.balanceOf(acctTwo);
+      let actOneBal = await tToken.balanceOf.call(acctOne);
+      let actTwoBal = await tToken.balanceOf.call(acctTwo);
 
       if (actOneBal.greaterThan(actTwoBal)) {
         await tToken.approve(acctTwo, maximumTru, { from: acctOne });

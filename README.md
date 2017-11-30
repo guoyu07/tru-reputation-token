@@ -16,6 +16,9 @@
   <a href="https://opensource.org/licenses/Apache-2.0">
     <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"/>
   </a>
+  <a href='http://tru-reputation-token.readthedocs.io/en/latest/?badge=latest'>
+    <img src='https://readthedocs.org/projects/tru-reputation-token/badge/?version=latest' alt='Documentation Status' />
+  </a>
 </p>
 
 Public repository for source code of the **Tru Reputation Token** ERC-20 token, and associated Smart Contracts related to minting or creation of TRU tokens (Pre-Sale, Crowdsale, etc).
