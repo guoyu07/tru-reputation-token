@@ -42,7 +42,7 @@ contract TruReputationToken is TruMintableToken, TruUpgradeableToken {
         execBoard = msg.sender;
         ChangedExecBoardAddress(0x0, msg.sender);
     }
-
+    
     // @notice Function to change the address of the TruAdvisoryBoard Contract
     // @dev Created to allow upgrades to the TruAdvisoryBoard Contract
     // @dev Can only be executed by the Current TruAdvisoryBoard Contract
