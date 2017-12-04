@@ -1,13 +1,14 @@
 pragma solidity ^0.4.18;
 import "../supporting/TruUpgradeableToken.sol";
+import "../supporting/TruAddress.sol";
 
 
 contract MockUpgradeableToken is TruUpgradeableToken {
 
-  bool public upgradeable = false;
   string public constant name = "Mock Upgradeable Token";
   string public constant symbol = "MUT";
   uint256 public constant decimals = 18;
+  bool public upgradeable = false;
 
   function canUpgrade() public constant returns(bool) {
      return upgradeable;

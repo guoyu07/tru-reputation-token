@@ -17,13 +17,13 @@ main CrowdSale of the :ref:`tru-reputation-token`.
 +-----------------------+-------------------------------------------------------------------------+
 | **Author:**           | Ian Bray, Tru Ltd                                                       |
 +-----------------------+-------------------------------------------------------------------------+
-| **Solidity Version:** | ^0.4.18                                                                 |
+| **Solidity Version:** | 0.4.18                                                                  |
 +-----------------------+-------------------------------------------------------------------------+
 | **Relative Path:**    | ./contracts/TruPreSale.sol                                              |
 +-----------------------+-------------------------------------------------------------------------+
 | **License:**          | `Apache 2 License`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
-| **Current Version:**  | 0.0.9                                                                   |
+| **Current Version:**  | |version|                                                               |
 +-----------------------+-------------------------------------------------------------------------+
 
 .. ------------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ The following variables exist for the `TruPreSale`_ Smart Contract:
 +----------------+----------+---------+-----------------------------------------------------------+
 | **Variable**   | **Type** | **Vis** | **Details**                                               |
 +----------------+----------+---------+-----------------------------------------------------------+
-| PRESALECAP     | uint256  | public  | Variable for the Pre-Sale cap                             |
+| PRESALE_CAP    | uint256  | public  | Variable for the Pre-Sale cap                             |
 |                |          |         |                                                           |
 |                |          |         | **Default:** *8000 * 10^18*                               |
 +----------------+----------+---------+-----------------------------------------------------------+
@@ -121,7 +121,7 @@ The following functions exist for the `TruPreSale`_ Smart Contract:
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _tru-sale-constructor:
+.. _tru-presale-constructor:
 
 TruPreSale Constructor
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,7 +148,7 @@ Code
 The code for the `TruPreSale Constructor`_ function is as follows:
 
 .. code-block:: c
-    :caption: **TruPreSale Constructor 0.0.9 Code**
+    :caption: **TruPreSale Constructor Code**
 
     unction TruPreSale(
         uint256 _startTime, 
@@ -158,7 +158,7 @@ The code for the `TruPreSale Constructor`_ function is as follows:
     {
             isPreSale = true;
             isCrowdSale = false;
-            cap = PRESALECAP;
+            cap = PRESALE_CAP;
     }
 
 The `TruPreSale Constructor`_ function performs the following:
@@ -166,7 +166,7 @@ The `TruPreSale Constructor`_ function performs the following:
  - Executes the super :ref:`tru-sale-constructor` function.
  - Sets the *isPreSale* variable to **true**.
  - Sets the *isCrowdSale* variable to **false**.
- - Set the *cap* variable to equal the *PRESALECAP* variable value.
+ - Set the *cap* variable to equal the *PRESALE_CAP* variable value.
 
 Usage
 ''''''''''''''''''''''''''''''''
@@ -222,7 +222,7 @@ Code
 The code for the `finalise`_ function is as follows:
 
 .. code-block:: c
-    :caption: **finalise 0.0.9 Code**
+    :caption: **finalise Code**
 
     function finalise() public onlyOwner {
         require(!isCompleted);
@@ -281,7 +281,7 @@ Code
 The code for the `completion`_ function is as follows:
 
 .. code-block:: c
-    :caption: **completion 0.0.9 Code**
+    :caption: **completion Code**
 
     function completion() internal {
      

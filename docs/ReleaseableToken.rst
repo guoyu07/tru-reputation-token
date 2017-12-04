@@ -8,20 +8,20 @@ ReleaseableToken
 ---------------------------------------
 
 +-----------------------+-------------------------------------------------------------------------+
-| **Title:**            | TruUpgradeableToken                                                     |
+| **Title:**            | ReleaseableToken                                                        |
 +-----------------------+-------------------------------------------------------------------------+
 | **Description:**      | Smart Contract derived from **ReleaseableToken** by `Token Market`_     |
 |                       | with additional functionality for the **TruReputationToken**.           |
 +-----------------------+-------------------------------------------------------------------------+
 | **Author:**           | Ian Bray, Tru Ltd                                                       |
 +-----------------------+-------------------------------------------------------------------------+
-| **Solidity Version:** | ^0.4.18                                                                 |
+| **Solidity Version:** | 0.4.18                                                                  |
 +-----------------------+-------------------------------------------------------------------------+
 | **Relative Path:**    | ./contracts/supporting/ReleaseableToken.sol                             |
 +-----------------------+-------------------------------------------------------------------------+
 | **License:**          | `Apache 2 License`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
-| **Current Version:**  | 0.0.9                                                                   |
+| **Current Version:**  | |version|                                                               |
 +-----------------------+-------------------------------------------------------------------------+
 | **Original Source:**  | `ReleaseableToken Source`_                                              |
 +-----------------------+-------------------------------------------------------------------------+
@@ -135,7 +135,7 @@ The `ReleaseAgentSet`_ event has the following usage syntax and arguments:
 +---+---------------+----------+--------------+---------------------------------------------------+
 |   | **Argument**  | **Type** | **Indexed?** | **Details**                                       |
 +---+---------------+----------+--------------+---------------------------------------------------+
-| 1 | _releaseAgent | address  | Yes          | Address of new *releaseAgent*                     |
+| 1 | releaseAgent  | address  | Yes          | Address of new *releaseAgent*                     |
 +---+---------------+----------+--------------+---------------------------------------------------+
 
 .. code-block:: c
@@ -164,9 +164,9 @@ The `TransferAgentSet`_ event has the following usage syntax and arguments:
 +---+---------------+----------+--------------+---------------------------------------------------+
 |   | **Argument**  | **Type** | **Indexed?** | **Details**                                       |
 +---+---------------+----------+--------------+---------------------------------------------------+
-| 1 | _releaseAgent | address  | Yes          | Address of new Transfer Agent                     |
+| 1 | transferAgent | address  | Yes          | Address of new Transfer Agent                     |
 +---+---------------+----------+--------------+---------------------------------------------------+
-| 2 | _status       | bool     | Yes          | Whether Transfer Agent is enabled or disabled     |
+| 2 | status        | bool     | Yes          | Whether Transfer Agent is enabled or disabled     |
 +---+---------------+----------+--------------+---------------------------------------------------+
 
 .. code-block:: c
@@ -227,7 +227,7 @@ Code
 The code for the `canTransfer`_ modifier is as follows:
 
 .. code-block:: c
-    :caption: **canTransfer 0.0.9 Code**
+    :caption: **canTransfer Code**
 
     modifier canTransfer(address _sender) {
         require(released || transferAgents[_sender]);
@@ -258,7 +258,7 @@ Code
 The code for the `inReleaseState`_ modifier is as follows:
 
 .. code-block:: c
-    :caption: **inReleaseState 0.0.9 Code**
+    :caption: **inReleaseState Code**
    
     modifier inReleaseState(bool releaseState) {
         require(releaseState == released);
@@ -289,7 +289,7 @@ Code
 The code for the `onlyReleaseAgent`_ modifier is as follows:
 
 .. code-block:: c
-    :caption: **onlyReleaseAgent 0.0.9 Code**
+    :caption: **onlyReleaseAgent Code**
 
     modifier onlyReleaseAgent() {
         require(msg.sender == releaseAgent);
@@ -298,7 +298,8 @@ The code for the `onlyReleaseAgent`_ modifier is as follows:
 
 The `onlyReleaseAgent`_ function performs the following:
 
- - Checks that the transaction sender address matches the **releaseAgent* address otherwise it throws
+ - Checks that the transaction sender address matches the *releaseAgent* address otherwise it
+   throws
 
 .. ------------------------------------------------------------------------------------------------
 
@@ -352,7 +353,7 @@ Code
 The code for the `setReleaseAgent`_ function is as follows:
 
 .. code-block:: c
-    :caption: **setReleaseAgent 0.0.9 Code**
+    :caption: **setReleaseAgent Code**
 
     function setReleaseAgent(address addr) public onlyOwner inReleaseState(false) {
         ReleaseAgentSet(addr);
@@ -404,7 +405,7 @@ Code
 The code for the `setTransferAgent`_ function is as follows:
 
 .. code-block:: c
-    :caption: **setTransferAgent 0.0.9 Code**
+    :caption: **setTransferAgent Code**
 
     function setTransferAgent(address addr, bool state) public onlyOwner inReleaseState(false) {
         TransferAgentSet(addr, state);
@@ -455,7 +456,7 @@ Code
 The code for the `releaseTokenTransfer`_ function is as follows:
 
 .. code-block:: c
-    :caption: **releaseTokenTransfer 0.0.9 Code**
+    :caption: **releaseTokenTransfer Code**
 
     function releaseTokenTransfer() public onlyReleaseAgent {
         Released();
@@ -506,7 +507,7 @@ Code
 The code for the `transfer`_ function is as follows:
 
 .. code-block:: c
-    :caption: **transfer 0.0.9 Code**
+    :caption: **transfer Code**
 
     function transfer(address _to, 
                       uint _value) public canTransfer(msg.sender) returns (bool success) {
@@ -520,7 +521,16 @@ The `transfer`_ function performs the following:
 Usage
 ^^^^^^^^^^^^^^^^^^^^^
 
-The `transfer`_ function has the following usage syntax:
+The `transfer`_ function has the following usage syntax and arguments:
+
++---+--------------+----------+-------------------------------------------------------------------+
+|   | **Argument** | **Type** | **Details**                                                       |
++---+--------------+----------+-------------------------------------------------------------------+
+| 1 | _to          | address  | Address to be sent *_value* to                                    |
++---+--------------+----------+-------------------------------------------------------------------+
+| 2 | _value       | uint     | Value of tokens to send to *_to* address                          |
++---+--------------+----------+-------------------------------------------------------------------+
+
 
 .. code-block:: c
    :caption: **transfer Usage Example**
@@ -556,7 +566,7 @@ Code
 The code for the `transferFrom`_ function is as follows:
 
 .. code-block:: c
-    :caption: **transferFrom 0.0.9 Code**
+    :caption: **transferFrom Code**
 
     function transferFrom(address _from, 
                           address _to, 
@@ -571,7 +581,17 @@ The `transferFrom`_ function performs the following:
 Usage
 ^^^^^^^^^^^^^^^^^^^^^
 
-The `transferFrom`_ function has the following usage syntax:
+The `transferFrom`_ function has the following usage syntax and arguments:
+
++---+--------------+----------+-------------------------------------------------------------------+
+|   | **Argument** | **Type** | **Details**                                                       |
++---+--------------+----------+-------------------------------------------------------------------+
+| 1 | _fro         | address  | Address to be sent *_value* from                                  |
++---+--------------+----------+-------------------------------------------------------------------+
+| 2 | _to          | address  | Address to be sent *_value* to                                    |
++---+--------------+----------+-------------------------------------------------------------------+
+| 3 | _value       | uint     | Value of tokens to send to *_to* address                          |
++---+--------------+----------+-------------------------------------------------------------------+
 
 .. code-block:: c
    :caption: **transferFrom Usage Example**

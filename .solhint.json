@@ -3,7 +3,7 @@
   "rules": {
     "indent": ["error", 4],
     "quotes": ["error", "double"],
-    "max-line-length": ["error", 120],
+    "max-line-length": ["error", 125],
     "avoid-sha3": "warn",
     "avoid-suicide": "error",
     "avoid-throw": "error",

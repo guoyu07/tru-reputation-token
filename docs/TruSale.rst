@@ -23,7 +23,7 @@ The `TruSale`_ Smart Contract acts a parent class for the :ref:`tru-presale` and
 +-----------------------+-------------------------------------------------------------------------+
 | **License:**          | `Apache 2 License`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
-| **Current Version:**  | 0.0.9                                                                   |
+| **Current Version:**  | |version|                                                               |
 +-----------------------+-------------------------------------------------------------------------+
 
 .. ------------------------------------------------------------------------------------------------
@@ -76,24 +76,24 @@ The following variables exist for the `TruSale`_ Smart Contract:
 +----------------+--------------------+---------+-------------------------------------------------+
 | multiSigWallet | address            | public  | Sale wallet address                             |
 +----------------+--------------------+---------+-------------------------------------------------+
-| BASERATE       | uint256            | public  | Constant variable of post sale TRU to ETH rate  |
+| BASE_RATE      | uint256            | public  | Constant variable of post sale TRU to ETH rate  |
 |                |                    |         |                                                 |
 |                |                    |         | **Default:** *1000*                             |
 +----------------+--------------------+---------+-------------------------------------------------+
-| PRESALERATE    | uint256            | public  | Constant variable of Pre-Sale TRU to ETH rate   |
+| PRESALE_RATE   | uint256            | public  | Constant variable of Pre-Sale TRU to ETH rate   |
 |                |                    |         |                                                 |
 |                |                    |         | **Default:** *1250* - 25% Bonus                 |
 +----------------+--------------------+---------+-------------------------------------------------+
-| SALERATE       | uint256            | public  | Constant variable of CrowdSale TRU to ETH rate  |
+| SALE_RATE      | uint256            | public  | Constant variable of CrowdSale TRU to ETH rate  |
 |                |                    |         |                                                 |
 |                |                    |         | **Default:** *1125* - 12.5% Bonus               |
 +----------------+--------------------+---------+-------------------------------------------------+
-| MINAMOUNT      | uint256            | public  | Minimum Amount of ETH for an address to         |
+| MIN_AMOUNT     | uint256            | public  | Minimum Amount of ETH for an address to         |
 |                |                    |         | participate in Sale                             |
 |                |                    |         |                                                 |
 |                |                    |         | **Default:** *1 * 10^18*                        |
 +----------------+--------------------+---------+-------------------------------------------------+
-| MAXAMOUNT      | uint256            | public  | Maximum ETH buy Amount for a non-Whitelist      |
+| MAX_AMOUNT     | uint256            | public  | Maximum ETH buy Amount for a non-Whitelist      |
 |                |                    |         | address                                         |
 |                |                    |         |                                                 |
 |                |                    |         | **Default:** *20 * 10^18*                       |
@@ -129,17 +129,17 @@ There are no enums for the `TruSale`_ Smart Contract.
 
 The following events exist for the `TruSale`_ Smart Contract:
 
-+--------------------+----------------------------------------------------------------------------+
-| **Name**           | **Description**                                                            |
-+--------------------+----------------------------------------------------------------------------+
-| `TokenPurchased`_  | Event to notify when a token purchase occurs                               |
-+--------------------+----------------------------------------------------------------------------+
-| `WhiteListUpdate`_ | Event to notify when the *purchaseWhiteList* is updated                    |
-+--------------------+----------------------------------------------------------------------------+
-| `EndChanged`_      | Event to notify when the *saleEndTime* changes                             |
-+--------------------+----------------------------------------------------------------------------+
-| `Completed`_       | Event to notify when the Sale completes                                    |
-+--------------------+----------------------------------------------------------------------------+
++---------------------+---------------------------------------------------------------------------+
+| **Name**            | **Description**                                                           |
++---------------------+---------------------------------------------------------------------------+
+| `TokenPurchased`_   | Event to notify when a token purchase occurs                              |
++---------------------+---------------------------------------------------------------------------+
+| `WhiteListUpdated`_ | Event to notify when the *purchaseWhiteList* is updated                   |
++---------------------+---------------------------------------------------------------------------+
+| `EndChanged`_       | Event to notify when the *saleEndTime* changes                            |
++---------------------+---------------------------------------------------------------------------+
+| `Completed`_        | Event to notify when the Sale completes                                   |
++---------------------+---------------------------------------------------------------------------+
 
 .. ------------------------------------------------------------------------------------------------
 
@@ -162,13 +162,13 @@ The `TokenPurchased`_ event has the following usage syntax and arguments:
 +---+--------------+----------+--------------+----------------------------------------------------+
 |   | **Argument** | **Type** | **Indexed?** | **Details**                                        |
 +---+--------------+----------+--------------+----------------------------------------------------+
-| 1 | _purchaser   | address  | Yes          | Address being updated on the Whitelist             |
+| 1 | purchaser    | address  | Yes          | Address being updated on the Whitelist             |
 +---+--------------+----------+--------------+----------------------------------------------------+
-| 2 | _recipient   | address  | No           | Status of the address on the Whitelist             |
+| 2 | recipient    | address  | No           | Status of the address on the Whitelist             |
 +---+--------------+----------+--------------+----------------------------------------------------+
-| 3 | _weiValue    | uint256  | No           | Amount of ETH spent (in Wei)                       |
+| 3 | weiValue     | uint256  | No           | Amount of ETH spent (in Wei)                       |
 +---+--------------+----------+--------------+----------------------------------------------------+
-| 4 | _tokenAmount | uint256  | No           | Amount of tokens purchased (in smallest decimal)   |
+| 4 | tokenAmount  | uint256  | No           | Amount of tokens purchased (in smallest decimal)   |
 +---+--------------+----------+--------------+----------------------------------------------------+
 
 
@@ -182,13 +182,13 @@ The `TokenPurchased`_ event has the following usage syntax and arguments:
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _tru-sale-whitelist-update:
+.. _tru-sale-whitelist-updated:
 
-WhiteListUpdate
+WhiteListUpdated
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +------------------+------------------------------------------------------------------------------+
-| **Event Name:**  | WhiteListUpdate                                                              |
+| **Event Name:**  | WhiteListUpdated                                                             |
 +------------------+------------------------------------------------------------------------------+
 | **Description:** | Event to notify when the *purchaseWhiteList* is updated                      |
 +------------------+------------------------------------------------------------------------------+
@@ -196,22 +196,25 @@ WhiteListUpdate
 Usage
 '''''''''''''''''''''
 
-The `WhiteListUpdate`_ event has the following usage syntax and arguments:
+The `WhiteListUpdated`_ event has the following usage syntax and arguments:
 
-+---+-------------------+----------+--------------+-----------------------------------------------+
-|   | **Argument**      | **Type** | **Indexed?** | **Details**                                   |
-+---+-------------------+----------+--------------+-----------------------------------------------+
-| 1 | _purchaserAddress | address  | Yes          | Address being updated on the Whitelist        |
-+---+-------------------+----------+--------------+-----------------------------------------------+
-| 2 | _whitelistStatus  | address  | No           | Status of the address on the Whitelist        |
-+---+-------------------+----------+--------------+-----------------------------------------------+
-
++---+------------------+----------+--------------+------------------------------------------------+
+|   | **Argument**     | **Type** | **Indexed?** | **Details**                                    |
++---+------------------+----------+--------------+------------------------------------------------+
+| 1 | purchaserAddress | address  | Yes          | Address being updated on the Whitelist         |
++---+------------------+----------+--------------+------------------------------------------------+
+| 2 | whitelistStatus  | address  | No           | Status of the address on the Whitelist         |
++---+------------------+----------+--------------+------------------------------------------------+
+| 3 | executor         | address  | Yes          | Address that executed the `WhiteListUpdated`_  |
+|   |                  |          |              | event                                          |
++---+------------------+----------+--------------+------------------------------------------------+
 
 .. code-block:: c
-   :caption: **WhiteListUpdate Usage Example**
+   :caption: **WhiteListUpdated Usage Example**
 
-    WhiteListUpdate(0x123456789abcdefghijklmnopqrstuvwxyz98765,
-                    true);
+    WhiteListUpdated(0x123456789abcdefghijklmnopqrstuvwxyz98765,
+                    true,
+                    0x12acd9ef9abcdefghijklmnopqrstuvwxyzghy74);
 
 .. ------------------------------------------------------------------------------------------------
 
@@ -234,16 +237,19 @@ The `EndChanged`_ event has the following usage syntax and arguments:
 +---+--------------+----------+--------------+----------------------------------------------------+
 |   | **Argument** | **Type** | **Indexed?** | **Details**                                        |
 +---+--------------+----------+--------------+----------------------------------------------------+
-| 1 | _oldEnd      | uint256  | No           | Previous *saleEndTime* timestamp                   |
+| 1 | oldEnd       | uint256  | No           | Previous *saleEndTime* timestamp                   |
 +---+--------------+----------+--------------+----------------------------------------------------+
-| 2 | _newEnd      | uint256  | No           | Updated *saleEndTime* timestamp                    |
+| 2 | newEnd       | uint256  | No           | Updated *saleEndTime* timestamp                    |
 +---+--------------+----------+--------------+----------------------------------------------------+
-
+| 3 | executor     | address  | Yes          | Address that executed the `EndChanged`_ event      |
++---+--------------+----------+--------------+----------------------------------------------------+
 
 .. code-block:: c
    :caption: **EndChanged Usage Example**
 
-    EndChanged(1511930475, 1512016874);
+    EndChanged(1511930475, 
+               1512016874,
+               0x123456789abcdefghijklmnopqrstuvwxyz98765);
 
 .. ------------------------------------------------------------------------------------------------
 
@@ -263,10 +269,16 @@ Usage
 
 The `Completed`_ event has the following usage syntax:
 
++---+--------------+----------+--------------+----------------------------------------------------+
+|   | **Argument** | **Type** | **Indexed?** | **Details**                                        |
++---+--------------+----------+--------------+----------------------------------------------------+
+| 1 |  executor    | address  | Yes          | Address that executed the `Completed`_ event       |
++---+--------------+----------+--------------+----------------------------------------------------+
+
 .. code-block:: c
    :caption: **Completed Usage Example**
 
-    Completed();
+    Completed(0x123456789abcdefghijklmnopqrstuvwxyz98765);
 
 .. ------------------------------------------------------------------------------------------------
 
@@ -322,7 +334,7 @@ Code
 The code for the `onlyTokenOwner`_ modifier is as follows:
 
 .. code-block:: c
-   :caption: **onlyTokenOwner 0.0.9 Code**
+   :caption: **onlyTokenOwner Code**
 
     modifier onlyTokenOwner(address _tokenOwner) {
         require(msg.sender == _tokenOwner);
@@ -346,6 +358,8 @@ The following functions exist for the `TruSale`_ Smart Contract:
 | **Name**               | **Description**                                                        |
 +------------------------+------------------------------------------------------------------------+
 | `TruSale Constructor`_ | Constructor for the `TruSale`_ Smart Contract                          |
++------------------------+------------------------------------------------------------------------+
+| `buy`_                 | Function for buying tokens from the Sale                               |
 +------------------------+------------------------------------------------------------------------+
 | `updateWhitelist`_     | Function to add or disable a purchaser from AML Whitelist              |
 +------------------------+------------------------------------------------------------------------+
@@ -393,14 +407,14 @@ Code
 The code for the `TruSale Constructor`_ function is as follows:
 
 .. code-block:: c
-    :caption: **TruSale Constructor 0.0.9 Code**
+    :caption: **TruSale Constructor Code**
 
     function TruSale(uint256 _startTime, 
                      uint256 _endTime, 
                      address _token, 
                      address _saleWallet) public {
 
-        require(TruAddress.isValidAddress(_token) == true);
+        require(TruAddress.isValid(_token) == true);
 
         TruReputationToken tToken = TruReputationToken(_token);
         address tokenOwner = tToken.owner();
@@ -441,6 +455,65 @@ The `TruSale Constructor`_ function has the following usage syntax and arguments
 
 .. ------------------------------------------------------------------------------------------------
 
+.. _tru-sale-buy:
+
+buy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
++--------------------------+----------------------------------------------------------------------+
+| **Function Name:**       | buy                                                                  |
++--------------------------+----------------------------------------------------------------------+
+| **Description:**         | Function for buying tokens from the Sale                             |
++--------------------------+----------------------------------------------------------------------+
+| **Function Type:**       | N/A                                                                  |
++--------------------------+----------------------------------------------------------------------+
+| **Function Visibility:** | Public payable                                                       |
++--------------------------+----------------------------------------------------------------------+
+| **Function Modifiers:**  | :ref:`stop-in-emergency`                                             |
++--------------------------+----------------------------------------------------------------------+
+| **Return Type:**         | N/A                                                                  |
++--------------------------+----------------------------------------------------------------------+
+| **Return Details:**      | N/A                                                                  |
++--------------------------+----------------------------------------------------------------------+
+
+Code
+''''''''''''''''''''''''''''''''
+
+The code for the `buy`_ function is as follows:
+
+.. code-block:: c
+    :caption: **buy Code**
+    function buy() public payable stopInEmergency {
+        // Check that the Sale is still open and the Cap has not been reached
+        require(checkSaleValid());
+
+        validatePurchase(msg.sender);
+    }
+
+.. note:: the `buy`_ function is a Solidity payable functino- as such, ETH is sent to the function
+         to allow the purchase of tokens during a sale. This function can be halted via the
+         :ref:`stop-in-emergency` modifier as part of the :ref:`haltable` characteristics of this
+         Contract.
+
+The `buy`_ function performs the following:
+
+ - The modifier :ref:`stop-in-emergency` checks that the Sale has not been halted. If it has,
+   it will throw.
+ - Checks the `checkSaleValid`_ function returns true. If not, it will throw.
+ - executes the `validatePurchase`_ function.
+
+Usage
+''''''''''''''''''''''''''''''''
+
+The `buy`_ function has the following usage syntax: 
+
+.. code-block:: c
+   :caption: **buy Usage Example**
+
+    buy({value: 1000000000000000000});
+
+.. ------------------------------------------------------------------------------------------------
+
 .. _tru-sale-update-whitelist:
 
 updateWhitelist
@@ -468,10 +541,10 @@ Code
 The code for the `updateWhitelist`_ function is as follows:
 
 .. code-block:: c
-    :caption: **updateWhitelist 0.0.9 Code**
+    :caption: **updateWhitelist Code**
 
     function updateWhitelist(address _purchaser, uint _status) public onlyOwner {
-        require(TruAddress.isValidAddress(_purchaser) == true);
+        require(TruAddress.isValid(_purchaser) == true);
         bool boolStatus = false;
         if (_status == 0) {
             boolStatus = false;
@@ -481,7 +554,7 @@ The code for the `updateWhitelist`_ function is as follows:
             revert();
         }
 
-        WhiteListUpdate(_purchaser, boolStatus);
+        WhiteListUpdated(_purchaser, boolStatus);
         purchaserWhiteList[_purchaser] = boolStatus;
     }
 
@@ -500,7 +573,7 @@ The `updateWhitelist`_ function performs the following:
  - Validates the *_purchaser* argument is a valid Ethereum address.
  - Checks the *_status* argument is either 0 or 1. If 0, sets *boolStatus* to false, if 1, sets 
    *boolStatus* to true. If else, it will throw.
- - Fires the `WhiteListUpdate`_ event
+ - Fires the `WhiteListUpdated`_ event
  - Sets the *_purchaser* to the *boolStatus* on the *purchaseWhiteList*
 
 Usage
@@ -550,7 +623,7 @@ Code
 The code for the `changeEndTime`_ function is as follows:
 
 .. code-block:: c
-    :caption: **changeEndTime 0.0.9 Code**
+    :caption: **changeEndTime Code**
    
     function changeEndTime(uint256 _endTime) public onlyOwner {
         
@@ -628,7 +701,7 @@ Code
 The code for the `hasEnded`_ function is as follows:
 
 .. code-block:: c
-   :caption: **hasEnded 0.0.9 Code**
+   :caption: **hasEnded Code**
 
     function hasEnded() public constant returns (bool) {
         bool isCapHit = weiRaised >= cap;
@@ -682,7 +755,7 @@ Code
 The code for the `checkSaleValid`_ function is as follows:
 
 .. code-block:: c
-   :caption: **checkSaleValid 0.0.9 Code**
+   :caption: **checkSaleValid Code**
 
     function checkSaleValid() internal constant returns (bool) {
         bool afterStart = now >= saleStartTime;
@@ -740,7 +813,7 @@ The code for the `validatePurchase`_ function is as follows:
     function validatePurchase(address _purchaser) internal stopInEmergency {
     
         // _purchaser must be valid
-        require(TruAddress.isValidAddress(_purchaser) == true);
+        require(TruAddress.isValid(_purchaser) == true);
     
         // Value must be greater than 0
         require(msg.value > 0);
@@ -845,7 +918,7 @@ Code
 The code for the `createSale`_ function is as follows:
 
 .. code-block:: c
-   :caption: **createSale 0.0.9 Code**
+   :caption: **createSale Code**
 
     function createSale(
         uint256 _startTime, 
@@ -861,7 +934,7 @@ The code for the `createSale`_ function is as follows:
         require(_endTime >= _startTime);
     
         // _salletWallet must be valid
-        require(TruAddress.isValidAddress(_saleWallet) == true);
+        require(TruAddress.isValid(_saleWallet) == true);
 
         truToken = TruReputationToken(_token);
         multiSigWallet = _saleWallet;
@@ -927,16 +1000,16 @@ Code
 The code for the `buyTokens`_ function is as follows:
 
 .. code-block:: c
-   :caption: **buyTokens 0.0.9 Code**
+   :caption: **buyTokens Code**
 
     function buyTokens(address _purchaser) private {
         uint256 weiTotal = msg.value;
 
         // If the Total wei is less than the minimum purchase, reject
-        require(weiTotal >= MINAMOUNT);
+        require(weiTotal >= MIN_AMOUNT);
 
         // If the Total wei is greater than the maximum stake, purchasers must be on the whitelist
-        if (weiTotal > MAXAMOUNT) {
+        if (weiTotal > MAX_AMOUNT) {
             require(purchaserWhiteList[msg.sender]); 
         }
     
@@ -944,16 +1017,16 @@ The code for the `buyTokens`_ function is as follows:
         if (purchasedAmount[msg.sender] != 0 && !purchaserWhiteList[msg.sender]) {
             uint256 totalPurchased = purchasedAmount[msg.sender];
             totalPurchased = totalPurchased.add(weiTotal);
-            require(totalPurchased < MAXAMOUNT);
+            require(totalPurchased < MAX_AMOUNT);
         }
 
-        uint256 tokenRate = BASERATE;
+        uint256 tokenRate = BASE_RATE;
     
         if (isPreSale) {
-            tokenRate = PRESALERATE;
+            tokenRate = PRESALE_RATE;
         }
         if (isCrowdSale) {
-            tokenRate = SALERATE;
+            tokenRate = SALE_RATE;
         }
 
         // Multiply Wei x Rate to get Number of Tokens to create (as a 10^18 subunit)
@@ -982,17 +1055,17 @@ The code for the `buyTokens`_ function is as follows:
 
 The `buyTokens`_ function performs the following:
 
- - Checks that the sent amount (*msg.value*) is equal to or greater than the *MINAMOUNT* variable. 
+ - Checks that the sent amount (*msg.value*) is equal to or greater than the *MIN_AMOUNT* variable. 
    If it is not, it will throw.
- - Checks if the sent amount (*msg.value*) is greater than the *MAXAMOUNT* variable. If it is, it
+ - Checks if the sent amount (*msg.value*) is greater than the *MAX_AMOUNT* variable. If it is, it
    will perform a further check to see if the sender is on the Whitelist- if they are, it will
-   proceed, if not it will throw. If the amount is less than or equal to the *MAXAMOUNT* variable,
+   proceed, if not it will throw. If the amount is less than or equal to the *MAX_AMOUNT* variable,
    it will proceed.
  - Checks that the cumulative total of this purchase, and any prior purchases do not exceed the 
-   *MAXAMOUNT* variable if the purchaser is not on the Whitelist. If it is, it will throw.
- - Sets the Sale Rate to the default of the *BASERATE* variable.
- - If the *isPreSale* variable is true sets the Sale Rate to *PRESALERATE* variable.
- - If the *isCrowdSale* variable is true sets the Sale Rate to *SALERATE* variable.
+   *MAX_AMOUNT* variable if the purchaser is not on the Whitelist. If it is, it will throw.
+ - Sets the Sale Rate to the default of the *BASE_RATE* variable.
+ - If the *isPreSale* variable is true sets the Sale Rate to *PRESALE_RATE* variable.
+ - If the *isCrowdSale* variable is true sets the Sale Rate to *SALE_RATE* variable.
  - Calculates the number of tokens purchased.
  - Increments the *purchaserCount* variable if this is the first purchase from this address.
  - Adds the calculated token count to the *soldTokens* variable.

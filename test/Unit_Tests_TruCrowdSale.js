@@ -6,6 +6,7 @@
  * 
  * @author      Ian Bray, Tru Ltd
  * @copyright   2017 Tru Ltd
+ * @version     0.0.10
  */
 
 'use strict';
@@ -162,8 +163,9 @@ contract('TruCrowdSale', function(accounts) {
       'TEST DESCRIPTION: TruPreSale did not end despite hitting cap\n      ' +
       'EXPECTED RESULT: true\n      ' +
       'ACTUAL RESULT: false');
-
+    let psCpEvent = preInst.Completed();
     await preInst.finalise({ from: acctOne });
+    let psCpResult = psCpEvent.get();
     let psComplete = await preInst.isCompleted.call();
 
     assert.isTrue(psComplete,
@@ -172,6 +174,22 @@ contract('TruCrowdSale', function(accounts) {
       'TEST DESCRIPTION: TruPreSale did not finalise despite hitting cap\n      ' +
       'EXPECTED RESULT: true\n      ' +
       'ACTUAL RESULT: false');
+    
+    assert.equal(psCpResult.length, 
+      1,
+      '\n      ' +
+      'UNIT TESTS - TRUCROWDSALE - TEST CASE 03: Test #4\n      ' +
+      'TEST DESCRIPTION: Incorrect Completed Event length for TruPreSale\n      ' +
+      'EXPECTED RESULT: 1\n      ' +
+      'ACTUAL RESULT: ' + psCpResult.length);
+
+    assert.equal(psCpResult[0].args.executor, 
+      acctOne,
+      '\n      ' +
+      'UNIT TESTS - TRUCROWDSALE - TEST CASE 03: Test #5\n      ' +
+      'TEST DESCRIPTION: Incorrect value for TruPreSale Completed Event executor argument\n      ' +
+      'EXPECTED RESULT: ' + acctOne + '\n      ' +
+      'ACTUAL RESULT: ' + psCpResult[0].args.executor);
 
     let tokenBal = await truToken.totalSupply.call();
 
@@ -180,12 +198,12 @@ contract('TruCrowdSale', function(accounts) {
     sInst = await TruCrowdSale.new(sStartTime, sEndTime, truToken.address, execAcct, tokenBal, currentRaised);
     sAddress = sInst.address;
 
-    sRate = await sInst.SALERATE.call();
+    sRate = await sInst.SALE_RATE.call();
 
     assert.isTrue(sRate.equals(csRate),
       '\n      ' +
-      'UNIT TESTS - TRUCROWDSALE - TEST CASE 03: Test #4\n      ' +
-      'TEST DESCRIPTION: SALERATE incorrect\n      ' +
+      'UNIT TESTS - TRUCROWDSALE - TEST CASE 03: Test #6\n      ' +
+      'TEST DESCRIPTION: SALE_RATE incorrect\n      ' +
       'EXPECTED RESULT: Should be 1125 TRU per ETH\n      ' +
       'ACTUAL RESULT: Returning as ' + sRate.toFormat(0));
   }).timeout(timeoutDuration);
@@ -205,8 +223,8 @@ contract('TruCrowdSale', function(accounts) {
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUCROWDSALE - TEST CASE 05: CrowdSale hard variables are as expected', async function() {
-    let minimumPurchase = await sInst.MINAMOUNT.call();
-    let maximumPurchase = await sInst.MAXAMOUNT.call();
+    let minimumPurchase = await sInst.MIN_AMOUNT.call();
+    let maximumPurchase = await sInst.MAX_AMOUNT.call();
     let cap = await sInst.cap.call();
 
     assert.isTrue(sRate.equals(csRate),
@@ -262,7 +280,7 @@ contract('TruCrowdSale', function(accounts) {
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUCROWDSALE - TEST CASE 07: Can Add Purchaser to CrowdSale Purchaser Whitelist', async function() {
-    var wlWatch = sInst.WhiteListUpdate();
+    var wlWatch = sInst.WhiteListUpdated();
     await sInst.updateWhitelist(acctThree, 1);
     var watchResult = wlWatch.get();
     var whiteListed = await sInst.purchaserWhiteList(acctThree);
@@ -275,20 +293,20 @@ contract('TruCrowdSale', function(accounts) {
       'EXPECTED RESULT: 1\n      ' +
       'ACTUAL RESULT: ' + watchResult.length);
 
-    assert.isTrue(watchResult[0].args._whitelistStatus,
+    assert.isTrue(watchResult[0].args.whitelistStatus,
       '\n      ' +
       'UNIT TESTS - TRUCROWDSALE - TEST CASE 07: Test #2\n      ' +
       'TEST DESCRIPTION: Incorrect status on Whitelist entry for TruCrowdSale\n      ' +
       'EXPECTED RESULT: true\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._whitelistStatus);
+      'ACTUAL RESULT: ' + watchResult[0].args.whitelistStatus);
 
-    assert.equal(watchResult[0].args._purchaserAddress,
+    assert.equal(watchResult[0].args.purchaserAddress,
       acctThree,
       '\n      ' +
       'UNIT TESTS - TRUCROWDSALE - TEST CASE 07: Test #3\n      ' +
       'TEST DESCRIPTION: Incorrect Whitelist entry for TruCrowdSale\n      ' +
       'EXPECTED RESULT: ' + acctThree + '\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._purchaserAddress);
+      'ACTUAL RESULT: ' + watchResult[0].args.purchaserAddress);
 
     assert.isTrue(whiteListed,
       '\n      ' +
@@ -299,7 +317,7 @@ contract('TruCrowdSale', function(accounts) {
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUCROWDSALE - TEST CASE 08: Can Remove Purchaser from CrowdSale Purchaser Whitelist', async function() {
-    var wlWatch = sInst.WhiteListUpdate();
+    var wlWatch = sInst.WhiteListUpdated();
     await sInst.updateWhitelist(acctThree, 0);
     var watchResult = wlWatch.get();
     var notWhiteListed = await sInst.purchaserWhiteList(acctThree);
@@ -312,20 +330,20 @@ contract('TruCrowdSale', function(accounts) {
       'EXPECTED RESULT: 1\n      ' +
       'ACTUAL RESULT: ' + watchResult.length);
 
-    assert.isFalse(watchResult[0].args._whitelistStatus,
+    assert.isFalse(watchResult[0].args.whitelistStatus,
       '\n      ' +
       'UNIT TESTS - TRUCROWDSALE - TEST CASE 08: Test #2\n      ' +
       'TEST DESCRIPTION: Incorrect status on Whitelist entry for TruCrowdSale\n      ' +
       'EXPECTED RESULT: false\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._whitelistStatus);
+      'ACTUAL RESULT: ' + watchResult[0].args.whitelistStatus);
 
-    assert.equal(watchResult[0].args._purchaserAddress,
+    assert.equal(watchResult[0].args.purchaserAddress,
       acctThree,
       '\n      ' +
       'UNIT TESTS - TRUCROWDSALE - TEST CASE 08: Test #3\n      ' +
       'TEST DESCRIPTION: Incorrect Whitelist entry for TruCrowdSale\n      ' +
       'EXPECTED RESULT: ' + acctThree + '\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._purchaserAddress);
+      'ACTUAL RESULT: ' + watchResult[0].args.purchaserAddress);
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUCROWDSALE - TEST CASE 09: Cannot purchase before start of CrowdSale', async function() {
@@ -694,8 +712,10 @@ contract('TruCrowdSale', function(accounts) {
   it('UNIT TESTS - TRUCROWDSALE - TEST CASE 25: CrowdSale owner can finalise the CrowdSale', async function() {
 
     // Only the Owner should be able to finalise the sale
+    let sCEvent = sInst.Completed();
     await sInst.finalise({ from: acctTwo }).should.be.rejectedWith(EVMRevert);
     await sInst.finalise({ from: acctOne });
+    let sCWatch = sCEvent.get();
 
     let isComplete = await sInst.isCompleted.call();
     let mintingFinished = await truToken.mintingFinished.call();
@@ -712,11 +732,28 @@ contract('TruCrowdSale', function(accounts) {
       'TEST DESCRIPTION: Incorrect Post-CrowdSale Completion Status\n      ' +
       'EXPECTED RESULT: true\n      ' +
       'ACTUAL RESULT: ' + isComplete);
+    
+    // Does Completed Event for TruCrowdSale fire once?
+    assert.equal(sCWatch.length,
+      1,
+      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #2\n      ' +
+      'TEST DESCRIPTION: Incorrect Completed Event length for TruCrowdSale\n      ' +
+      'EXPECTED RESULT: 1\n      ' +
+      'ACTUAL RESULT: ' + sCWatch.length);
+    
+    // Does Completed Event have correct executor argument?
+    assert.equal(sCWatch[0].args.executor, 
+      acctOne,
+      '\n      ' +
+      'UNIT TESTS - TRUCROWDSALE - TEST CASE 03: Test #3\n      ' +
+      'TEST DESCRIPTION: Incorrect value for TruCrowdSale Completed Event executor argument\n      ' +
+      'EXPECTED RESULT: ' + acctOne + '\n      ' +
+      'ACTUAL RESULT: ' + sCWatch[0].args.executor);
 
     // Is the Minting Finalised on the TruReputationToken?
     assert.isTrue(mintingFinished,
       '\n      ' +
-      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #2\n      ' +
+      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #4\n      ' +
       'TEST DESCRIPTION: Incorrect Post-CrowdSale Minting Finished Status\n      ' +
       'EXPECTED RESULT: true\n      ' +
       'ACTUAL RESULT: ' + mintingFinished);
@@ -724,7 +761,7 @@ contract('TruCrowdSale', function(accounts) {
     // Is the PreSale Finished?
     assert.isTrue(preSaleFinished,
       '\n      ' +
-      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #3\n      ' +
+      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #5\n      ' +
       'TEST DESCRIPTION: Incorrect Post-CrowdSale Presale Complete Status\n      ' +
       'EXPECTED RESULT: true\n      ' +
       'ACTUAL RESULT: ' + preSaleFinished);
@@ -732,7 +769,7 @@ contract('TruCrowdSale', function(accounts) {
     // Is the CrowdSale Finished?
     assert.isTrue(saleFinished,
       '\n      ' +
-      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #4\n      ' +
+      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #6\n      ' +
       'TEST DESCRIPTION: Incorrect Post-CrowdSale CrowdSale Complete Status\n      ' +
       'EXPECTED RESULT: true\n      ' +
       'ACTUAL RESULT: ' + saleFinished);
@@ -741,7 +778,7 @@ contract('TruCrowdSale', function(accounts) {
     assert.equal(tokenOwner,
       acctOne,
       '\n      ' +
-      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #5\n      ' +
+      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #7\n      ' +
       'TEST DESCRIPTION: Incorrect Post-CrowdSale Token Ownership\n      ' +
       'EXPECTED RESULT: ' + acctOne + '\n      ' +
       'ACTUAL RESULT: ' + tokenOwner);
@@ -749,7 +786,7 @@ contract('TruCrowdSale', function(accounts) {
     // Has 300,000,000 TRU been minted during the sales?
     assert.isTrue(tokenSupply.equals(maxTokens),
       '\n      ' +
-      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #6\n      ' +
+      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #8\n      ' +
       'TEST DESCRIPTION: Incorrect Post-CrowdSale Token Supply size\n      ' +
       'EXPECTED RESULT: 300,000,000 TRU\n      ' +
       'ACTUAL RESULT: ' + web3.fromWei(tokenSupply.toNumber(), 'ether') + ' TRU');
@@ -758,7 +795,7 @@ contract('TruCrowdSale', function(accounts) {
       // Has an additional 150,000,000 TRU (50% of total Pool) been minted into the Exec Account?
     assert.isTrue(tokenBalance.equals(allSaleTokens),
       '\n      ' +
-      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #7\n      ' +
+      'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #9\n      ' +
       'TEST DESCRIPTION: Incorrect Post-CrowdSale Tru Ltd Token Pool size\n      ' +
       'EXPECTED RESULT: 150,000,000 TRU\n      ' +
       'ACTUAL RESULT: ' + web3.fromWei(tokenBalance.toNumber(), 'ether') + ' TRU');
@@ -964,12 +1001,12 @@ contract('TruCrowdSale', function(accounts) {
       'EXPECTED RESULT: 1\n      ' +
       'ACTUAL RESULT: ' + watchResult.length);
 
-    assert.isTrue(watchResult[0].args._newEnd.equals(endTimeTwo),
+    assert.isTrue(watchResult[0].args.newEnd.equals(endTimeTwo),
       '\n      ' +
       'UNIT TESTS - TRUCROWDSALE - TEST CASE 30: Test #4\n      ' +
       'TEST DESCRIPTION: Incorrect End Time argument on EndChanged Event. \n      ' +
       'EXPECTED RESULT: ' + endTimeTwo + '\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._newEnd.toFormat(0));
+      'ACTUAL RESULT: ' + watchResult[0].args.newEnd.toFormat(0));
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUCROWDSALE - TEST CASE 31: Cannot change CrowdSale end time to less than start time', async function(){
@@ -1057,12 +1094,12 @@ contract('TruCrowdSale', function(accounts) {
       'EXPECTED RESULT: 1\n      ' +
       'ACTUAL RESULT: ' + watchResult.length);
 
-    assert.isTrue(watchResult[0].args._newEnd.equals(endTimeTwo),
+    assert.isTrue(watchResult[0].args.newEnd.equals(endTimeTwo),
       '\n      ' +
       'UNIT TESTS - TRUCROWDSALE - TEST CASE 32: Test #4\n      ' +
       'TEST DESCRIPTION: Incorrect End Time argument on EndChanged Event. \n      ' +
       'EXPECTED RESULT: ' + endTimeTwo + '\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._newEnd.toFormat(0));
+      'ACTUAL RESULT: ' + watchResult[0].args.newEnd.toFormat(0));
 
   }).timeout(timeoutDuration);
 
@@ -1112,12 +1149,12 @@ contract('TruCrowdSale', function(accounts) {
       'EXPECTED RESULT: 1\n      ' +
       'ACTUAL RESULT: ' + watchResult.length);
 
-    assert.isTrue(watchResult[0].args._newEnd.equals(endTimeTwo),
+    assert.isTrue(watchResult[0].args.newEnd.equals(endTimeTwo),
       '\n      ' +
       'UNIT TESTS - TRUCROWDSALE - TEST CASE 33: Test #4\n      ' +
       'TEST DESCRIPTION: Incorrect End Time argument on EndChanged Event. \n      ' +
       'EXPECTED RESULT: ' + endTimeTwo + '\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._newEnd.toFormat(0));
+      'ACTUAL RESULT: ' + watchResult[0].args.newEnd.toFormat(0));
     
     assert.isTrue(csEndStatus,
       '\n      ' +

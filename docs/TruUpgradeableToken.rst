@@ -15,13 +15,13 @@ TruUpgradeableToken
 +-----------------------+-------------------------------------------------------------------------+
 | **Author:**           | Ian Bray, Tru Ltd                                                       |
 +-----------------------+-------------------------------------------------------------------------+
-| **Solidity Version:** | ^0.4.18                                                                 |
+| **Solidity Version:** | 0.4.18                                                                  |
 +-----------------------+-------------------------------------------------------------------------+
 | **Relative Path:**    | ./contracts/supporting/TruUpgradeableToken.sol                          |
 +-----------------------+-------------------------------------------------------------------------+
 | **License:**          | `Apache 2 License`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
-| **Current Version:**  | 0.0.9                                                                   |
+| **Current Version:**  | |version|                                                               |
 +-----------------------+-------------------------------------------------------------------------+
 | **Original Source:**  | `UpgradeableToken`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
@@ -148,13 +148,13 @@ The :ref:`Upgrade <upgrade-event>` event has the following usage syntax and argu
 +---+--------------+----------+--------------+----------------------------------------------------+
 |   | **Argument** | **Type** | **Indexed?** | **Details**                                        |
 +---+--------------+----------+--------------+----------------------------------------------------+
-| 1 |  _from       | address  | Yes          | Source wallet that the older tokens are sent from  |
+| 1 | from         | address  | Yes          | Source wallet that the older tokens are sent from  |
 +---+--------------+----------+--------------+----------------------------------------------------+
-| 2 |  _to         | address  | Yes          | Address of the destination for upgraded tokens     |
+| 2 | to           | address  | Yes          | Address of the destination for upgraded tokens     |
 |   |              |          |              | which is hardcoded to the *upgradeAgent* who sends |
 |   |              |          |              | them back to the originating address               |
 +---+--------------+----------+--------------+----------------------------------------------------+
-| 3 |  _value      | uint256  | No           | Number of tokens to upgrade                        |
+| 3 | upgradeValue | uint256  | No           | Number of tokens to upgrade                        |
 +---+--------------+----------+--------------+----------------------------------------------------+
 
 .. code-block:: c
@@ -185,13 +185,16 @@ The `UpgradeAgentSet`_ event has the following usage syntax and arguments:
 +---+--------------+----------+--------------+----------------------------------------------------+
 |   | **Argument** | **Type** | **Indexed?** | **Details**                                        |
 +---+--------------+----------+--------------+----------------------------------------------------+
-| 1 |  agent       | address  | No           | Address of new *upgradeAgent*                      |
+| 1 | agent        | address  | Yes          | Address of new *upgradeAgent*                      |
++---+--------------+----------+--------------+----------------------------------------------------+
+| 2 | executor     | address  | Yes          | Address that executed the `UpgradeAgentSet`_ event |
 +---+--------------+----------+--------------+----------------------------------------------------+
 
 .. code-block:: c
     :caption: **UpgradeAgentSet Usage Example**
 
-    UpgradeAgentSet(0x123456789abcdefghijklmnopqrstuvwxyz98765);
+    UpgradeAgentSet(0x123456789abcdefghijklmnopqrstuvwxyz98765,
+                    0x123456789abcdefghijklmnopqrstuvwxyz01234);
 
 .. ------------------------------------------------------------------------------------------------
 
@@ -217,6 +220,9 @@ The `NewUpgradedAmount`_ event has the following usage syntax and arguments:
 | 1 | originalBalance | uint256  | No           | Balance of Upgrade Tokens before                |
 +---+-----------------+----------+--------------+-------------------------------------------------+
 | 2 | newBalance      | uint256  | No           | Balance of Upgrade Tokens after                 |
++---+-----------------+----------+--------------+-------------------------------------------------+
+| 3 | executor        | address  | Yes          | Address that executed the `NewUpgradedAmount`_  |
+|   |                 |          |              | event                                           |
 +---+-----------------+----------+--------------+-------------------------------------------------+
 
 .. code-block:: c
@@ -267,7 +273,7 @@ Code
 The code for the `onlyUpgradeMaster`_ modifier is as follows:
 
 .. code-block:: c
-    :caption: **onlyUpgradeMaster 0.0.9 Code**
+    :caption: **onlyUpgradeMaster Code**
 
     modifier onlyUpgradeMaster() {
         require(msg.sender == upgradeMaster);
@@ -332,10 +338,10 @@ Code
 The code for the `TruUpgradeableToken Constructor`_ function is as follows:
 
 .. code-block:: c
-    :caption: **TruUpgradeableToken Constructor 0.0.9 Code**
+    :caption: **TruUpgradeableToken Constructor Code**
 
     function TruUpgradeableToken(address _upgradeMaster) public {
-        require(TruAddress.isValidAddress(_upgradeMaster) == true);
+        require(TruAddress.isValid(_upgradeMaster) == true);
         upgradeMaster = _upgradeMaster;
     }
 
@@ -389,7 +395,7 @@ Code
 The code for the :ref:`upgrade <upgrade-func>` function is as follows:
 
 .. code-block:: c
-    :caption: **upgrade 0.0.9 Code**
+    :caption: **upgrade Code**
    
     function upgrade(uint256 value) public {
         UpgradeState state = getUpgradeState();
@@ -471,10 +477,10 @@ Code
 The code for the `setUpgradeAgent`_ function is as follows:
 
 .. code-block:: c
-    :caption: **setUpgradeAgent 0.0.9 Code**
+    :caption: **setUpgradeAgent Code**
    
     function setUpgradeAgent(address _agent) public onlyUpgradeMaster {
-        require(TruAddress.isValidAddress(_agent) == true);
+        require(TruAddress.isValid(_agent) == true);
         require(canUpgrade());
         require(getUpgradeState() != UpgradeState.Upgrading);
 
@@ -547,12 +553,12 @@ Code
 The code for the `getUpgradeState`_ function is as follows:
 
 .. code-block:: c
-    :caption: **getUpgradeState 0.0.9 Code**
+    :caption: **getUpgradeState Code**
 
     function getUpgradeState() public constant returns(UpgradeState) {
         if (!canUpgrade())
             return UpgradeState.NotAllowed;
-        else if (TruAddress.isValidAddress(upgradeAgent) == false)
+        else if (TruAddress.isValid(upgradeAgent) == false)
             return UpgradeState.WaitingForAgent;
         else if (totalUpgraded == 0)
             return UpgradeState.ReadyToUpgrade;
@@ -607,10 +613,10 @@ Code
 The code for the `setUpgradeMaster`_ function is as follows:
 
 .. code-block:: c
-    :caption: **setUpgradeMaster 0.0.9 Code**
+    :caption: **setUpgradeMaster Code**
 
     function setUpgradeMaster(address _master) public onlyUpgradeMaster {
-        require(TruAddress.isValidAddress(_master) == true);
+        require(TruAddress.isValid(_master) == true);
         upgradeMaster = _master;
     }
 
@@ -665,7 +671,7 @@ Code
 The code for the `canUpgrade`_ function is as follows:
 
 .. code-block:: c
-    :caption: **canUpgrade 0.0.9 Code**
+    :caption: **canUpgrade Code**
 
     function canUpgrade() public constant returns(bool) {
         return true;

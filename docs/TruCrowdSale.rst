@@ -17,13 +17,13 @@ main CrowdSale of the :ref:`tru-reputation-token`.
 +-----------------------+-------------------------------------------------------------------------+
 | **Author:**           | Ian Bray, Tru Ltd                                                       |
 +-----------------------+-------------------------------------------------------------------------+
-| **Solidity Version:** | ^0.4.18                                                                 |
+| **Solidity Version:** | 0.4.18                                                                  |
 +-----------------------+-------------------------------------------------------------------------+
 | **Relative Path:**    | ./contracts/TruCrowdSale.sol                                            |
 +-----------------------+-------------------------------------------------------------------------+
 | **License:**          | `Apache 2 License`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
-| **Current Version:**  | 0.0.9                                                                   |
+| **Current Version:**  | |version|                                                               |
 +-----------------------+-------------------------------------------------------------------------+
 
 .. ------------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ The following variables exist for the `TruCrowdSale`_ Smart Contract:
 +----------------+----------+---------+-----------------------------------------------------------+
 | **Variable**   | **Type** | **Vis** | **Details**                                               |
 +----------------+----------+---------+-----------------------------------------------------------+
-| TOTALCAP       | uint256  | public  | Variable for the Total cap for the Crowdsale & Pre-Sale   |
+| TOTAL_CAP      | uint256  | public  | Variable for the Total cap for the Crowdsale & Pre-Sale   |
 +----------------+----------+---------+-----------------------------------------------------------+
 | existingSupply | uint256  | private | Variable containing the existing                          |
 |                |          |         | :ref:`tru-reputation-token` supply.                       |
@@ -122,7 +122,7 @@ The following functions exist for the `TruCrowdSale`_ Smart Contract:
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _tru-sale-constructor:
+.. _tru-crowdsale-constructor:
 
 TruCrowdSale Constructor
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,7 +149,7 @@ Code
 The code for the `TruCrowdSale Constructor`_ function is as follows:
 
 .. code-block:: c
-    :caption: **TruCrowdSale Constructor 0.0.9 Code**
+    :caption: **TruCrowdSale Constructor Code**
 
     function TruCrowdSale(
         uint256 _startTime, 
@@ -161,7 +161,7 @@ The code for the `TruCrowdSale Constructor`_ function is as follows:
         {
             isPreSale = false;
             isCrowdSale = true;
-            uint256 remainingCap = TOTALCAP.sub(_currentRaise);
+            uint256 remainingCap = TOTAL_CAP.sub(_currentRaise);
             cap = remainingCap;
             existingSupply = _currentSupply;
     }
@@ -171,7 +171,7 @@ The `TruCrowdSale Constructor`_ function performs the following:
  - Executes the super :ref:`tru-sale-constructor` function.
  - Sets the *isPreSale* variable to **false**.
  - Sets the *isCrowdSale* variable to **true**.
- - Calculates the *cap* variable by removing the *_currentRaise* argument from the *TOTALCAP* 
+ - Calculates the *cap* variable by removing the *_currentRaise* argument from the *TOTAL_CAP* 
    variable.
  - Sets *existingSupply* variable to the *_currentSupply* argument.
 
@@ -235,7 +235,7 @@ Code
 The code for the `finalise`_ function is as follows:
 
 .. code-block:: c
-    :caption: **finalise 0.0.9 Code**
+    :caption: **finalise Code**
 
     function finalise() public onlyOwner {
         require(!isCompleted);
@@ -294,7 +294,7 @@ Code
 The code for the `completion`_ function is as follows:
 
 .. code-block:: c
-    :caption: **completion 0.0.9 Code**
+    :caption: **completion Code**
 
     function completion() internal {
      

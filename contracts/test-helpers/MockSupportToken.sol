@@ -3,6 +3,8 @@ pragma solidity ^0.4.18;
 import "../supporting/SafeMath.sol";
 import "../supporting/BasicToken.sol";
 import "../supporting/StandardToken.sol";
+import "../supporting/TruAddress.sol";
+
 
 contract MockSupportToken is StandardToken {
 

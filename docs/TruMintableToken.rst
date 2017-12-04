@@ -21,7 +21,7 @@ TruMintableToken
 +-----------------------+-------------------------------------------------------------------------+
 | **License:**          | `Apache 2 License`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
-| **Current Version:**  | 0.0.9                                                                   |
+| **Current Version:**  | |version|                                                               |
 +-----------------------+-------------------------------------------------------------------------+
 | **Original Source:**  | `MintableToken`_                                                        |
 +-----------------------+-------------------------------------------------------------------------+
@@ -150,12 +150,18 @@ MintFinished
 Usage
 ^^^^^^^^^^^^^^^^^^^^^
 
-The `MintFinished`_ event has no arguments.
+The `MintFinished`_ event has the following usage syntax and arguments:
+
++---+--------------+----------+--------------+----------------------------------------------------+
+|   | **Argument** | **Type** | **Indexed?** | **Details**                                        |
++---+--------------+----------+--------------+----------------------------------------------------+
+| 1 |  _executor   | address  | Yes          | Address that executed the `MintFinished`_ event    |
++---+--------------+----------+--------------+----------------------------------------------------+
 
 .. code-block:: c
     :caption: **MintFinished Usage Example**
 
-    MintFinished();
+    MintFinished(0x123456789abcdefghijklmnopqrstuvwxyz98765);
 
 .. ------------------------------------------------------------------------------------------------
 
@@ -167,18 +173,24 @@ PreSaleComplete
 +------------------+------------------------------------------------------------------------------+
 | **Event Name:**  | PreSaleComplete                                                              |
 +------------------+------------------------------------------------------------------------------+
-| **Description:** | EEvent to notify when a Pre-Sale is complete                                 |
+| **Description:** | Event to notify when a Pre-Sale is complete                                  |
 +------------------+------------------------------------------------------------------------------+
 
 Usage
 ^^^^^^^^^^^^^^^^^^^^^
 
-The `PreSaleComplete`_ event has no arguments.
+The `PreSaleComplete`_ event has the following usage syntax and arguments:
+
++---+--------------+----------+--------------+----------------------------------------------------+
+|   | **Argument** | **Type** | **Indexed?** | **Details**                                        |
++---+--------------+----------+--------------+----------------------------------------------------+
+| 1 |  _executor   | address  | Yes          | Address that executed the `PreSaleComplete`_ event |
++---+--------------+----------+--------------+----------------------------------------------------+
 
 .. code-block:: c
     :caption: **PreSaleComplete Usage Example**
 
-    PreSaleComplete();
+    PreSaleComplete(0x123456789abcdefghijklmnopqrstuvwxyz98765);
 
 .. ------------------------------------------------------------------------------------------------
 
@@ -196,12 +208,18 @@ SaleComplete
 Usage
 ^^^^^^^^^^^^^^^^^^^^^
 
-The `SaleComplete`_ event has no arguments.
+The `SaleComplete`_ event has the following usage syntax and arguments:
+
++---+--------------+----------+--------------+----------------------------------------------------+
+|   | **Argument** | **Type** | **Indexed?** | **Details**                                        |
++---+--------------+----------+--------------+----------------------------------------------------+
+| 1 |  _executor   | address  | Yes          | Address that executed the `SaleComplete`_ event    |
++---+--------------+----------+--------------+----------------------------------------------------+
 
 .. code-block:: c
     :caption: **SaleComplete Usage Example**
 
-    SaleComplete();
+    SaleComplete(0x123456789abcdefghijklmnopqrstuvwxyz98765);
 
 .. ------------------------------------------------------------------------------------------------
 
@@ -246,7 +264,7 @@ Code
 The code for the `canMint`_ modifier is as follows:
 
 .. code-block:: c
-    :caption: **canMint 0.0.9 Code**
+    :caption: **canMint Code**
    
     modifier canMint() {
         require(!mintingFinished);
@@ -303,11 +321,11 @@ Code
 The code for the `mint`_ function is as follows:
 
 .. code-block:: c
-    :caption: **mint 0.0.9 Code**
+    :caption: **mint Code**
 
     function mint(address _to, uint256 _amount) public onlyOwner canMint returns (bool) {
         require(_amount > 0);
-        require(TruAddress.isValidAddress(_to) == true);
+        require(TruAddress.isValid(_to) == true);
     
         totalSupply = totalSupply.add(_amount);
         balances[_to] = balances[_to].add(_amount);
@@ -373,7 +391,7 @@ Code
 The code for the `finishMinting`_ function is as follows:
 
 .. code-block:: c
-    :caption: **finishMinting 0.0.9 Code**
+    :caption: **finishMinting Code**
 
     function finishMinting(bool _presale, bool _sale) public onlyOwner returns (bool) {
         require(_sale != _presale);

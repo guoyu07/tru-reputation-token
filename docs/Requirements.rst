@@ -4,7 +4,7 @@
 
 .. _requirements:
 
-Requirements
+Project Requirements
 =====================
 
 
@@ -187,10 +187,12 @@ Description:
     construction of the Smart Contract.
 
 Implementation Notes: 
-    Implemented using the *execBoard* address variable, the *onlyExecBoard* modifier, 
-    *ChangedExecBoardAddress* event, and the *changeBoardAddress* function that can only be executed 
-    by the existing Executive Board address. This implemenetation addresses this requirement and 
-    `TRTREQ 007`_.
+    Implemented using the *execBoard* address variable, the 
+    :ref:`tru-reputation-token-only-exec-board` modifier, 
+    :ref:`tru-reputation-token-board-address-changed` event, and the 
+    :ref:`tru-reputation-token-change-board-address` function 
+    that can only be executed by the existing Executive Board address. This implemenetation 
+    addresses this requirement and `TRTREQ 007`_.
 
 **Requirement Met?** Yes
 
@@ -211,7 +213,8 @@ Description:
 
 Implementation Notes: 
     Implemented along with `TRTREQ 006`_ by the *onlyExecBoard* modifier, 
-    *ChangedExecBoardAddress* event, and the *changeBoardAddress* function.
+    :ref:`tru-reputation-token-board-address-changed` event, and the 
+    :ref:`tru-reputation-token-change-board-address` function.
 
 **Requirement Met?** Yes
 
@@ -475,8 +478,9 @@ Description:
     End Time.
 
 Implementation Notes:
-    Implemented using *saleStartTime* and *saleEndTime* variables, the *hasEnded* constant function, 
-    and requiring the *saleStartTime* and *saleEndTime* variables in the constructor.
+    Implemented using *saleStartTime* and *saleEndTime* variables, the ref:`tru-sale-has-ended` 
+    constant function, and requiring the *saleStartTime* and *saleEndTime* variables in the 
+    constructor (:ref:`tru-sale-constructor`).
 
 **Requirement Met?** Yes
 
@@ -495,7 +499,7 @@ Description:
     occurs.
 
 Implementation Notes:
-    Implemented using logic in the *buy* function to check that the Sale has started.
+    Implemented using logic in the :ref:`tru-sale-buy` function to check that the Sale has started.
 
 **Requirement Met?** Yes
 
@@ -514,7 +518,8 @@ Description:
     able to purchase any further tokens from the sale.
 
 Implementation Notes:
-    Implemented using logic in the *buy* function and *hasEnded* constant function.
+    Implemented using logic in the :ref:`tru-sale-buy` function and :ref:`tru-sale-has-ended` constant 
+    function.
 
 **Requirement Met?** Yes
 
@@ -533,7 +538,8 @@ Description:
     considered completed and no one should be able to purchase any further tokens from the sale.
 
 Implementation Notes:
-    Implemented using the *cap* variable, and logic in the *hasEnded* constant function.
+    Implemented using the *cap* variable, and logic in the :ref:`tru-sale-has-ended` constant 
+    function.
 
 **Requirement Met?** Yes
 
@@ -552,7 +558,7 @@ Description:
     considered completed and no one should be able to purchase any further tokens from the sale.
 
 Implementation Notes:
-    Implemented using logic in the *hasEnded* constant function.
+    Implemented using logic in the :ref:`tru-sale-has-ended` constant function.
 
 **Requirement Met?** Yes
 
@@ -572,8 +578,8 @@ Description:
     visible within the sale Smart Contract.
 
 Implementation Notes:
-    Implemented using the *BASERATE*, *PRESALERATE*, *SALERATE*, *isPreSale* and *isCrowdSale* 
-    variables, and logic in the *buy* function.
+    Implemented using the *BASE_RATE*, *PRESALE_RATE*, *SALE_RATE*, *isPreSale* and *isCrowdSale* 
+    variables, and logic in the :ref:`tru-sale-buy-tokens` function.
 
 **Requirement Met?** Yes
 
@@ -672,7 +678,8 @@ Description:
     by the owner of the Sale Smart Contract.
 
 Implementation Notes:
-    Implemented using the *changeEndTime* and leveraging the *onlyOwner* modifier.
+    Implemented using the :ref:`tru-sale-change-end-time` function and leveraging the 
+    :ref:`ownable-only-owner` modifier.
 
 **Requirement Met?** Yes
 
@@ -693,8 +700,8 @@ Description:
     should be able to amend this Whitelist.
 
 Implementation Notes:
-    Implemented using the *purchaserWhiteList* mapping, the *updateWhiteList* function and leveraging
-    the *onlyOwner* modifier.
+    Implemented using the *purchaserWhiteList* mapping, the :ref:`tru-sale-update-whitelist` 
+    function and leveraging the :ref:`ownable-only-owner` modifier.
 
 **Requirement Met?** Yes
 
@@ -714,7 +721,7 @@ Description:
     20 ETH.
 
 Implementation Notes:
-    Implemented using the *MAXAMOUNT* variable and logic in the *buy* function.
+    Implemented using the *MAX_AMOUNT* variable and logic in the :ref:`tru-sale-buy-tokens` function.
 
 **Requirement Met?** Yes
 
@@ -733,7 +740,7 @@ Description:
     can purchase to participate in a sale. This minimum limit must be set to 1 ETH.
 
 Implementation Notes:
-    Implemented using the *MINAMOUNT* variable and logic in the *buy* function.
+    Implemented using the *MIN_AMOUNT* variable and logic in the :ref:`tru-sale-buy-tokens` function.
 
 **Requirement Met?** Yes
 
@@ -775,7 +782,7 @@ Description:
 
 Implementation Notes:
     Implemented a modified version of **MintableToken** (**TruMintableToken**) by 
-    `Zeppelin Solidity`_ and implemented logic in the *buy* function.
+    `Zeppelin Solidity`_ and implemented logic in the :ref:`tru-sale-buy-tokens` function.
 
 **Requirement Met?** Yes
 
@@ -796,9 +803,9 @@ Description:
 
 Implementation Notes:
     Implemented a modified version of **MintableToken** (**TruMintableToken**) by 
-    `Zeppelin Solidity`_ and implemented logic in the *completion* function to mint the same number 
-    of tokens bought in a sale to match the number sold in that Sale rather than mint them at the
-    moment of purchase.
+    `Zeppelin Solidity`_ and implemented logic in the :ref:`tru-crowdsale-completion` function to 
+    mint  the same number of tokens bought in a sale to match the number sold in that Sale rather 
+    than  mint them at the moment of purchase.
     
 **Requirement Met?** Yes
 
@@ -818,10 +825,10 @@ Description:
     tokens purchased.
 
 Implementation Notes:
-    Implemented using the *TokenPurchased* event that is fired each time a purchase is successful.
-    Event includes the address of the purchaser, the destination address (fixed to be the same in
-    this implementation, but potentially could be different in another), the total amount spent and
-    the total amount of tokens bought.
+    Implemented using the :ref:`tru-sale-token-purchased` event that is fired each time a purchase 
+    is successful. Event includes the address of the purchaser, the destination address (fixed to be 
+    the same in this implementation, but potentially could be different in another), the total amount 
+    spent and the total amount of tokens bought.
 
 **Requirement Met?** Yes
 
@@ -840,9 +847,9 @@ Description:
     is updated and include the Whitelisted address and its status on the Whitelist.
 
 Implementation Notes:
-    Implemented using the *WhiteListUpdate* event that is fired each time a Whitelist entry is
-    added or updated. The event includes the address and their status on the Whitelist (true for
-    enabled, false for disabled).
+    Implemented using the :ref:`tru-sale-whitelist-updated` event that is fired each time a 
+    Whitelist entry is added or updated. The event includes the address and their status on the 
+    Whitelist (true for enabled, false for disabled).
 
 **Requirement Met?** Yes
 
@@ -865,7 +872,8 @@ Implementation Notes:
     Implemented via the *purchaserWhiteList* mapping of a bool variable to an address. When that
     variable is set to *true* they are active and enabled on the Whitelist. When it is sent to
     *false* they are disabled and in effect 'removed' from the Whitelist. This status is checked
-    by the *buy* function rather than purely checking they have an entry on the Whitelist.
+    by the :ref:`tru-sale-validate-purchase` function rather than purely checking they have an 
+    entry on the Whitelist.
 
 **Requirement Met?** Yes
 
@@ -884,8 +892,9 @@ Description:
     sale is changed.
 
 Implementation Notes:
-    Implemented using the *EndChanged* event that is fired each time the *saleEndTime* variable is
-    altered from its initial value. The event includes the both the old and the new end time.
+    Implemented using the :ref:`tru-sale-end-changed` event that is fired each time the *saleEndTime* 
+    variable is altered from its initial value. The event includes the both the old and the new end 
+    time.
 
 
 **Requirement Met?** Yes
@@ -905,7 +914,7 @@ Description:
     Exchange Rate of 1,000 TRU per ETH
 
 Implementation Notes:
-    Implemented using the *BASERATE* variable.
+    Implemented using the *BASE_RATE* variable.
 
 
 **Requirement Met?** Yes
@@ -965,8 +974,8 @@ Description:
     The cap for the Pre-Sale of **Tru Reputation Token** must have a fixed sale cap of 8,000 ETH
 
 Implementation Notes:
-    Implemented by setting the *PRESALECAP* to 8000 x 10^18, and logic within the *buyTruTokens* 
-    function.
+    Implemented by setting the *PRESALE_CAP* to 8000 x 10^18, and logic within the 
+    :ref:`tru-sale-validate-purchase` function.
 
 **Requirement Met?** Yes
 
@@ -985,8 +994,8 @@ Description:
     equals a 25% bonus/20% discount versus the Base Rate.
 
 Implementation Notes:
-    Implemented using logic within the *buyTruTokens* function, and setting a constant variable
-    for the *PRESALERATE* to 1250.
+    Implemented using logic within the :ref:`tru-sale-validate-purchase` function, and setting a 
+    constant variable for the *PRESALE_RATE* to 1250.
 
 **Requirement Met?** Yes
 
@@ -1027,8 +1036,8 @@ Description:
 
 Implementation Notes:
     Implemented using logic in the CrowdSale constructor to ensure that the result of the PreSale is 
-    passed into the constructor and the *TOTALCAP*, and then removing the PreSale raised amount 
-    from the *TOTALCAP*.
+    passed into the constructor and the *TOTAL_CAP*, and then removing the PreSale raised amount 
+    from the *TOTAL_CAP*.
 
 **Requirement Met?** Yes
 
@@ -1050,7 +1059,7 @@ Description:
 
 
 Implementation Notes:
-    By setting the *TOTALCAP* to 88000 x 10^18, and logic within the constructor for the CrowdSale
+    By setting the *TOTAL_CAP* to 88000 x 10^18, and logic within the constructor for the CrowdSale
     Smart Contract to remove total raised to date from the initial 
 
 **Requirement Met?** Yes
@@ -1070,8 +1079,8 @@ Description:
     equals a 12.5% bonus/11.11...% discount versus the Base Rate.
 
 Implementation Notes:
-    Implemented using logic within the *buyTruTokens* function, and setting a constant variable
-    for the *SALERATE* to 1125, this requirement.
+    Implemented using logic within the :ref:`tru-sale-validate-purchase` function, and setting a 
+    constant variable for the *SALE_RATE* to 1125, this requirement.
 
 **Requirement Met?** Yes
 

@@ -7,6 +7,7 @@ import "../supporting/TruMintableToken.sol";
 import "../supporting/TruUpgradeableToken.sol";
 import "../TruReputationToken.sol";
 
+
 /**
  * A sample token that is used as a migration testing target.
  *

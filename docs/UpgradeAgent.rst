@@ -20,7 +20,7 @@ UpgradeAgent
 +-----------------------+-------------------------------------------------------------------------+
 | **License:**          | `Apache 2 License`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
-| **Current Version:**  | 0.0.9                                                                   |
+| **Current Version:**  | |version|                                                               |
 +-----------------------+-------------------------------------------------------------------------+
 | **Original Source:**  | `UpgradeAgent Source`_                                                  |
 +-----------------------+-------------------------------------------------------------------------+
@@ -134,7 +134,7 @@ Code
 The code for the `isUpgradeAgent`_ function is an interface and it is defined as follows:
 
 .. code-block:: c
-    :caption: **isUpgradeAgent 0.0.9 Code**
+    :caption: **isUpgradeAgent Code**
 
     function isUpgradeAgent() public pure returns (bool) {
         return true;
@@ -179,7 +179,7 @@ Code
 The code for the `upgradeFrom`_ function is an interface and it is defined as follows:
 
 .. code-block:: c
-    :caption: **isUpgradeAgent 0.0.9 Code**
+    :caption: **isUpgradeAgent Code**
 
     function isUpgradeAgent() public pure returns (bool) {
         return true;

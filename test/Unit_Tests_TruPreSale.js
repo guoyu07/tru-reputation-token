@@ -6,6 +6,7 @@
  * 
  * @author      Ian Bray, Tru Ltd
  * @copyright   2017 Tru Ltd
+ * @version     0.0.10
  */
 
 'use strict';
@@ -103,7 +104,7 @@ contract('TruPreSale', function(accounts) {
     psInst = await TruPreSale.new(psStartTime, psEndTime, truToken.address, execAcct);
     tokenSupply = await truToken.totalSupply.call();
     psAddress = psInst.address;
-    pSaleRate = await psInst.PRESALERATE.call();
+    pSaleRate = await psInst.PRESALE_RATE.call();
 
     // Token Supply should be 0
     assert.isTrue(tokenSupply.equals(0),
@@ -138,8 +139,8 @@ contract('TruPreSale', function(accounts) {
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUPRESALE - TEST CASE 04: Pre-Sale hard variables are as expected', async function() {
-    psMinPurchase = await psInst.MINAMOUNT.call();
-    psMaxPurchase = await psInst.MAXAMOUNT.call();
+    psMinPurchase = await psInst.MIN_AMOUNT.call();
+    psMaxPurchase = await psInst.MAX_AMOUNT.call();
     psCap = await psInst.cap.call();
 
     // Minimum Purchase on PreSale should be 1 ETH
@@ -212,7 +213,7 @@ contract('TruPreSale', function(accounts) {
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUPRESALE - TEST CASE 07: Can Add Purchaser to Purchaser Whitelist', async function() {
-    let wlWatch = psInst.WhiteListUpdate();
+    let wlWatch = psInst.WhiteListUpdated();
     await psInst.updateWhitelist(acctThree, 1, { from: acctOne });
     let watchResult = await wlWatch.get();
     let whiteListed = await psInst.purchaserWhiteList(acctThree, { from: acctOne });
@@ -227,21 +228,21 @@ contract('TruPreSale', function(accounts) {
       'ACTUAL RESULT: ' + watchResult.length);
 
     // The White List Status for account Three should equal 'true' (Active on WhiteList)
-    assert.isTrue(watchResult[0].args._whitelistStatus,
+    assert.isTrue(watchResult[0].args.whitelistStatus,
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 07: Test #2\n      ' +
       'TEST DESCRIPTION: Incorrect status on Whitelist entry for TruPreSale. \n      ' +
       'EXPECTED RESULT: true\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._whitelistStatus);
+      'ACTUAL RESULT: ' + watchResult[0].args.whitelistStatus);
 
     // The White List Purchaser Address should be Account Three
-    assert.equal(watchResult[0].args._purchaserAddress,
+    assert.equal(watchResult[0].args.purchaserAddress,
       acctThree,
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 07: Test #3\n      ' +
       'TEST DESCRIPTION: Incorrect Whitelist entry for TruPreSale\n      ' +
       'EXPECTED RESULT: ' + acctThree + '\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._purchaserAddress);
+      'ACTUAL RESULT: ' + watchResult[0].args.purchaserAddress);
 
     // A query to the Contract should show Account Three is Active on the Whitelist
     assert.isTrue(whiteListed,
@@ -255,12 +256,12 @@ contract('TruPreSale', function(accounts) {
 
   it('UNIT TESTS - TRUPRESALE - TEST CASE 08: Can Remove Purchaser from Purchaser Whitelist', async function() {
 
-    let wlWatch = psInst.WhiteListUpdate();
+    let wlWatch = psInst.WhiteListUpdated();
     await psInst.updateWhitelist(acctThree, 0);
     let watchResult = wlWatch.get();
     let notWhiteListed = await psInst.purchaserWhiteList(acctThree);
 
-    // A WhiteListUpdate Event should have been fired
+    // A WhiteListUpdated Event should have been fired
     assert.equal(watchResult.length,
       1,
       '\n      ' +
@@ -270,21 +271,21 @@ contract('TruPreSale', function(accounts) {
       'ACTUAL RESULT: ' + watchResult.length);
 
     // The White List Status for account Three should equal 'false' (Inactive on WhiteList)
-    assert.isFalse(watchResult[0].args._whitelistStatus,
+    assert.isFalse(watchResult[0].args.whitelistStatus,
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 08: Test #2\n      ' +
       'TEST DESCRIPTION: Incorrect status on Whitelist entry for TruPreSale\n      ' +
       'EXPECTED RESULT: false\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._whitelistStatus);
+      'ACTUAL RESULT: ' + watchResult[0].args.whitelistStatus);
 
     // The White List Purchaser Address should be Account Three
-    assert.equal(watchResult[0].args._purchaserAddress,
+    assert.equal(watchResult[0].args.purchaserAddress,
       acctThree,
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 08: Test #3\n      ' +
       'TEST DESCRIPTION: Incorrect Whitelist entry for TruPreSale\n      ' +
       'EXPECTED RESULT: ' + acctThree + '\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._purchaserAddress);
+      'ACTUAL RESULT: ' + watchResult[0].args.purchaserAddress);
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUPRESALE - TEST CASE 09: Cannot purchase before start of Pre-Sale', async function() {
@@ -346,9 +347,11 @@ contract('TruPreSale', function(accounts) {
 
     // Should succeed for Account Three to buy a cumulative below maximum purchase for Non-Whitelisted Accounts
     await psInst.buy({ from: acctThree, value: belowCapEth });
+    
     soldEth = belowCapNumber
     await psInst.buy({ from: acctThree, value: oneEth });
     soldEth = soldEth + 1;
+    
 
     // Should fail for Account Three to buy another 24 ETH as the culmulative total should be over 25 ETH
     await psInst.buy({ from: acctThree, value: maxPurchase }).should.be.rejectedWith(EVMRevert);
@@ -741,8 +744,9 @@ contract('TruPreSale', function(accounts) {
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUPRESALE - TEST CASE 26: Pre-Sale owner can finalise the Pre-Sale', async function() {
+    let psCEvent = psInst.Completed();
     await psInst.finalise({ from: acctOne });
-
+    let psCWatch = psCEvent.get();
     let isComplete = await psInst.isCompleted.call();
     let mintingFinished = await truToken.mintingFinished.call();
     let preSaleFinished = await truToken.preSaleComplete.call();
@@ -750,6 +754,7 @@ contract('TruPreSale', function(accounts) {
     let tokenBalance = await truToken.balanceOf.call(execAcct);
     tokenSupply = await truToken.totalSupply.call();
 
+    // Is the Pre-Sale Complete?
     assert.isTrue(isComplete,
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 26: Test #1\n      ' +
@@ -757,6 +762,24 @@ contract('TruPreSale', function(accounts) {
       'EXPECTED RESULT: true\n      ' +
       'ACTUAL RESULT: ' + isComplete);
 
+    // Did the Pre-Sale complete event fire once?
+    assert.equal(psCWatch.length,
+      1,
+      'UNIT TESTS - TRUPRESALE - TEST CASE 26: Test #2\n      ' +
+      'TEST DESCRIPTION: Incorrect Completed Event length for TruPreSale\n      ' +
+      'EXPECTED RESULT: 1\n      ' +
+      'ACTUAL RESULT: ' + psCWatch.length);
+
+    // Does Completed Event have correct executor argument?
+    assert.equal(psCWatch[0].args.executor, 
+      acctOne,
+      '\n      ' +
+      'UNIT TESTS - TRUPRESALE - TEST CASE 26: Test #3\n      ' +
+      'TEST DESCRIPTION: Incorrect value for TruPreSale Completed Event executor argument\n      ' +
+      'EXPECTED RESULT: ' + acctOne + '\n      ' +
+      'ACTUAL RESULT: ' + psCWatch[0].args.executor);
+    
+    // Is Minting not finished?
     assert.isFalse(mintingFinished,
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 26: Test #2\n      ' +
@@ -764,6 +787,7 @@ contract('TruPreSale', function(accounts) {
       'EXPECTED RESULT: false\n      ' +
       'ACTUAL RESULT: ' + mintingFinished);
 
+    // Is Pre-Sale finished?
     assert.isTrue(preSaleFinished,
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 26: Test #3\n      ' +
@@ -771,6 +795,7 @@ contract('TruPreSale', function(accounts) {
       'EXPECTED RESULT: true\n      ' +
       'ACTUAL RESULT: ' + preSaleFinished);
 
+    // Does acctOne own the Token Contract?
     assert.equal(tokenOwner,
       acctOne,
       '\n      ' +
@@ -779,6 +804,7 @@ contract('TruPreSale', function(accounts) {
       'EXPECTED RESULT: ' + acctOne + '\n      ' +
       'ACTUAL RESULT: ' + tokenOwner);
 
+    // Does the Token Supply match the calculated number of tokens?
     assert.isTrue(tokenSupply.equals(totalTokens),
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 26: Test #5\n      ' +
@@ -786,6 +812,7 @@ contract('TruPreSale', function(accounts) {
       'EXPECTED RESULT: 30,000,000 TRU\n      ' +
       'ACTUAL RESULT: ' + web3.fromWei(tokenSupply.toNumber(), 'ether') + ' TRU');
 
+    // Does the token balance match the Pre-Sale Token Cap?
     assert.isTrue(tokenBalance.equals(preSaleTokenCount),
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 26: Test #6\n      ' +
@@ -892,12 +919,12 @@ contract('TruPreSale', function(accounts) {
       'EXPECTED RESULT: 1\n      ' +
       'ACTUAL RESULT: ' + watchResult.length);
 
-    assert.isTrue(watchResult[0].args._newEnd.equals(endTimeTwo),
+    assert.isTrue(watchResult[0].args.newEnd.equals(endTimeTwo),
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 29: Test #4\n      ' +
       'TEST DESCRIPTION: Incorrect End Time argument on EndChanged Event. \n      ' +
       'EXPECTED RESULT: ' + endTimeTwo + '\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._newEnd.toFormat(0));
+      'ACTUAL RESULT: ' + watchResult[0].args.newEnd.toFormat(0));
     
   }).timeout(timeoutDuration);
 
@@ -990,12 +1017,12 @@ contract('TruPreSale', function(accounts) {
       'EXPECTED RESULT: 1\n      ' +
       'ACTUAL RESULT: ' + watchResult.length);
 
-    assert.isTrue(watchResult[0].args._newEnd.equals(endTimeTwo),
+    assert.isTrue(watchResult[0].args.newEnd.equals(endTimeTwo),
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 31: Test #5\n      ' +
       'TEST DESCRIPTION: Incorrect End Time argument on EndChanged Event. \n      ' +
       'EXPECTED RESULT: ' + endTimeTwo + '\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._newEnd.toFormat(0));
+      'ACTUAL RESULT: ' + watchResult[0].args.newEnd.toFormat(0));
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUPRESALE - TEST CASE 32: Can change Pre-Sale end time to less than current time & end sale', async function(){
@@ -1041,12 +1068,12 @@ contract('TruPreSale', function(accounts) {
       'EXPECTED RESULT: 1\n      ' +
       'ACTUAL RESULT: ' + watchResult.length);
 
-    assert.isTrue(watchResult[0].args._newEnd.equals(endTimeTwo),
+    assert.isTrue(watchResult[0].args.newEnd.equals(endTimeTwo),
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 32: Test #4\n      ' +
       'TEST DESCRIPTION: Incorrect End Time argument on EndChanged Event. \n      ' +
       'EXPECTED RESULT: ' + endTimeTwo + '\n      ' +
-      'ACTUAL RESULT: ' + watchResult[0].args._newEnd.toFormat(0));
+      'ACTUAL RESULT: ' + watchResult[0].args.newEnd.toFormat(0));
 
     assert.isTrue(psEndStatus,
     '\n      ' +

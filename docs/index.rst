@@ -11,6 +11,11 @@
 Tru Reputation Token
 =====================
 
++----------------------+---------------------------+
+| **Last Modified On** | 4th December 2017         |
++----------------------+---------------------------+
+| **Revision Version** | |version|                 |
++----------------------+---------------------------+
 
 The `Tru Reputation Token`_ is part of the `Tru Reputation Protocol`_ by `Tru Ltd`_ and forms the 
 cornerstone of the crypto-economic model in the `Tru Reputation Protocol`_ as detailed in the 
@@ -112,9 +117,6 @@ Tru Ltd is registered in England and Wales, No. 09659526
 .. |TruLtd| image:: https://tru.ltd/images/logos/tru-V2.jpg
                :width: 30px
                :alt: Tru Ltd
-.. |TruTelegramChannel| image:: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
-               :width: 30px
-               :alt: Tru Reputation Protocol Telegram Channel
 .. |TruTelegramChat| image:: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
                :width: 30px
                :alt: Tru Reputation Protocol Telegram Group Chat

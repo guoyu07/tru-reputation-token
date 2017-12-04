@@ -11,8 +11,20 @@ var BasicToken = artifacts.require('./BasicToken.sol');
 var TruSale = artifacts.require('./TruSale.sol');
 var TruPreSale = artifacts.require('./TruPreSale.sol');
 var TruCrowdSale = artifacts.require('./TruCrowdSale.sol');
+
+
 module.exports = function(deployer) {
   deployer.deploy(TruAddress);
-  deployer.link(TruAddress, [TruReputationToken, MockUpgradeableToken, MockMigrationTarget, MockUpgradeAgent, BasicToken, TruSale, TruPreSale, TruCrowdSale, MockFailUpgradeAgent, MockSale, MockFailUpgradeableToken]);
+  deployer.link(TruAddress, [TruReputationToken, 
+                             MockUpgradeableToken, 
+                             MockMigrationTarget, 
+                             MockUpgradeAgent, 
+                             BasicToken, 
+                             TruSale, 
+                             TruPreSale, 
+                             TruCrowdSale, 
+                             MockFailUpgradeAgent, 
+                             MockSale, 
+                             MockFailUpgradeableToken]);
   deployer.deploy(TruReputationToken);
 };

@@ -7,6 +7,7 @@
  * 
  * @author      Ian Bray, Tru Ltd
  * @copyright   2017 Tru Ltd
+ * @version     0.0.10
  */
 
 'use strict';

@@ -1,10 +1,8 @@
+/// @title TruAddress
+/// @dev Tru Address - Library of helper functions surrounding the Address type in Solidity
+/// @author Ian Bray
 pragma solidity 0.4.18;
 
-/**
-  * @title TruAddress
-  * @dev Tru Address - Library of helper functions surrounding the Address type in Solidity
-  * @author Ian Bray
- */
 import "./SafeMath.sol";
 
 
@@ -13,14 +11,17 @@ library TruAddress {
     using SafeMath for uint256;
     using SafeMath for uint;
 
-    // @notice Function to validate that a supplied Address is valid 
-    // (that is is 20 bytes long and it is not empty or 0x0)
-    function isValidAddress(address input) public pure returns (bool) {
-        uint addrLength = addressLength(input);
+    /// @dev Function to validate that a supplied Address is valid 
+    /// (that is is 20 bytes long and it is not empty or 0x0)
+    /// @return Returns true if the address is structurally a valid ethereum address and not 0x0; 
+    /// returns false otherwise
+    function isValid(address input) public pure returns (bool) {
+        uint addrLength = addressLength(address(input));
         return ((addrLength == 20) && (input != address(0)));
     }
 
-    // @notice Function convert a Address to a String
+    /// @dev Function convert a Address to a String
+    /// @return Address as a string
     function toString(address input) internal pure returns (string) {
         bytes memory byteArray = new bytes(20);
         for (uint i = 0; i < 20; i++) {
@@ -29,7 +30,8 @@ library TruAddress {
         return string(byteArray);
     }
 
-    // @notice Function to return the length of a given Address
+    /// @dev Function to return the length of a given Address
+    /// @return Length of the address as a uint
     function addressLength(address input) internal pure returns (uint) {
         string memory addressStr = toString(input);
         return bytes(addressStr).length;

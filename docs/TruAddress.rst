@@ -14,13 +14,13 @@ TruAddress
 +-----------------------+-------------------------------------------------------------------------+
 | **Author:**           | Ian Bray, Tru Ltd                                                       |
 +-----------------------+-------------------------------------------------------------------------+
-| **Solidity Version:** | ^0.4.18                                                                 |
+| **Solidity Version:** | 0.4.18                                                                  |
 +-----------------------+-------------------------------------------------------------------------+
 | **Relative Path:**    | ./contracts/supporting/TruAddress.sol                                   |
 +-----------------------+-------------------------------------------------------------------------+
 | **License:**          | `Apache 2 License`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
-| **Current Version:**  | 0.0.9                                                                   |
+| **Current Version:**  | |version|                                                               |
 +-----------------------+-------------------------------------------------------------------------+
 
 .. ------------------------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ The following functions exist for the `TruAddress`_ Solidity Library:
 +-------------------------+-----------------------------------------------------------------------+
 | **Name**                |  **Description**                                                      |
 +-------------------------+-----------------------------------------------------------------------+
-| `isValidAddress`_       | Function to validate a supplied ethereum address                      |
+| `isValid`_              | Function to validate a supplied ethereum address                      |
 +-------------------------+-----------------------------------------------------------------------+
 | `toString`_             | Function to convert an Address to a String                            |
 +-------------------------+-----------------------------------------------------------------------+
@@ -106,11 +106,11 @@ The following functions exist for the `TruAddress`_ Solidity Library:
 
 .. _tru-address-is-valid-address:
 
-isValidAddress
+isValid
 '''''''''''''''''''''
 
 +--------------------------+-----------------------------------------------------------------------+
-| **Function Name:**       | isValidAddress                                                        |
+| **Function Name:**       | isValid                                                               |
 +--------------------------+-----------------------------------------------------------------------+
 | **Description:**         | Function to validate a supplied address is the correct length & format|
 +--------------------------+-----------------------------------------------------------------------+
@@ -128,17 +128,17 @@ isValidAddress
 Code
 ^^^^^^^^^^^^^^^^^^^^^
 
-The code for the `isValidAddress`_ is as follows:
+The code for the `isValid`_ is as follows:
 
 .. code-block:: c
-    :caption: **isValidAddress 0.0.9 Code**
+    :caption: **isValid Code**
 
-    function isValidAddress(address input) public pure returns (bool) {
+    function isValid(address input) public pure returns (bool) {
         uint addrLength = addressLength(input);
         return ((addrLength == 20) && (input != address(0)));
     }
 
-The `isValidAddress`_ function performs the following:
+The `isValid`_ function performs the following:
 
  - Retrieves the address length
  - returns a bool check that the address is both 20 characters long and not an empty address
@@ -146,7 +146,7 @@ The `isValidAddress`_ function performs the following:
 Usage
 ^^^^^^^^^^^^^^^^^^^^^
 
-The `isValidAddress`_ function has the following usage syntax and arguments:
+The `isValid`_ function has the following usage syntax and arguments:
 
 +---+--------------+----------+-------------------------------------------------------------------+
 |   | **Argument** | **Type** | **Details**                                                       |
@@ -155,9 +155,9 @@ The `isValidAddress`_ function has the following usage syntax and arguments:
 +---+--------------+----------+-------------------------------------------------------------------+
 
 .. code-block:: c
-    :caption: **isValidAddress Usage Example**
+    :caption: **isValid Usage Example**
 
-    isValidAddress(0x123456789abcdefghijklmnopqrstuvwxyz98765);
+    isValid(0x123456789abcdefghijklmnopqrstuvwxyz98765);
 
 .. ------------------------------------------------------------------------------------------------
 
@@ -188,7 +188,7 @@ Code
 The code for the `toString`_ is as follows:
 
 .. code-block:: c
-    :caption: **toString 0.0.9 Code**
+    :caption: **toString Code**
 
     function toString(address input) internal pure returns (string) {
         bytes memory byteArray = new bytes(20);
@@ -249,7 +249,7 @@ Code
 The code for the `addressLength`_ is as follows:
 
 .. code-block:: c
-   :caption: **addressLength 0.0.9 Code**
+   :caption: **addressLength Code**
 
     function addressLength(address input) internal pure returns (uint) {
         string memory addressStr = toString(input);

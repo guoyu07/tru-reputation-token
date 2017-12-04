@@ -134,7 +134,9 @@ contract('TruReputationToken', function(accounts) {
 
   it('UNIT TESTS - TRUREPUTATIONTOKEN - TEST CASE 06: Exec Board should be able to assign different Exec Board Account', async function() {
 
+    let cbWatch = truToken.BoardAddressChanged();
     await truToken.changeBoardAddress(execAcctTwo, { from: execAcct });
+    var ebResult = cbWatch.get();
     let execBoard = await truToken.execBoard.call();
 
     assert.equal(execBoard,
@@ -144,6 +146,37 @@ contract('TruReputationToken', function(accounts) {
       'TEST DESCRIPTION: Incorrect Exec Board account for TruReputationToken\n      ' +
       'EXPECTED RESULT: ' + execAcctTwo + '\n      ' +
       'ACTUAL RESULT: ' + execBoard);
+
+    assert.equal(ebResult.length,
+      1,
+      '\n      ' +
+      'UNIT TESTS - TRUREPUTATIONTOKEN - TEST CASE 06: Test #2\n      ' +
+      'TEST DESCRIPTION: Incorrect BoardAddressChanged Event length for TruReputationToken\n      ' +
+      'EXPECTED RESULT: 1\n      ' +
+      'ACTUAL RESULT: ' + ebResult.length);
+    
+    assert.equal(ebResult[0].args.oldAddress,
+      execAcct,
+      '\n      ' +
+      'UNIT TESTS - TRUREPUTATIONTOKEN - TEST CASE 06: Test #3\n      ' +
+      'TEST DESCRIPTION: Incorrect value for BoardAddressChanged Event oldAddress argument\n      ' +
+      'EXPECTED RESULT: ' + execAcct + '\n      ' +
+      'ACTUAL RESULT: ' + ebResult[0].args.oldAddress);
+    assert.equal(ebResult[0].args.newAddress,
+      execAcctTwo,
+      '\n      ' +
+      'UNIT TESTS - TRUREPUTATIONTOKEN - TEST CASE 06: Test #4\n      ' +
+      'TEST DESCRIPTION: Incorrect value for BoardAddressChanged Event newAddress argument\n      ' +
+      'EXPECTED RESULT: ' + execAcctTwo + '\n      ' +
+      'ACTUAL RESULT: ' + ebResult[0].args.newAddress);
+
+    assert.equal(ebResult[0].args.executor,
+      execAcct,
+      '\n      ' +
+      'UNIT TESTS - TRUREPUTATIONTOKEN - TEST CASE 06: Test #5\n      ' +
+      'TEST DESCRIPTION: Incorrect value for BoardAddressChanged Event executor argument\n      ' +
+      'EXPECTED RESULT: ' + execAcct + '\n      ' +
+      'ACTUAL RESULT: ' + ebResult[0].args.executor);
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUREPUTATIONTOKEN - TEST CASE 07: TruReputationToken should have 0 total supply', async function() {

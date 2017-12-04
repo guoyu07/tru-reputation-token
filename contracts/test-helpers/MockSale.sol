@@ -1,25 +1,27 @@
 pragma solidity ^0.4.18;
 
 import "../supporting/SafeMath.sol";
+import "../supporting/TruAddress.sol";
 import "../TruReputationToken.sol";
 import "../TruSale.sol";
+
 
 contract MockSale is TruSale {
 
     using SafeMath for uint256;
 
-    uint256 public constant PRESALECAP = 12000 * 10**18;
+    uint256 public constant PRESALE_CAP = 12000 * 10**18;
 
     function MockSale(
         uint256 _startTime, 
         uint256 _endTime, 
         address _token,
         address _saleWallet) public TruSale(_startTime, _endTime, _token, _saleWallet) 
-        {
-            isPreSale = true;
-            isCrowdSale = false;
-            cap = PRESALECAP;
-        }
+    {
+        isPreSale = true;
+        isCrowdSale = false;
+        cap = PRESALE_CAP;
+    }
 
 
     function mockBuy() public {

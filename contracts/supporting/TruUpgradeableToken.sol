@@ -1,19 +1,10 @@
-/**
- * This smart contract code is Copyright 2017 TokenMarket Ltd. For more information see https://tokenmarket.net
- *
- * Licensed under the Apache License, version 2.0: https://github.com/TokenMarketNet/ico/blob/master/LICENSE.txt
- *
- * Updated by Tru Ltd November 2017 to comply with Solidity 0.4.18 syntax and Best Practices
- */
-
-pragma solidity ^0.4.18;
-
-
-/**
- * A token upgrade mechanism where users can opt-in amount of tokens to the next smart contract revision.
- *
- * First envisioned by Golem and Lunyr projects.
- */
+/// @title Tru Upgradeable Token
+/// @notice A token upgrade mechanism where users can opt-in amount of tokens to the next smart contract revision.
+/// @dev This Smart Contract is based upon UpgradeableToken by TokenMarket Ltd. The original source can be found
+/// at https://raw.githubusercontent.com/TokenMarketNet/ico/master/contracts/UpgradeableToken.sol
+/// It has been updated for Tru Ltd's purposes in November 2017 and compiles with solidity 0.4.18's syntax
+/// @author Ian Bray, Tru Ltd/Original: TokenMarket Ltd
+pragma solidity 0.4.18;
 
 import "./SafeMath.sol";
 import "./StandardToken.sol";
@@ -26,14 +17,17 @@ contract TruUpgradeableToken is StandardToken {
     using SafeMath for uint256;
     using SafeMath for uint;
 
-    /** Contract / person who can set the upgrade path. This can be the same as team multisig wallet, as what it is with its default value. */
+    /// @notice Contract / person who can set the upgrade path.
     address public upgradeMaster;
 
-    /** The next contract where the tokens will be migrated. */
+    /// @notice The Contract that the target will be upgraded to
     UpgradeAgent public upgradeAgent;
 
-    /** How many tokens we have upgraded by now. */
+    /// @notice Total Number of upgraded tokens
     uint256 public totalUpgraded;
+
+    /// @notice Whether the Contract is upgradeable
+    bool private isUpgradeable = true;
 
     /**
      * Upgrade states.
@@ -46,19 +40,28 @@ contract TruUpgradeableToken is StandardToken {
     */
     enum UpgradeState {Unknown, NotAllowed, WaitingForAgent, ReadyToUpgrade, Upgrading}
 
-    /**
-     * 
-    */
-    event Upgrade(address indexed _from, address indexed _to, uint256 _value);
+    /// @notice Event to notify when a token holder upgrades their tokens
+    /// @param to Destination address of upgraded tokens (should always be upgradeAgent)
+    /// @param upgradeValue Number of tokens being upgraded
+    event Upgrade(address indexed from, 
+        address indexed to, 
+        uint256 upgradeValue);
 
-    /**
-     * New upgrade agent available.
-    */
-    event UpgradeAgentSet(address agent);
+    /// @notice Event to notify when an upgradeAgent is set
+    /// @param agent upgradeAgent address
+    /// @param executor Address which set the upgradeAgent
+    event UpgradeAgentSet(address indexed agent, 
+        address indexed executor);
 
-    event NewUpgradedAmount(uint256 originalBalance, uint256 newBalance);
+    /// @notice Event to notify the new total number of tokens that have been
+    /// @param originalBalance Balance of Upgrade Tokens before
+    /// @param newBalance Balance of Upgrade Tokens after
+    /// @param executor AAddress that executed the token upgrade
+    event NewUpgradedAmount(uint256 originalBalance, 
+        uint256 newBalance, 
+        address indexed executor);
     
-    // @notice Modifier to only allow the Upgrade Master to execute the function
+    /// @notice Modifier to only allow the Upgrade Master to execute the function
     modifier onlyUpgradeMaster() {
         require(msg.sender == upgradeMaster);
         _;
@@ -68,7 +71,8 @@ contract TruUpgradeableToken is StandardToken {
      * Constructor
     */
     function TruUpgradeableToken(address _upgradeMaster) public {
-        require(TruAddress.isValidAddress(_upgradeMaster) == true);
+
+        require(TruAddress.isValid(_upgradeMaster));
         upgradeMaster = _upgradeMaster;
     }
 
@@ -88,7 +92,7 @@ contract TruUpgradeableToken is StandardToken {
         uint256 newTotalSupply = totalSupply.sub(_value);
         balances[msg.sender] = newSenderBalance;
         totalSupply = newTotalSupply;        
-        NewUpgradedAmount(totalUpgraded, newTotalSupply);
+        NewUpgradedAmount(totalUpgraded, newTotalSupply, msg.sender);
         totalUpgraded = upgradedAmount;
         // Upgrade agent reissues the tokens
         upgradeAgent.upgradeFrom(msg.sender, _value);
@@ -99,7 +103,7 @@ contract TruUpgradeableToken is StandardToken {
      * Set an upgrade agent that handles
     */
     function setUpgradeAgent(address _agent) public onlyUpgradeMaster {
-        require(TruAddress.isValidAddress(_agent) == true);
+        require(TruAddress.isValid(_agent));
         require(canUpgrade());
         require(getUpgradeState() != UpgradeState.Upgrading);
 
@@ -108,7 +112,7 @@ contract TruUpgradeableToken is StandardToken {
         require(newUAgent.isUpgradeAgent());
         require(newUAgent.originalSupply() == totalSupply);
 
-        UpgradeAgentSet(upgradeAgent);
+        UpgradeAgentSet(upgradeAgent, msg.sender);
 
         upgradeAgent = newUAgent;
     }
@@ -119,7 +123,7 @@ contract TruUpgradeableToken is StandardToken {
     function getUpgradeState() public constant returns(UpgradeState) {
         if (!canUpgrade())
             return UpgradeState.NotAllowed;
-        else if (TruAddress.isValidAddress(upgradeAgent) == false)
+        else if (upgradeAgent == address(0))
             return UpgradeState.WaitingForAgent;
         else if (totalUpgraded == 0)
             return UpgradeState.ReadyToUpgrade;
@@ -133,7 +137,7 @@ contract TruUpgradeableToken is StandardToken {
      * This allows us to set a new owner for the upgrade mechanism.
     */
     function setUpgradeMaster(address _master) public onlyUpgradeMaster {
-        require(TruAddress.isValidAddress(_master) == true);
+        require(TruAddress.isValid(_master) == true);
         upgradeMaster = _master;
     }
 
@@ -141,6 +145,6 @@ contract TruUpgradeableToken is StandardToken {
      * Child contract can enable to provide the condition when the upgrade can begun.
     */
     function canUpgrade() public constant returns(bool) {
-        return true;
+        return isUpgradeable;
     }
 }

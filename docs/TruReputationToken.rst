@@ -14,13 +14,13 @@ TruReputationToken
 +-----------------------+-------------------------------------------------------------------------+
 | **Author:**           | Ian Bray, Tru Ltd                                                       |
 +-----------------------+-------------------------------------------------------------------------+
-| **Solidity Version:** | ^0.4.18                                                                 |
+| **Solidity Version:** | 0.4.18                                                                  |
 +-----------------------+-------------------------------------------------------------------------+
 | **Relative Path:**    | ./contracts/TruReputationToken.sol                                      |
 +-----------------------+-------------------------------------------------------------------------+
 | **License:**          | `Apache 2 License`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
-| **Current Version:**  | 0.0.9                                                                   |
+| **Current Version:**  | |version|                                                               |
 +-----------------------+-------------------------------------------------------------------------+
 
 
@@ -57,26 +57,25 @@ The following imports and dependencies exist for the `TruReputationToken`_ Smart
 
 The following variables exist for the `TruReputationToken`_ Smart Contract:
 
-+-----------------+----------+---------+----------------------------------------------------------+
-| **Variable**    | **Type** | **Vis** | **Details**                                              |
-+-----------------+----------+---------+----------------------------------------------------------+
-| **decimals**    | uint8    | public  | Constant variable for number of decimals token supports  |
-|                 |          |         |                                                          |
-|                 |          |         | **Default:** *18*                                        |
-+-----------------+----------+---------+----------------------------------------------------------+
-| **name**        | string   | public  | Constant variable for public name of the token           |
-|                 |          |         |                                                          |
-|                 |          |         | **Default** *Tru Reputation Token*                       |
-+-----------------+----------+---------+----------------------------------------------------------+
-| **symbol**      | string   | public  | Constant variable for public symbol of the token         |
-|                 |          |         |                                                          |
-|                 |          |         | **Default:** *TRU*                                       |
-+-----------------+----------+---------+----------------------------------------------------------+
-| **execBoard**   | address  | public  | Variable containing address of the Tru Ltd Executive     |
-|                 |          |         | Board                                                    |
-|                 |          |         |                                                          |
-|                 |          |         | **Default:** *0x0*                                       |
-+-----------------+----------+---------+----------------------------------------------------------+
++---------------+----------+---------+------------------------------------------------------------+
+| **Variable**  | **Type** | **Vis** | **Details**                                                |
++---------------+----------+---------+------------------------------------------------------------+
+| **decimals**  | uint8    | public  | Constant variable for number of decimals token supports    |
+|               |          |         |                                                            |
+|               |          |         | **Default:** *18*                                          |
++---------------+----------+---------+------------------------------------------------------------+
+| **name**      | string   | public  | Constant variable for public name of the token             |
+|               |          |         |                                                            |
+|               |          |         | **Default** *Tru Reputation Token*                         |
++---------------+----------+---------+------------------------------------------------------------+
+| **symbol**    | string   | public  | Constant variable for public symbol of the token           |
+|               |          |         |                                                            |
+|               |          |         | **Default:** *TRU*                                         |
++---------------+----------+---------+------------------------------------------------------------+
+| **execBoard** | address  | public  | Variable containing address of the Tru Ltd Executive Board |
+|               |          |         |                                                            |
+|               |          |         | **Default:** *0x0*                                         |
++---------------+----------+---------+------------------------------------------------------------+
 
 .. ------------------------------------------------------------------------------------------------
 
@@ -96,21 +95,21 @@ There are no enums for the `TruReputationToken`_ Smart Contract.
 
 The following events exist for the `TruReputationToken`_ Solidity Library:
 
-+--------------------------------+----------------------------------------------------------------+
-| **Name**                       | **Description**                                                |
-+--------------------------------+----------------------------------------------------------------+
-| `ChangedExecBoardAddress`_     | Event to notify when the *execBoard* address changes           |
-+--------------------------------+----------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------+
+| **Name**               | **Description**                                                        |
++------------------------+------------------------------------------------------------------------+
+| `BoardAddressChanged`_ | Event to notify when the *execBoard* address changes                   |
++------------------------+------------------------------------------------------------------------+
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _tru-reputation-token-changed-exec-board:
+.. _tru-reputation-token-board-address-changed:
 
-ChangedExecBoardAddress
+BoardAddressChanged
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +------------------+------------------------------------------------------------------------------+
-| **Event Name:**  | ChangedExecBoardAddress                                                      |
+| **Event Name:**  | BoardAddressChanged                                                          |
 +------------------+------------------------------------------------------------------------------+
 | **Description:** | Event to notify when the *execBoard* address changes                         |
 +------------------+------------------------------------------------------------------------------+
@@ -118,7 +117,7 @@ ChangedExecBoardAddress
 Usage
 '''''''''''''''''''''
 
-The `ChangedExecBoardAddress`_ event has the following usage syntax and arguments:
+The `BoardAddressChanged`_ event has the following usage syntax and arguments:
 
 +---+--------------+----------+--------------+----------------------------------------------------+
 |   | **Argument** | **Type** | **Indexed?** | **Details**                                        |
@@ -129,12 +128,14 @@ The `ChangedExecBoardAddress`_ event has the following usage syntax and argument
 |   |              |          |              | which is hardcoded to the *upgradeAgent* who sends |
 |   |              |          |              | them back to the originating address               |
 +---+--------------+----------+--------------+----------------------------------------------------+
-
+| 3 | executor     | address  | Yes          | Address that executed the `BoardAddressChanged`_   |
+|   |              |          |              | event                                              |
++---+--------------+----------+--------------+----------------------------------------------------+
 
 .. code-block:: c
-   :caption: **ChangedExecBoardAddress Usage Example**
+   :caption: **BoardAddressChanged Usage Example**
 
-    ChangedExecBoardAddress(0x123456789abcdefghijklmnopqrstuvwxyz98765,
+    BoardAddressChanged(0x123456789abcdefghijklmnopqrstuvwxyz98765,
                             0x123456789abcdefghijklmnopqrstuvwxyz01234);
 
 .. ------------------------------------------------------------------------------------------------
@@ -148,7 +149,7 @@ There are no mappings for the `TruReputationToken`_ Smart Contract.
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _tru-upgradeable-token-modifiers:
+.. _tru-reputation-token-modifiers:
 
 6. Modifiers
 ---------------------------------------
@@ -158,7 +159,7 @@ The following modifiers exist for the `TruReputationToken`_ Smart Contract:
 +----------------------+--------------------------------------------------------------------------+
 | **Name**             |  **Description**                                                         |
 +----------------------+--------------------------------------------------------------------------+
-| `onlyExecBoard`_     | Modifier to check the Executive Board is executing this call             |
+| `onlyExecBoard`_     | Modifier to check the Tru Advisory Board is executing this call          |
 +----------------------+--------------------------------------------------------------------------+
 
 .. ------------------------------------------------------------------------------------------------
@@ -171,7 +172,7 @@ onlyExecBoard
 +--------------------+----------------------------------------------------------------------------+
 | **Modifier Name:** | onlyExecBoard                                                              |
 +--------------------+----------------------------------------------------------------------------+
-| **Description:**   | Modifier to check the Executive Board is executing this call               |
+| **Description:**   | Modifier to check the Tru Advisory Board is executing this call            |
 +--------------------+----------------------------------------------------------------------------+
 
 Code
@@ -180,7 +181,7 @@ Code
 The code for the `onlyExecBoard`_ modifier is as follows:
 
 .. code-block:: c
-    :caption: **onlyExecBoard 0.0.9 Code**
+    :caption: **onlyExecBoard Code**
 
     modifier onlyExecBoard() {
         require(msg.sender == execBoard);
@@ -243,18 +244,18 @@ Code
 The code for the `TruReputationToken Constructor`_ function is as follows:
 
 .. code-block:: c
-    :caption: **TruReputationToken Constructor 0.0.9 Code**
+    :caption: **TruReputationToken Constructor Code**
    
     function TruReputationToken() public TruUpgradeableToken(msg.sender) {
         execBoard = msg.sender;
-        ChangedExecBoardAddress(0x0, msg.sender);
+        BoardAddressChanged(0x0, msg.sender);
     }
 
 The `TruReputationToken Constructor`_ function performs the following:
 
  - Executes the TruUpgradeableToken constructor as part of its construction.
  - Sets the initial *execBoard* variable to *msg.sender*
- - Fires the `ChangedExecBoardAddress`_ event
+ - Fires the `BoardAddressChanged`_ event
 
 Usage
 '''''''''''''''''''''
@@ -301,14 +302,14 @@ Code
 The code for the `changeBoardAddress`_ function is as follows:
 
 .. code-block:: c
-    :caption: **changeBoardAddress 0.0.9 Code**
+    :caption: **changeBoardAddress Code**
    
     function changeBoardAddress(address _newAddress) public onlyExecBoard {
-        require(TruAddress.isValidAddress(_newAddress) == true);
+        require(TruAddress.isValid(_newAddress) == true);
         require(_newAddress != execBoard);
         address oldAddress = execBoard;
         execBoard = _newAddress;
-        ChangedExecBoardAddress(oldAddress, _newAddress);
+        BoardAddressChanged(oldAddress, _newAddress);
     }
 
 The `changeBoardAddress`_ function performs the following:
@@ -317,7 +318,7 @@ The `changeBoardAddress`_ function performs the following:
  - Checks the *_newAddress* argument is not the same as the current *execBoard* variable. If it is,
    it will throw;
  - Sets the *execBoard* variable to the *_newAddress* argument.
- - Fires the `ChangedExecBoardAddress`_ event
+ - Fires the `BoardAddressChanged`_ event
 
 Usage
 '''''''''''''''''''''
@@ -327,7 +328,7 @@ The `changeBoardAddress`_ function has the following usage syntax and arguments:
 +---+--------------+----------+-------------------------------------------------------------------+
 |   | **Argument** | **Type** | **Details**                                                       |
 +---+--------------+----------+-------------------------------------------------------------------+
-| 1 | _newAddress  | address  | Address to be set as the new Executive Board Address              |
+| 1 | _newAddress  | address  | Address to be set as the new Tru Advisory Board Address           |
 +---+--------------+----------+-------------------------------------------------------------------+
 
 .. code-block:: c
@@ -364,7 +365,7 @@ Code
 The code for the `canUpgrade`_ override function is as follows:
 
 .. code-block:: c
-    :caption: **canUpgrade 0.0.9 Code**
+    :caption: **canUpgrade Code**
    
     function canUpgrade() public constant returns(bool) {
         return released && super.canUpgrade();
@@ -413,7 +414,7 @@ Code
 The code for the `setUpgradeMaster`_ override function is as follows:
 
 .. code-block:: c
-   :caption: **setUpgradeMaster 0.0.9 Code**
+   :caption: **setUpgradeMaster Code**
 
     function setUpgradeMaster(address master) public onlyOwner {
         super.setUpgradeMaster(master);
@@ -427,7 +428,13 @@ The `setUpgradeMaster`_ function performs the following:
 Usage
 '''''''''''''''''''''
 
-The `setUpgradeMaster`_ function has the following usage syntax:
+The `setUpgradeMaster`_ function has the following usage syntax and arguments:
+
++---+--------------+----------+-------------------------------------------------------------------+
+|   | **Argument** | **Type** | **Details**                                                       |
++---+--------------+----------+-------------------------------------------------------------------+
+| 1 | _master      | address  | Address to be set as the new Upgrade Master Contract              |
++---+--------------+----------+-------------------------------------------------------------------+
 
 .. code-block:: c
    :caption: **setUpgradeMaster Usage Example**

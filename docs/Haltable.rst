@@ -15,13 +15,13 @@ Haltable
 +-----------------------+-------------------------------------------------------------------------+
 | **Author:**           | TokenMarket Ltd/Updated by Ian Bray, Tru Ltd                            |
 +-----------------------+-------------------------------------------------------------------------+
-| **Solidity Version:** | ^0.4.18                                                                 |
+| **Solidity Version:** | 0.4.18                                                                  |
 +-----------------------+-------------------------------------------------------------------------+
 | **Relative Path:**    | ./contracts/supporting/Haltable.sol                                     |
 +-----------------------+-------------------------------------------------------------------------+
 | **License:**          | `Apache 2 License`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
-| **Current Version:**  | 0.0.9                                                                   |
+| **Current Version:**  | |version|                                                               |
 +-----------------------+-------------------------------------------------------------------------+
 | **Original Source:**  | `Haltable Source`_                                                      |
 +-----------------------+-------------------------------------------------------------------------+
@@ -79,6 +79,7 @@ The following events exist for the `Haltable`_ Smart Contract:
 +---------------+---------------------------------------------------------------------------------+
 | `HaltStatus`_ | Event to track halted status changes                                            |
 +---------------+---------------------------------------------------------------------------------+
+
 .. ------------------------------------------------------------------------------------------------
 
 .. _haltable-halt-status:
@@ -100,7 +101,7 @@ The `HaltStatus`_ event has the following usage syntax and arguments:
 +---+--------------+----------+--------------+----------------------------------------------------+
 |   | **Argument** | **Type** | **Indexed?** | **Details**                                        |
 +---+--------------+----------+--------------+----------------------------------------------------+
-| 1 |  halted      | bool     | No           | Whether the contract is halted or not              |
+| 1 |  status      | bool     | No           | Whether the contract is halted or not              |
 +---+--------------+----------+--------------+----------------------------------------------------+
 
 .. code-block:: c
@@ -153,7 +154,7 @@ Code
 The code for the `stopInEmergency`_ modifier is as follows:
 
 .. code-block:: c
-    :caption: **stopInEmergency 0.0.9 Code**
+    :caption: **stopInEmergency Code**
    
     modifier stopInEmergency {
         require(!halted);
@@ -183,7 +184,7 @@ Code
 The code for the `onlyInEmergency`_ modifier is as follows:
 
 .. code-block:: c
-    :caption: **onlyInEmergency 0.0.9 Code**
+    :caption: **onlyInEmergency Code**
 
     modifier onlyInEmergency {
         require(halted);
@@ -240,7 +241,7 @@ Code
 The code for the `halt`_ function is as follows:
 
 .. code-block:: c
-    :caption: **halt 0.0.9 Code**
+    :caption: **halt Code**
 
     function halt() external onlyOwner {
         halted = true;
@@ -291,7 +292,7 @@ Code
 The code for the `unhalt`_ function is as follows:
 
 .. code-block:: c
-    :caption: **unhalt 0.0.9 Code**
+    :caption: **unhalt Code**
    
     function unhalt() external onlyOwner onlyInEmergency {
         halted = false;
