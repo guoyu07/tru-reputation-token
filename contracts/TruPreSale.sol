@@ -15,8 +15,8 @@ contract TruPreSale is TruSale {
     
     using SafeMath for uint256;
 
-    /// @notice Cap on CrowdSale in Wei (Ξ8,000) (8,000 x POWER(10,18))
-    uint256 public constant PRESALE_CAP = 8000 * 10**18;
+    /// @notice Cap on CrowdSale in Wei (Ξ5,000) (5,000 x POWER(10,18))
+    uint256 public constant PRESALE_CAP = 5000 * 10**18;
 
     /// @notice TruPreSale Contract constructor
     /// @param _startTime The Start Time of the Sale as a uint256

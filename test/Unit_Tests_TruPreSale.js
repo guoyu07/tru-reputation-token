@@ -56,12 +56,12 @@ contract('TruPreSale', function(accounts) {
   let belowCapNumber = maxEthPurchase - 2;
   let maxPurchase = web3.toWei(maxEthPurchase, 'ether');
   let belowCapEth = web3.toWei(belowCapNumber, 'ether');
-  let psEthCap = 8000;
+  let psEthCap = 5000;
   let pSaleCap = new BigNumber(web3.toWei(psEthCap, 'ether'));
   let truAmt = 10000;
   let psRate = 1250;
-  let preSaleTokenCount = new BigNumber(web3.toWei(10000000, 'ether'));
-  let totalTokens = new BigNumber(web3.toWei(20000000, 'ether'));
+  let preSaleTokenCount = new BigNumber(web3.toWei(6250000, 'ether'));
+  let totalTokens = new BigNumber(web3.toWei(12500000, 'ether'));
   let psStartTime;
   let psEndTime;
   let estSold;
@@ -809,7 +809,7 @@ contract('TruPreSale', function(accounts) {
       '\n      ' +
       'UNIT TESTS - TRUPRESALE - TEST CASE 26: Test #5\n      ' +
       'TEST DESCRIPTION: Incorrect Post-Sale Token Supply size. \n      ' +
-      'EXPECTED RESULT: 30,000,000 TRU\n      ' +
+      'EXPECTED RESULT: ' + totalTokens.toNumber() + ' TRU\n      ' +
       'ACTUAL RESULT: ' + web3.fromWei(tokenSupply.toNumber(), 'ether') + ' TRU');
 
     // Does the token balance match the Pre-Sale Token Cap?

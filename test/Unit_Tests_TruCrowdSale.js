@@ -55,24 +55,24 @@ contract('TruCrowdSale', function(accounts) {
   let twentyThreeEth = web3.toWei(24, 'ether');
   let fiftyOneEth = web3.toWei(51, 'ether');
   let fiftyTwoEth = new BigNumber(web3.toWei(52, 'ether'));
-  let psEthCap = 8000;
+  let psEthCap = 5000;
   let pSaleCap = web3.toWei(psEthCap, 'ether');
-  let sEthCap = 80000;
+  let sEthCap = 50000;
   let saleCap = new BigNumber(web3.toWei(sEthCap, 'ether'));
   let minPurchase = oneEth;
   let maxEthPurchase = 20;
   let belowCapNumber = maxEthPurchase - 1;
   let maxPurchase = web3.toWei(maxEthPurchase, 'ether');
   let belowCapEth = web3.toWei(belowCapNumber, 'ether');
-  let unsoldCSCap = 82000;
-  let truAmt = 6000;
+  let unsoldCSCap = 52000;
+  let truAmt = 3000;
   let psRate = 1250;
   let csRate = 1125;
-  let maxTokens = new BigNumber(web3.toWei(200000000, 'ether'));
-  let allSaleTokens = new BigNumber(web3.toWei(100000000, 'ether'));
-  let preSaleTokenCount = new BigNumber(web3.toWei(10000000, 'ether'));
+  let maxTokens = new BigNumber(web3.toWei(125000000, 'ether'));
+  let allSaleTokens = new BigNumber(web3.toWei(62500000, 'ether'));
+  let preSaleTokenCount = new BigNumber(web3.toWei(6250000, 'ether'));
   let psPostSaleTokenCount = preSaleTokenCount.mul(2);
-  let saleTokenCount = new BigNumber(web3.toWei(90000000, 'ether'));
+  let saleTokenCount = new BigNumber(web3.toWei(56250000, 'ether'));
   let psStartTime;
   let psEndTime;
   let sStartTime;
@@ -783,12 +783,12 @@ contract('TruCrowdSale', function(accounts) {
       'EXPECTED RESULT: ' + acctOne + '\n      ' +
       'ACTUAL RESULT: ' + tokenOwner);
 
-    // Has 300,000,000 TRU been minted during the sales?
+    // Has 125,000,000 TRU been minted during the sales?
     assert.isTrue(tokenSupply.equals(maxTokens),
       '\n      ' +
       'UNIT TESTS - TRUCROWDSALE - TEST CASE 25: Test #8\n      ' +
       'TEST DESCRIPTION: Incorrect Post-CrowdSale Token Supply size\n      ' +
-      'EXPECTED RESULT: 300,000,000 TRU\n      ' +
+      'EXPECTED RESULT: ' + maxTokens.toNumber() + ' TRU\n      ' +
       'ACTUAL RESULT: ' + web3.fromWei(tokenSupply.toNumber(), 'ether') + ' TRU');
 
     let tBal = web3.fromWei(tokenBalance.toNumber(), 'ether')

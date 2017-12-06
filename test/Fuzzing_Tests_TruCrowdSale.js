@@ -48,7 +48,7 @@ contract('TruCrowdSale', function(accounts) {
   let crowdSale;
   let tokenSupply = 0;
   let weiRaised = 0;
-  let pSaleCap = 8000;
+  let pSaleCap = 5000;
   let acctOne = accounts[0];
   let accountTwo = accounts[1];
   let accountThree = accounts[2];

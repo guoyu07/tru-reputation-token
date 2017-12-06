@@ -140,6 +140,9 @@ contract TruSale is Ownable, Haltable {
     /// Moved from Bool on _status to int- 0 for false, 1 for true, due to
     /// type safety when calling from Web3 potentially opening an exploit in Solidity
     /// Bool arguments in public function in Solidity are, basically, dangerous
+    /// @param _purchaser address of the purchaser to be added to the Whitelist
+    /// @param _status the Status for the purchaser on the WhiteList- 0 for disabled, 
+    /// 1 for enabled
     function updateWhitelist(address _purchaser, uint _status) public onlyOwner {
         require(TruAddress.isValid(_purchaser) == true);
         bool boolStatus = false;

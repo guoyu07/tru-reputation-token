@@ -439,7 +439,7 @@ the following common requirements were specified:
 +-----------------+-------------------------------------------------------------------------------+
 | `SALREQ 023`_   | Post Sale rate should be set to 1,000 TRU per ETH                             |
 +-----------------+-------------------------------------------------------------------------------+
-| `SALREQ 024`_   | No more than 200,000,000 TRU should be minted during the Sales                |
+| `SALREQ 024`_   | No more than 125,000,000 TRU should be minted during the Sales                |
 +-----------------+-------------------------------------------------------------------------------+
 
 .. ------------------------------------------------------------------------------------------------
@@ -927,16 +927,16 @@ SALREQ 024
 '''''''''''''''''''''
 
 Requirement:
-    No more than 200,000,000 TRU should be minted during the Sales
+    No more than 125,000,000 TRU should be minted during the Sales
 
 Description:
-    The combined total of all Sales should not mint more than 200,000,000 **Tru Reputation Tokens**.
-    Of this no more than 100,000,000 TRU should be sold with the remainder being minted for 
+    The combined total of all Sales should not mint more than 125,000,000 **Tru Reputation Tokens**.
+    Of this no more than 62,500,000 TRU should be sold with the remainder being minted for 
     distribution by Tru Ltd as per the `Tru Reputation Protocol Whitepaper`_.
 
 Implementation Notes:
-    Implemented using the ETH cap and buy rates ensuring that only 100,000,000 
-    **Tru Reputation Tokens** can be sold, and that only a further 100,000,000 
+    Implemented using the ETH cap and buy rates ensuring that only 62,500,000
+    **Tru Reputation Tokens** can be sold, and that only a further 62,500,000 
     **Tru Reputation Tokens** can be minted to the sale wallet.
 
 
@@ -955,7 +955,7 @@ requirements were specified:
 +-----------------+-------------------------------------------------------------------------------+
 | **Requirement** | **Requirement Description**                                                   |
 +-----------------+-------------------------------------------------------------------------------+
-| `PSREQ 001`_    | Cap for Pre-Sale must be fixed at 8,000 ETH                                   |
+| `PSREQ 001`_    | Cap for Pre-Sale must be fixed at 5,000 ETH                                   |
 +-----------------+-------------------------------------------------------------------------------+
 | `PSREQ 002`_    | Sale Rate for Pre-Sale must be 1,250 TRU per ETH                              |
 +-----------------+-------------------------------------------------------------------------------+
@@ -968,7 +968,7 @@ PSREQ 001
 '''''''''''''''''''''
 
 Requirement:
-    Cap for Pre-Sale must be fixed at 8,000 ETH
+    Cap for Pre-Sale must be fixed at 5,000 ETH
 
 Description:
     The cap for the Pre-Sale of **Tru Reputation Token** must have a fixed sale cap of 8,000 ETH
@@ -1014,7 +1014,7 @@ requirements were specified:
 +-----------------+-------------------------------------------------------------------------------+
 | `CSREQ 001`_    | Cap for CrowdSale should be cumulative with any unsold Pre-Sale Cap           |
 +-----------------+-------------------------------------------------------------------------------+
-| `CSREQ 002`_    | Cap for CrowdSale must be fixed to 80,000 ETH                                 |
+| `CSREQ 002`_    | Cap for CrowdSale must be fixed to 50,000 ETH                                 |
 +-----------------+-------------------------------------------------------------------------------+
 | `CSREQ 003`_    | Sale Rate for Pre-Sale should be 1,125 TRU per ETH                            |
 +-----------------+-------------------------------------------------------------------------------+
@@ -1031,7 +1031,7 @@ Requirement:
 
 Description:
     The cap for the CrowdSale of **Tru Reputation Token** must include any unsold tokens from the 
-    Pre-Sale (e.g. if only 7,000 ETH worth of Tru Tokens are sold during the Pre-Sale, this must be
+    Pre-Sale (e.g. if only 4,000 ETH worth of Tru Tokens are sold during the Pre-Sale, this must be
     added to the CrowdSale cap).
 
 Implementation Notes:

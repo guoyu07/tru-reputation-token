@@ -1,6 +1,6 @@
 {
   "name": "tru-reputation-token",
-  "version": "0.0.9",
+  "version": "0.1.1",
   "description": "Github repository for the Tru Reputation Token - part of the Tru Reputation Protocol",
   "main": "truffle.js",
   "directories": {

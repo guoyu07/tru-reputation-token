@@ -16,9 +16,9 @@ contract TruCrowdSale is TruSale {
     
     using SafeMath for uint256;
   
-    /// @notice Cap on Pre-Sale and CrowdSale in Wei (Ξ88,000) (88000 x POWER(10,18))
+    /// @notice Cap on Pre-Sale and CrowdSale in Wei (Ξ55,000) (55000 x POWER(10,18))
     /// is updated when constructed to remove sold amount in the Pre-Sale
-    uint256 public constant TOTAL_CAP = 88000 * 10**18;
+    uint256 public constant TOTAL_CAP = 55000 * 10**18;
 
     uint256 private existingSupply;
 
