@@ -1,5 +1,43 @@
+"use strict";
 require('babel-register');
 require('babel-polyfill');
+
+var fs = require("fs"),
+    HDWalletProvider = require("truffle-hdwallet-provider"),
+    infuraRinkeby = "https://rinkeby.infura.io/",
+    infuraMainNet = "https://mainnet.infura.io/",
+    rinkebyMnemonicFile = "./secret/rinkeby.mnemonic",
+    mainNetMnemonicFile = "./secret/mainnet.mnemonic",
+    rinkebyTokenFile = "./secret/rinkeby.infuratoken",
+    mainNetTokenFile = "./secret/rinkeby.infuratoken",
+    rinkebyMnemonic,
+    rinkebyToken,
+    mainNetMnemonic,
+    mainNetToken,
+    rinkebyUrl,
+    mainNetUrl;
+
+// Setup Rinkeby Variables
+if (fs.existsSync(rinkebyMnemonicFile)) {
+  rinkebyMnemonic = fs.readFileSync(rinkebyMnemonicFile, "utf8");
+}
+if (fs.existsSync(rinkebyTokenFile)) {
+  rinkebyToken = fs.readFileSync(rinkebyTokenFile, "utf8");
+  if (rinkebyToken != null) {
+    rinkebyUrl = infuraRinkeby + rinkebyToken;
+  }
+}
+
+// Setup MainNet Variables
+if (fs.existsSync(rinkebyMnemonicFile)) {
+  mainNetMnemonic = fs.readFileSync(rinkebyMnemonicFile, "utf8");
+}
+if (fs.existsSync(mainNetTokenFile)) {
+  mainNetToken = fs.readFileSync(mainNetTokenFile, "utf8");
+  if (mainNetToken != null) {
+    mainNetUrl = infuraMainNet + mainNetToken;
+  }
+}
 
 module.exports = {
   mocha: {
@@ -10,7 +48,7 @@ module.exports = {
     testnet: {
       host: 'localhost',
       port: 8546,
-      network_id: '*', // Match any network id
+      network_id: '1064', // Match any network id
       gasPrice: 20e9,
       gas: 0xfffffff,
       before_timeout: 3600000,
@@ -33,18 +71,14 @@ module.exports = {
       test_timeout: 3600000
     },
     rinkeby: {
-      host: 'localhost',
-      port: 8545,
-      from: 'INSERT_ADDRESS_HERE',
-      gas: 4712388, // Default MainNet Gas Limit
-      network_id: 2,
-      gas: 4612388,
-      before_timeout: 3600000,
-      test_timeout: 3600000
+      provider: function() {
+        return new HDWalletProvider(rinkebyMnemonic, rinkebyUrl);
+      },
+      network_id: 4  // Network ID for Rinkeby is 4
     },
     coverage: {
       host: 'localhost',
-      network_id: '*',
+      network_id: '1065',
       port: 8556,
       gasPrice: 20e9,
       gas: 0xfffffff,

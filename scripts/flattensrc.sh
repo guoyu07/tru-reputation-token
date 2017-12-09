@@ -11,18 +11,47 @@ project_root() {
 }
 
 flatten_trt() {
-     project_root
-     solidity_flattener contracts/TruReputationToken.sol --output src/TruReputationToken.sol > /dev/null 2>&1;
+    project_root
+    rm src/TruReputationToken.sol > /dev/null 2>&1;
+    truffle-flattener contracts/TruReputationToken.sol > src/TempTRT.sol
+    sed -i -e '/pragma solidity/d' src/TempTRT.sol
+    echo "pragma solidity ^0.4.18;" > src/TruReputationToken.sol
+    cat src/TempTRT.sol >> src/TruReputationToken.sol
+    rm src/TempTRT.* > /dev/null 2>&1;
+    rm src/*.sol-e > /dev/null 2>&1;
 }
 
 flatten_tps() {
     project_root
-    solidity_flattener contracts/TruPreSale.sol --output src/TruPreSale.sol > /dev/null 2>&1;
+    rm src/TruPreSale.sol > /dev/null 2>&1;
+    truffle-flattener contracts/TruPreSale.sol > src/TempTPS.sol
+    sed -i -e '/pragma solidity/d' src/TempTPS.sol
+    echo "pragma solidity ^0.4.18;" > src/TruPreSale.sol
+    cat src/TempTPS.sol >> src/TruPreSale.sol
+    rm src/TempTPS.* > /dev/null 2>&1;
+    rm src/*.sol-e > /dev/null 2>&1;
 }
 
 flatten_tcs() {
     project_root
-    solidity_flattener contracts/TruCrowdSale.sol --output src/TruCrowdSale.sol > /dev/null 2>&1;
+    rm src/TruCrowdSale.sol > /dev/null 2>&1;
+    truffle-flattener contracts/TruCrowdSale.sol > src/TempTCS.sol
+    sed -i -e '/pragma solidity/d' src/TempTCS.sol
+    echo "pragma solidity ^0.4.18;" > src/TruCrowdSale.sol
+    cat src/TempTCS.sol >> src/TruCrowdSale.sol
+    rm src/TempTCS.* > /dev/null 2>&1;
+    rm src/*.sol-e > /dev/null 2>&1;
+}
+
+flatten_truaddress() {
+    project_root
+    rm src/TruAddress.sol > /dev/null 2>&1;
+    truffle-flattener contracts/supporting/TruAddress.sol > src/TempAddr.sol
+    sed -i -e '/pragma solidity/d' src/TempAddr.sol
+    echo "pragma solidity ^0.4.18;" > src/TruAddress.sol
+    cat src/TempAddr.sol >> src/TruAddress.sol
+    rm src/TempAddr.* > /dev/null 2>&1;
+    rm src/*.sol-e > /dev/null 2>&1;
 }
 
 flatten(){
@@ -31,29 +60,34 @@ flatten(){
     flatten_trt
     flatten_tps
     flatten_tcs
+    flatten_truaddress
 }
 
 case "$1" in
   (flatten)
     flatten
     ;;
-  (flattentrt)
+  (token)
     flatten_trt
     ;;
-  (flattentps)
+  (presale)
     flatten_tps
     ;;
-  (flattentcs)
+  (crowdsale)
     flatten_tcs
+    ;;
+  (address)
+    flatten_truaddress
     ;;
   (*)
     echo -e "\x1B[94m\n================================================================================================\n\x1B[96m                         TRU REPUTATION TOKEN\x1B[97m\n                               flattensrc.sh\x1B[94m\n================================================================================================\n\x1B[0m"
     echo -e "\x1B[97mUSAGE:\x1B[0m\n"
     echo -e "\x1B[97mAppend script with one of the following commands:\n\x1B[0m"
-    echo -e "\x1B[92mflatten\x1B[0m          \x1B[97mGenerate flattened Solidity Source for all Tru Reputation Token Smart Contracts\x1B[0m"
-    echo -e "\x1B[92mflattentrt\x1B[0m       \x1B[97mGenerate flattened Solidity Source for TruReputationToken.sol\x1B[0m"
-    echo -e "\x1B[92mflattentps\x1B[0m       \x1B[97mGenerate flattened Solidity Source for TruPreSale.sol\x1B[0m"
-    echo -e "\x1B[92mflattentcs\x1B[0m       \x1B[97mGenerate flattened Solidity Source for TruCrowdSale.sol\x1B[0m"
+    echo -e "\x1B[92mflatten\x1B[0m      \x1B[97mGenerate flattened Solidity Source for all Tru Reputation Token Smart Contracts\x1B[0m"
+    echo -e "\x1B[92mtoken\x1B[0m        \x1B[97mGenerate flattened Solidity Source for TruReputationToken.sol\x1B[0m"
+    echo -e "\x1B[92mpresale\x1B[0m      \x1B[97mGenerate flattened Solidity Source for TruPreSale.sol\x1B[0m"
+    echo -e "\x1B[92mcrowdsale\x1B[0m    \x1B[97mGenerate flattened Solidity Source for TruCrowdSale.sol\x1B[0m"
+    echo -e "\x1B[92maddress\x1B[0m      \x1B[97mGenerate flattened Solidity Source for TruAddress.sol\x1B[0m"
     echo -e "\x1B[94m\n================================================================================================\n\x1B[0m"
     exit 0
     ;;

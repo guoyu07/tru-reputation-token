@@ -26,6 +26,7 @@ Public repository for source code of the **Tru Reputation Token** ERC-20 token, 
 Table of Contents
 =================
 
+  * **[Instance Details](#Instance-Details)** Details of any public instances of the Contracts in this Project
   * **[Project Structure](#Project-Structure)** Details the folder structure of this Project, what is in each folder, and important files
   * **[Audits](#Audits)** Details the contents and methodoloy of the `./audits` folder
   * **[Testing and Code Coverage](#Testing-and-Code-Coverage)** Details of the Testing Suite included in **Tru Reputation Token**
@@ -34,6 +35,17 @@ Table of Contents
   * **[License](#License)** Details of the License covering the **Tru Reputation Token**
   * **[Contact Information](#Contact-Information)** Details of the Contact Information and Community Portals for *Tru Ltd*, the **Tru Reputation Protocol** and **Tru Reputation Token**
   * **[Legal Notices](#Legal-Notices)** Legal Notices for this **Tru Reputation Token**
+
+## Instance Details
+
+The following instances of the **TruReputationToken**, **TruPreSale** or **TruCrowdSale** Smart Contracts are deployed in the following networks.
+
+### Rinkeby Testnet Instances
+
+| **Contract** | **Address** | **EtherScan Verified?** |
+| ---- | --- | --- |
+| **TruReputationToken** | [0x3cc6363e5c791f804811e883b0af73cfba1b841d](https://rinkeby.etherscan.io/address/0x3cc6363e5c791f804811e883b0af73cfba1b841d) | **Yes** |
+| **TruPreSale** | [0x9a921ee90d0404c8f3f2eb974c8b3a415da142d5](https://rinkeby.etherscan.io/address/0x9a921ee90d0404c8f3f2eb974c8b3a415da142d5) | **Yes** |
 
 ## Project Structure
 

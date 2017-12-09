@@ -7,8 +7,6 @@
 Project Requirements
 =====================
 
-
-
 :Author: Ian Bray
 :Revision Date: 26/11/2017
 
@@ -21,7 +19,6 @@ associated Sale Smart Contracts, supporting libraries, security or testing requi
 
 Token Requirements
 ----------------------------------------
-
 
 .. ------------------------------------------------------------------------------------------------
 
