@@ -1,5 +1,5 @@
 sudo: required
-dist: trust
+dist: trusty
 language: node_js
 node_js:
    - '7'

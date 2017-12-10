@@ -20,7 +20,7 @@ contract TruCrowdSale is TruSale {
     /// is updated when constructed to remove sold amount in the Pre-Sale
     uint256 public constant TOTAL_CAP = 55000 * 10**18;
 
-    uint256 private existingSupply;
+    uint256 public existingSupply = 0;
 
     /// @notice TruCrowdSale Contract constructor
     /// @param _startTime The Start Time of the Sale as a uint256
@@ -35,6 +35,8 @@ contract TruCrowdSale is TruSale {
         uint256 _currentSupply, 
         uint256 _currentRaise) public TruSale(_startTime, _endTime, _token, _saleWallet)
     {
+        require(_currentSupply >= 0);
+        require(_currentRaise >= 0);
         isPreSale = false;
         isCrowdSale = true;
         uint256 remainingCap = TOTAL_CAP.sub(_currentRaise);
