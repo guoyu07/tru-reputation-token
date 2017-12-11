@@ -1,70 +1,6 @@
 WARNING:root:You are using an untested version of z3. 4.5.0 is the officially tested version
 WARNING:root:You are using solc version 0.4.18, The latest supported version is 0.4.17
-INFO:root:Contract contracts/TruReputationToken.sol:TruReputationToken:
-INFO:oyente.symExec:Running, please wait...
-INFO:oyente.symExec: ============ Results ===========
-INFO:oyente.symExec: EVM code coverage: 96.8%
-INFO:oyente.symExec: Callstack bug: False
-INFO:oyente.symExec: Money concurrency bug: False
-INFO:oyente.symExec: Time dependency bug: False
-INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract contracts/supporting/ReleasableToken.sol:ReleasableToken:
-INFO:oyente.symExec:Running, please wait...
-INFO:oyente.symExec: ============ Results ===========
-INFO:oyente.symExec: EVM code coverage: 100.0%
-INFO:oyente.symExec: Callstack bug: False
-INFO:oyente.symExec: Money concurrency bug: False
-INFO:oyente.symExec: Time dependency bug: False
-INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract contracts/supporting/TruMintableToken.sol:TruMintableToken:
-INFO:oyente.symExec:Running, please wait...
-INFO:oyente.symExec: ============ Results ===========
-INFO:oyente.symExec: EVM code coverage: 100.0%
-INFO:oyente.symExec: Callstack bug: False
-INFO:oyente.symExec: Money concurrency bug: False
-INFO:oyente.symExec: Time dependency bug: False
-INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract contracts/supporting/UpgradeableToken.sol:UpgradeableToken:
-INFO:oyente.symExec:Running, please wait...
-INFO:oyente.symExec: ============ Results ===========
-INFO:oyente.symExec: EVM code coverage: 98.8%
-INFO:oyente.symExec: Callstack bug: False
-INFO:oyente.symExec: Money concurrency bug: False
-INFO:oyente.symExec: Time dependency bug: False
-INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract contracts/supporting/zeppelin/contracts/BasicToken.sol:BasicToken:
-INFO:oyente.symExec:Running, please wait...
-INFO:oyente.symExec: ============ Results ===========
-INFO:oyente.symExec: EVM code coverage: 99.8%
-INFO:oyente.symExec: Callstack bug: False
-INFO:oyente.symExec: Money concurrency bug: False
-INFO:oyente.symExec: Time dependency bug: False
-INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract contracts/supporting/zeppelin/contracts/BurnableToken.sol:BurnableToken:
-INFO:oyente.symExec:Running, please wait...
-INFO:oyente.symExec: ============ Results ===========
-INFO:oyente.symExec: EVM code coverage: 99.9%
-INFO:oyente.symExec: Callstack bug: False
-INFO:oyente.symExec: Money concurrency bug: False
-INFO:oyente.symExec: Time dependency bug: False
-INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract contracts/supporting/zeppelin/contracts/StandardToken.sol:StandardToken:
-INFO:oyente.symExec:Running, please wait...
-INFO:oyente.symExec: ============ Results ===========
-INFO:oyente.symExec: EVM code coverage: 99.9%
-INFO:oyente.symExec: Callstack bug: False
-INFO:oyente.symExec: Money concurrency bug: False
-INFO:oyente.symExec: Time dependency bug: False
-INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract contracts/supporting/zeppelin/math/SafeMath.sol:SafeMath:
-INFO:oyente.symExec:Running, please wait...
-INFO:oyente.symExec: ============ Results ===========
-INFO:oyente.symExec: EVM code coverage: 100.0%
-INFO:oyente.symExec: Callstack bug: False
-INFO:oyente.symExec: Money concurrency bug: False
-INFO:oyente.symExec: Time dependency bug: False
-INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract contracts/supporting/zeppelin/ownership/Ownable.sol:Ownable:
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:BasicToken:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
 INFO:oyente.symExec: EVM code coverage: 99.5%
@@ -72,6 +8,97 @@ INFO:oyente.symExec: Callstack bug: False
 INFO:oyente.symExec: Money concurrency bug: False
 INFO:oyente.symExec: Time dependency bug: False
 INFO:oyente.symExec: Reentrancy bug: False
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:Haltable:
+INFO:oyente.symExec:Running, please wait...
+INFO:oyente.symExec: ============ Results ===========
+INFO:oyente.symExec: EVM code coverage: 99.8%
+INFO:oyente.symExec: Callstack bug: False
+INFO:oyente.symExec: Money concurrency bug: False
+INFO:oyente.symExec: Time dependency bug: False
+INFO:oyente.symExec: Reentrancy bug: False
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:Ownable:
+INFO:oyente.symExec:Running, please wait...
+INFO:oyente.symExec: ============ Results ===========
+INFO:oyente.symExec: EVM code coverage: 99.5%
+INFO:oyente.symExec: Callstack bug: False
+INFO:oyente.symExec: Money concurrency bug: False
+INFO:oyente.symExec: Time dependency bug: False
+INFO:oyente.symExec: Reentrancy bug: False
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:ReleasableToken:
+INFO:oyente.symExec:Running, please wait...
+INFO:oyente.symExec: ============ Results ===========
+INFO:oyente.symExec: EVM code coverage: 99.9%
+INFO:oyente.symExec: Callstack bug: False
+INFO:oyente.symExec: Money concurrency bug: False
+INFO:oyente.symExec: Time dependency bug: False
+INFO:oyente.symExec: Reentrancy bug: False
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:SafeMath:
+INFO:oyente.symExec:Running, please wait...
+INFO:oyente.symExec: ============ Results ===========
+INFO:oyente.symExec: EVM code coverage: 100.0%
+INFO:oyente.symExec: Callstack bug: False
+INFO:oyente.symExec: Money concurrency bug: False
+INFO:oyente.symExec: Time dependency bug: False
+INFO:oyente.symExec: Reentrancy bug: False
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:StandardToken:
+INFO:oyente.symExec:Running, please wait...
+INFO:oyente.symExec: ============ Results ===========
+INFO:oyente.symExec: EVM code coverage: 99.9%
+INFO:oyente.symExec: Callstack bug: False
+INFO:oyente.symExec: Money concurrency bug: False
+INFO:oyente.symExec: Time dependency bug: False
+INFO:oyente.symExec: Reentrancy bug: False
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:TruAddress:
+INFO:oyente.symExec:Running, please wait...
+INFO:oyente.symExec: ============ Results ===========
+INFO:oyente.symExec: EVM code coverage: 72.2%
+INFO:oyente.symExec: Callstack bug: False
+INFO:oyente.symExec: Money concurrency bug: False
+INFO:oyente.symExec: Time dependency bug: False
+INFO:oyente.symExec: Reentrancy bug: False
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:TruCrowdSale:
+INFO:oyente.symExec:Running, please wait...
+INFO:oyente.symExec: ============ Results ===========
+INFO:oyente.symExec: EVM code coverage: 82.9%
+INFO:oyente.symExec: Callstack bug: False
+INFO:oyente.symExec: Money concurrency bug: False
+INFO:oyente.symExec: Time dependency bug: False
+INFO:oyente.symExec: Reentrancy bug: False
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:TruMintableToken:
+INFO:oyente.symExec:Running, please wait...
+INFO:oyente.symExec: ============ Results ===========
+INFO:oyente.symExec: EVM code coverage: 99.8%
+INFO:oyente.symExec: Callstack bug: False
+INFO:oyente.symExec: Money concurrency bug: False
+INFO:oyente.symExec: Time dependency bug: False
+INFO:oyente.symExec: Reentrancy bug: False
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:TruReputationToken:
+INFO:oyente.symExec:Running, please wait...
+INFO:oyente.symExec: ============ Results ===========
+INFO:oyente.symExec: EVM code coverage: 95.3%
+INFO:oyente.symExec: Callstack bug: False
+INFO:oyente.symExec: Money concurrency bug: False
+INFO:oyente.symExec: Time dependency bug: False
+INFO:oyente.symExec: Reentrancy bug: False
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:TruSale:
+INFO:oyente.symExec:Running, please wait...
+INFO:oyente.symExec: ============ Results ===========
+INFO:oyente.symExec: EVM code coverage: 80.0%
+INFO:oyente.symExec: Callstack bug: False
+INFO:oyente.symExec: Money concurrency bug: False
+INFO:oyente.symExec: Time dependency bug: False
+INFO:oyente.symExec: Reentrancy bug: False
+INFO:root:Contract src/0.1.3/TruCrowdSale.sol:TruUpgradeableToken:
+INFO:oyente.symExec:Running, please wait...
+INFO:oyente.symExec: ============ Results ===========
+INFO:oyente.symExec: EVM code coverage: 99.0%
+INFO:oyente.symExec: Callstack bug: False
+INFO:oyente.symExec: Money concurrency bug: False
+INFO:oyente.symExec: Time dependency bug: False
+INFO:oyente.symExec: Reentrancy bug: False
+INFO:oyente.symExec: ====== Analysis Completed ======
+INFO:oyente.symExec: ====== Analysis Completed ======
+INFO:oyente.symExec: ====== Analysis Completed ======
 INFO:oyente.symExec: ====== Analysis Completed ======
 INFO:oyente.symExec: ====== Analysis Completed ======
 INFO:oyente.symExec: ====== Analysis Completed ======

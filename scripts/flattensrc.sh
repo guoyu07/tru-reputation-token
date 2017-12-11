@@ -4,6 +4,7 @@
 # Licensed under the Apache License, version 2.0: https://github.com/TruLtd/tru-reputation-token/blob/master/LICENSE.txt
 # This script is used to generate a single Solidity File per main Ethereum Contract
 # This script requires solidity-flattener: https://github.com/BlockCatIO/solidity-flattener
+CURRENTVER=$(node -p -e "require('./package.json').version")
 project_root() {
     if [[ $PWD == *"/scripts" ]]; then
      cd ..
@@ -12,51 +13,57 @@ project_root() {
 
 flatten_trt() {
     project_root
-    rm src/TruReputationToken.sol > /dev/null 2>&1;
-    truffle-flattener contracts/TruReputationToken.sol > src/TempTRT.sol
-    sed -i -e '/pragma solidity/d' src/TempTRT.sol
-    echo "pragma solidity ^0.4.18;" > src/TruReputationToken.sol
-    cat src/TempTRT.sol >> src/TruReputationToken.sol
-    rm src/TempTRT.* > /dev/null 2>&1;
-    rm src/*.sol-e > /dev/null 2>&1;
+
+    node_modules/.bin//truffle-flattener contracts/TruReputationToken.sol > src/$CURRENTVER/TempTRT.sol
+    sed -i -e '/pragma solidity/d' src/$CURRENTVER/TempTRT.sol
+    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruReputationToken.sol
+    cat src/$CURRENTVER/TempTRT.sol >> src/$CURRENTVER/TruReputationToken.sol
+    rm src/$CURRENTVER/TempTRT.* > /dev/null 2>&1;
+    rm src/$CURRENTVER/*.sol-e > /dev/null 2>&1;
+    cp src/$CURRENTVER/* src/current > /dev/null 2>&1;
 }
 
 flatten_tps() {
     project_root
-    rm src/TruPreSale.sol > /dev/null 2>&1;
-    truffle-flattener contracts/TruPreSale.sol > src/TempTPS.sol
-    sed -i -e '/pragma solidity/d' src/TempTPS.sol
-    echo "pragma solidity ^0.4.18;" > src/TruPreSale.sol
-    cat src/TempTPS.sol >> src/TruPreSale.sol
-    rm src/TempTPS.* > /dev/null 2>&1;
-    rm src/*.sol-e > /dev/null 2>&1;
+
+    node_modules/.bin//truffle-flattener contracts/TruPreSale.sol > src/$CURRENTVER/TempTPS.sol
+    sed -i -e '/pragma solidity/d' src/$CURRENTVER/TempTPS.sol
+    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruPreSale.sol
+    cat src/$CURRENTVER/TempTPS.sol >> src/$CURRENTVER/TruPreSale.sol
+    rm src/$CURRENTVER/TempTPS.* > /dev/null 2>&1;
+    rm src/$CURRENTVER/*.sol-e > /dev/null 2>&1;
+    cp src/$CURRENTVER/* src/current > /dev/null 2>&1;
 }
 
 flatten_tcs() {
     project_root
-    rm src/TruCrowdSale.sol > /dev/null 2>&1;
-    truffle-flattener contracts/TruCrowdSale.sol > src/TempTCS.sol
-    sed -i -e '/pragma solidity/d' src/TempTCS.sol
-    echo "pragma solidity ^0.4.18;" > src/TruCrowdSale.sol
-    cat src/TempTCS.sol >> src/TruCrowdSale.sol
-    rm src/TempTCS.* > /dev/null 2>&1;
-    rm src/*.sol-e > /dev/null 2>&1;
+    
+    node_modules/.bin//truffle-flattener contracts/TruCrowdSale.sol > src/$CURRENTVER/TempTCS.sol
+    sed -i -e '/pragma solidity/d' src/$CURRENTVER/TempTCS.sol
+    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruCrowdSale.sol
+    cat src/$CURRENTVER/TempTCS.sol >> src/$CURRENTVER/TruCrowdSale.sol
+    rm src/$CURRENTVER/TempTCS.* > /dev/null 2>&1;
+    rm src/$CURRENTVER/*.sol-e > /dev/null 2>&1;
+    cp src/$CURRENTVER/* src/current > /dev/null 2>&1;
 }
 
 flatten_truaddress() {
     project_root
-    rm src/TruAddress.sol > /dev/null 2>&1;
-    truffle-flattener contracts/supporting/TruAddress.sol > src/TempAddr.sol
-    sed -i -e '/pragma solidity/d' src/TempAddr.sol
-    echo "pragma solidity ^0.4.18;" > src/TruAddress.sol
-    cat src/TempAddr.sol >> src/TruAddress.sol
-    rm src/TempAddr.* > /dev/null 2>&1;
-    rm src/*.sol-e > /dev/null 2>&1;
+    node_modules/.bin//truffle-flattener contracts/supporting/TruAddress.sol > src/$CURRENTVER/TempAddr.sol
+    sed -i -e '/pragma solidity/d' src/$CURRENTVER/TempAddr.sol
+    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruAddress.sol
+    cat src/$CURRENTVER/TempAddr.sol >> src/$CURRENTVER/TruAddress.sol
+    rm src/$CURRENTVER/TempAddr.* > /dev/null 2>&1;
+    rm src/$CURRENTVER/*.sol-e > /dev/null 2>&1;
+    cp src/$CURRENTVER/* src/current > /dev/null 2>&1;
 }
 
 flatten(){
     project_root
-    rm src/*.sol > /dev/null 2>&1;
+    mkdir -p src/$CURRENTVER > /dev/null 2>&1;
+    mkdir -p src/current > /dev/null 2>&1;
+    rm src/$CURRENTVER/*.sol > /dev/null 2>&1;
+    rm src/current/*.sol > /dev/null 2>&1;
     flatten_trt
     flatten_tps
     flatten_tcs

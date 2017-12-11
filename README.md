@@ -53,6 +53,7 @@ This *Tru Reputation Token Repository* is structured as below:
 
 * `/audits` Contains all Audits of the Solidity Source code. More Information can be found in **[Audits](#Audits)**
 * `/audits/oyente` Contains all **[Oyente Audits](https://github.com/melonproject/oyente)** for **Tru Reputation Token**
+* `/audits/mythril` Contains all **[Mythril Audits](https://github.com/b-mueller/mythril)** for **Tru Reputation Token**
 * `/contracts` Contains all Tru Reputation Token Smart Contracts
 * `/contracts/supporting` Contains all supporting Solidity Libraries & Smart Contracts - including modified **[TokenMarket Ltd](https://github.com/TokenMarketNet/ico/)** Contracts & **[Open Zeppelin](https://github.com/OpenZeppelin/zeppelin-solidity/)** Contracts leveraged by **Tru Reputation Token**.
 * `/contracts/test-helpers` Smart Contracts used solely during testing to ensure as full coverage as technically possible for **Tru Reputation Token**.
@@ -114,6 +115,13 @@ The following Scripts have been added to the package.json to ease the usage of t
 | `flattentrt` | Generates flattened `TruReputationToken.sol` Smart Contract in `src` | `flattensrc.sh` |
 | `flattentps` | Generates flattened `TruPreSale.sol` Smart Contract in `src` | `flattensrc.sh` |
 | `flattentcs` | Generates flattened `TruCrowdSale.sol` Smart Contract in `src` | `flattensrc.sh` |
+| `flattentad` | Generates flattened `TruAddress.sol` Smart Contract in `src` | `flattensrc.sh` |
+| `audit` | Generates [Oyente](https://github.com/melonproject/oyente) and [Mythril](https://github.com/b-mueller/mythril) Security Audits in `audits` | `audit.sh` |
+| `audit-oyente` | Generates [Oyente](https://github.com/melonproject/oyente) Security Audits in `audits` | `audit.sh` |
+| `audit-mythril` | Generates [Mythril](https://github.com/b-mueller/mythril) Security Audits in `audits` | `audit.sh` |
+| `pre` | Executes git pre-commit hook actions | `pre-commit.sh` |
+| `post` | Executes git post-commit hook actions | `post-commit.sh` |
+| `add-all` | Adds all files to git | N/A |
 
 
 ## License
@@ -137,7 +145,6 @@ The original unmodified source files are under copyright of *TokenMarket Ltd* an
 ### Open Zeppelin
 
 All Open Zeppelin Smart Contracts, libraries and supporting functionality used within this work are licensed under the [MIT License](https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE). The following items are covered by these terms:
-
 
 - `contracts/supporting/BasicToken.sol`
 - `contracts/supporting/ERC20.sol`

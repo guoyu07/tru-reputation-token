@@ -1,6 +1,6 @@
 {
   "name": "tru-reputation-token",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Github repository for the Tru Reputation Token - part of the Tru Reputation Protocol",
   "main": "truffle.js",
   "directories": {
@@ -19,10 +19,19 @@
     "coverage": "./scripts/coverage.sh generate",
     "clean": "rm -rf build/",
     "test": "./scripts/testnet.sh test",
+    "quicktest": "./scripts/testnet.sh quicktest",
+    "fuzz": "./scripts/testnet.sh fuzz",
     "flatten": "./scripts/flattensrc.sh flatten",
     "flattentrt": "./scripts/flattensrc.sh flattentrt",
     "flattentps": "./scripts/flattensrc.sh flattentps",
-    "flattentcs": "./scripts/flattensrc.sh flattentcs"
+    "flattentcs": "./scripts/flattensrc.sh flattentcs",
+    "flattentad": "./scripts/flattensrc.sh address",
+    "audit": "./scripts/audit.sh all",
+    "audit-oyente": "./scripts/audit.sh oyente",
+    "audit-mythril": "./scripts/audit.sh mythril",
+    "pre": "./scripts/pre-commit.sh",
+    "post": "./scripts/post-commit.sh",
+    "add-all": "git add . > git-add.log"
   },
   "author": "Tru Ltd",
   "repository": {
@@ -56,11 +65,28 @@
     "ethereumjs-testrpc": "^6.0.3",
     "fuzzer": "^0.2.1",
     "jshint": "^2.9.5",
+    "post-commit": "^0.0.1",
+    "pre-commit": "^1.2.2",
+    "solidity-analyzer": "git+https://github.com/quantstamp/solidity-analyzer.git",
     "solidity-coverage": "^0.4.2",
     "solidity-static-analysis": "^1.1.0",
     "truffle": "^4.0.1",
+    "truffle-flattener": "1.2.0",
     "truffle-hdwallet-provider": "0.0.3",
-    "zeppelin-solidity": "^1.3.0",
-    "truffle-flattener": "1.2.0"
+    "versiony-cli": "^1.3.0",
+    "zeppelin-solidity": "^1.3.0"
+  },
+  "pre-commit": {
+    "run": [
+      "quicktest",
+      "pre",
+      "audit",
+      "add-all"
+    ]
+  },
+  "post-commit": {
+    "run": [
+      "post"
+    ]
   }
 }

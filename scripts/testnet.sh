@@ -7,10 +7,12 @@ if [ "$SOLIDITY_COVERAGE" = true ]; then
   TESTNET_PORT="8556"
   TESTNET_LOG="coverage-testnet.log"
   TESTNET_NAME="coverage"
+  NO_LOOPS="2"
 else
   TESTNET_PORT="8546"
   TESTNET_LOG="testnet.log"
   TESTNET_NAME="testnet"
+  NO_LOOPS="10"
 fi
 
 check_state(){
@@ -91,17 +93,24 @@ stop() {
 
 test_tru(){
   stop;
+  rm -rf build/ > /dev/null 2>&1;
   start;
   local START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
   echo -e "\x1B[95mStarting Tests on Tru RPC Testnet \x1B[97m$START_TIME\x1B[0m";
   if [[ ! -z $(check_state) ]]; then
-    env FUZZLOOPS="10" truffle test --network=$TESTNET_NAME;
+    env FUZZLOOPS=$NO_LOOPS truffle test --network=$TESTNET_NAME;
   else
     start;
-    env FUZZLOOPS="10" truffle test --network=$TESTNET_NAME;
+    env FUZZLOOPS=$NO_LOOPS truffle test --network=$TESTNET_NAME;
   fi
+  
   local END_TIME=$(date '+%Y-%m-%d %H:%M:%S')
-  echo -e "\x1B[95mTests Completed on Tru RPC Testnet \x1B[97m$END_TIME\x1B[0m";
+  if [[ $? -ne 0 ]]; then
+    echo -e "\x1B[91mTests Failed on Tru RPC Testnet \x1B[97m$END_TIME\x1B[0m";
+  else
+    echo -e "\x1B[95mTests Completed on Tru RPC Testnet \x1B[97m$END_TIME\x1B[0m";
+  fi
+  
 }
 
 restart_testnet(){
@@ -123,6 +132,16 @@ migrate(){
     truffle migrate --network=$TESTNET_NAME;
   fi
   
+}
+
+fuzz(){
+  NO_LOOPS="250"
+  test_tru
+}
+
+quicktest(){
+  NO_LOOPS="2"
+  test_tru
 }
 
 open_console(){
@@ -171,6 +190,12 @@ case "$1" in
   (coverage)
     coverage
     ;;
+  (fuzz)
+    fuzz
+    ;;
+  (quicktest)
+    quicktest
+    ;;
   (*)
     echo -e "\x1B[94m\n================================================================================\n\x1B[96m                         TRU REPUTATION TOKEN\x1B[97m\n                               testnet.sh\x1B[94m\n================================================================================\n\x1B[0m"
     echo -e "\x1B[97mUSAGE:\x1B[0m\n"
@@ -180,8 +205,10 @@ case "$1" in
     echo -e "\x1B[92mrestart\x1B[0m     \x1B[97mRestarts the Tru RPC Testnet\x1B[0m"
     echo -e "\x1B[92mstatus\x1B[0m      \x1B[97mShows the running status of the Tru RPC Testnet\x1B[0m"
     echo -e "\x1B[92mtest\x1B[0m        \x1B[97mRuns full Mocha Test Suite on Tru RPC Testnet\x1B[0m"
+    echo -e "\x1B[92mfuzz\x1B[0m        \x1B[97mRuns full Mocha Test Suite on Tru RPC Testnet 250 times\x1B[0m"
     echo -e "\x1B[92mmigrate\x1B[0m     \x1B[97mCompiles and migrates the Contract Suite to Tru RPC TestNet\x1B[0m"
     echo -e "\x1B[92mconsole\x1B[0m     \x1B[97mOpens the Truffle Console on Tru RPC Testnet\x1B[0m"
+    echo -e "\x1B[92mquicktest\x1B[0m   \x1B[97mRuns full Mocha Test Suite on Tru RPC Testnet twice\x1B[0m"
     echo -e "\x1B[94m\n================================================================================\n\x1B[0m"
     exit 0
     ;;
