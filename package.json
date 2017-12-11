@@ -78,15 +78,9 @@
   },
   "pre-commit": {
     "run": [
-      "quicktest",
-      "pre",
-      "audit",
-      "add-all"
     ]
   },
   "post-commit": {
-    "run": [
-      "post"
-    ]
+    "run": []
   }
 }
