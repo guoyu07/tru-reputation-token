@@ -15,6 +15,17 @@ generate(){
   SOLIDITY_COVERAGE=true scripts/testnet.sh coverage
 }
 
+rename_src(){
+  find src/ -name "*.sol" -exec bash -c 'mv "$1" "${1%.sol}".source' - '{}' \;
+  rm coverage-testnet.log > /dev/null 2>&1;
+  rm coverage.json > /dev/null 2>&1;
+}
+
+restore_src(){
+  find src -name "*.source" -exec bash -c 'mv "$1" "${1%.source}".sol' - '{}' \;
+}
+
+
 case "$1" in
   (start)
     start
@@ -23,14 +34,16 @@ case "$1" in
     stop
     ;;
   (generate)
+    rename_src
     generate
+    restore_src
     ;;
   (*)
     echo -e "\x1B[94m\n================================================================================\n\x1B[96m                         TRU REPUTATION TOKEN\x1B[97m\n                               coverage.sh\x1B[94m\n================================================================================\n\x1B[0m"
     echo -e "\x1B[97mUSAGE:\x1B[0m\n"
     echo -e "\x1B[97mAppend script with one of the following commands:\n\x1B[0m"
-    echo -e "\x1B[92mstart\x1B[0m        \x1B[97mStarts the Tru RPC Testnet\x1B[0m"
-    echo -e "\x1B[92mstop\x1B[0m         \x1B[97mStops the Tru RPC Testnet\x1B[0m"
+    echo -e "\x1B[92mstart\x1B[0m        \x1B[97mStarts the Coverage Tru RPC Testnet\x1B[0m"
+    echo -e "\x1B[92mstop\x1B[0m         \x1B[97mStops the Coverage Tru RPC Testnet\x1B[0m"
     echo -e "\x1B[92mgenerate\x1B[0m     \x1B[97mGenerate Code Coverage Report\x1B[0m"
     echo -e "\x1B[94m\n================================================================================\n\x1B[0m"
     exit 0

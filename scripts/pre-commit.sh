@@ -10,3 +10,11 @@ CURRENTVER=$(node -e "console.log(require('./package.json').version);")
 sed -i -e "s/$OLDVER/$CURRENTVER/g" docs/conf.py > /dev/null 2>&1;
 rm docs/conf.py-e > /dev/null 2>&1;
 npm install > /dev/null 2>&1;
+bash scripts/audit.sh all;
+rm src/$CURRENTVER/*.evm > /dev/null 2>&1;
+rm src/$CURRENTVER/*.disasm > /dev/null 2>&1;
+rm src/$CURRENTVER/*.log > /dev/null 2>&1;
+rm src/current/*.evm > /dev/null 2>&1;
+rm src/current/*.disasm > /dev/null 2>&1;
+rm src/current/*.log > /dev/null 2>&1;
+git add .
