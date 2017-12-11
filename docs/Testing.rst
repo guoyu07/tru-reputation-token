@@ -4,44 +4,37 @@
 
 .. _testing:
 
-Testing
+Project Testing
 ================================================
 
-The following sections detail the testing for the **Tru Reputation Token** project.
+The following section covers the testing strategy and implementation for all Smart Contracts in
+the **Tru Reputation Token** project including supporting Libraries & Smart Contracts.
 
 .. ------------------------------------------------------------------------------------------------
 
 .. _testing-1:
 
-1. Testing
+1. Strategy
 ---------------------------------------
 
-The following section covers the testing strategy and implementation for all Smart Contracts in
-the **Tru Reputation Token** project including supporting libraries & Smart Contracts.
-
-.. ------------------------------------------------------------------------------------------------
-
-.. _testing-1-1:
-
-1.1 Strategy
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :ref:`Testing <testing-1>` Strategy for the **Tru Reputation Token** Project is as defined 
-below:
+The Testing Strategy for the **Tru Reputation Token** Project is as defined below:
 
 - Due to the inherent financial risk of Cryptocurrency, and the nature of Solidity, all Contract 
   code including any supporting Smart Contracts must be subjected to full coverage unit tests to 
   cover all lines, statements, branches and functions.
+
 - All testing is to be conducted on each commit to the Repository.
+
 - Testing will include, as much as practicable, all contrary cases that could cause any failure.
+
 - The **Tru Reputation Token** Project will not be released without the above items being met.
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _testing-1-2:
+.. _testing-2:
 
-1.2 Testing Helpers & Harnesses
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2. Testing Helpers & Harnesses
+---------------------------------------
 
 To facilitate full coverage, the following Testing Helpers and Harnesses have been created:
 
@@ -89,14 +82,14 @@ To facilitate full coverage, the following Testing Helpers and Harnesses have be
 .. _testing-mock-fail-upgrade-agent:
 
 MockFailUpgradeAgent.sol
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | MockFailUpgradeAgent.sol                                                          |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./contracts/test-helpers/MockFailUpgradeAgent.sol                                 |
+| **Path:**   | :file:`./contracts/test-helpers/MockFailUpgradeAgent.sol`                         |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Test harness of an :ref:`upgrade-agent` used to test failure paths for upgrades   |
 |             | on the :ref:`tru-reputation-token`                                                |
@@ -109,14 +102,14 @@ MockFailUpgradeAgent.sol
 .. _testing-mock-migration-target:
 
 MockMigrationTarget.sol
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | MockMigrationTarget.sol                                                           |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./contracts/test-helpers/MockMigrationTarget.sol                                  |
+| **Path:**   | :file:`./contracts/test-helpers/MockMigrationTarget.sol`                          |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Test harness of an :ref:`tru-reputation-token` to simulate an upgrade of the token|
 +-------------+-----------------------------------------------------------------------------------+
@@ -128,14 +121,14 @@ MockMigrationTarget.sol
 .. _testing-mock-sale:
 
 MockSale.sol
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | MockSale.sol                                                                      |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./contracts/test-helpers/MockSale.sol                                             |
+| **Path:**   | :file:`./contracts/test-helpers/MockSale.sol`                                     |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Test harness of a TruSale to provide full coverage of failure paths               |
 +-------------+-----------------------------------------------------------------------------------+
@@ -147,14 +140,14 @@ MockSale.sol
 .. _testing-mock-support-token:
 
 MockSupportToken.sol
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | MockSupportToken.sol                                                              |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./contracts/test-helpers/MockSupportToken.sol                                     |
+| **Path:**   | :file:`./contracts/test-helpers/MockSupportToken.sol`                             |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Test harness for full failure path testing of :ref:`std-token`                    |
 +-------------+-----------------------------------------------------------------------------------+
@@ -166,14 +159,14 @@ MockSupportToken.sol
 .. _testing-mock-upgradeable-token:
 
 MockUpgradeableToken.sol
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | MockUpgradeableToken.sol                                                          |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./contracts/test-helpers/MockUpgradeableToken.sol                                 |
+| **Path:**   | :file:`./contracts/test-helpers/MockUpgradeableToken.sol`                         |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Test harness of an Upgradeable token for testing of the                           |
 |             | :ref:`tru-upgradeable-token` Smart Contract                                       |
@@ -186,14 +179,14 @@ MockUpgradeableToken.sol
 .. _testing-mock-upgradeable-agent:
 
 MockUpgradeableAgent.sol
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | MockUpgradeableAgent.sol                                                          |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./contracts/test-helpers/MockUpgradeableAgent.sol                                 |
+| **Path:**   | :file:`./contracts/test-helpers/MockUpgradeableAgent.sol`                         |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Test harness of an Upgradeable token for testing of the :ref:`upgrade-agent` Smart|
 |             | Contract                                                                          |
@@ -206,14 +199,14 @@ MockUpgradeableAgent.sol
 .. _testing-evm-invalid-address:
 
 EVMInvalidAddress.js
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | EVMInvalidAddress.js                                                              |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./test/helpers/EVMInvalidAddress.js                                               |
+| **Path:**   | :file:`./test/helpers/EVMInvalidAddress.js`                                       |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Javascript helper for catching *Invalid Address* errors from EVM                  |
 +-------------+-----------------------------------------------------------------------------------+
@@ -225,14 +218,14 @@ EVMInvalidAddress.js
 .. _testing-evm-revert:
 
 EVMRevert.js
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | EVMRevert.js                                                                      |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./test/helpers/EVMRevert.js                                                       |
+| **Path:**   | :file:`./test/helpers/EVMRevert.js`                                               |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Javascript helper for catching *Revert* errors from EVM                           |
 +-------------+-----------------------------------------------------------------------------------+
@@ -244,14 +237,14 @@ EVMRevert.js
 .. _testing-evm-throw:
 
 EVMThrow.js
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | EVMThrow.js                                                                       |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./test/helpers/EVMThrow.js                                                        |
+| **Path:**   | :file:`./test/helpers/EVMThrow.js`                                                |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Javascript helper for catching *Throw* errors from EVM                            |
 +-------------+-----------------------------------------------------------------------------------+
@@ -263,14 +256,14 @@ EVMThrow.js
 .. _testing-expect-fuzz-fail:
 
 expectFuzzFail.js
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | expectFuzzFail.js                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./test/helpers/expectFuzzFail.js                                                  |
+| **Path:**   | :file:`./test/helpers/expectFuzzFail.js`                                          |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Javascript helper for catching Fuzzing failure errors from EVM                    |
 +-------------+-----------------------------------------------------------------------------------+
@@ -282,14 +275,14 @@ expectFuzzFail.js
 .. _testing-expect-not-deployed:
 
 expectNotDeployed.js
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | expectNotDeployed.js                                                              |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./test/helpers/expectNotDeployed.js                                               |
+| **Path:**   | :file:`./test/helpers/expectNotDeployed.js`                                       |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Javascript helper for catching *Not Deployed* errors from EVM                     |
 +-------------+-----------------------------------------------------------------------------------+
@@ -301,14 +294,14 @@ expectNotDeployed.js
 .. _testing-expect-throw:
 
 expectThrow.js
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | expectThrow.js                                                                    |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./test/helpers/expectThrow.js                                                     |
+| **Path:**   | :file:`./test/helpers/expectThrow.js`                                             |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Javascript helper promise for catching *Throw* errors                             |
 +-------------+-----------------------------------------------------------------------------------+
@@ -320,14 +313,14 @@ expectThrow.js
 .. _testing-increase-time:
 
 increaseTime.js
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | increaseTime.js                                                                   |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./test/helpers/increaseTime.js                                                    |
+| **Path:**   | :file:`./test/helpers/increaseTime.js`                                            |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Javascript helper to change current time on TestRPC                               |
 +-------------+-----------------------------------------------------------------------------------+
@@ -339,14 +332,14 @@ increaseTime.js
 .. _testing-is-even:
 
 isEven.js
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | isEven.js                                                                         |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./test/helpers/isEven.js                                                          |
+| **Path:**   | :file:`./test/helpers/isEven.js`                                                  |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Javascript helper to detect in a number is odd or even                            |
 +-------------+-----------------------------------------------------------------------------------+
@@ -358,14 +351,14 @@ isEven.js
 .. _testing-latest-time:
 
 latestTime.js
-''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-------------+-----------------------------------------------------------------------------------+
 | **Name:**   | latestTime.js                                                                     |
 +-------------+-----------------------------------------------------------------------------------+
 | **Type:**   | Solidity Contract                                                                 |
 +-------------+-----------------------------------------------------------------------------------+
-| **Path:**   | ./test/helpers/latestTime.js                                                      |
+| **Path:**   | :file:`./test/helpers/latestTime.js`                                              |
 +-------------+-----------------------------------------------------------------------------------+
 | **Detail:** | Javascript helper to get current timestamp of block on TestRPC                    |
 +-------------+-----------------------------------------------------------------------------------+
@@ -374,24 +367,24 @@ latestTime.js
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _testing-1-3:
+.. _testing-3:
 
-1.3. Unit Tests
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3. Unit Tests
+---------------------------------------
 
 The following Unit Tests are defined for the **Tru Reputation Token** project:
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _testing-1-3-1:
+.. _testing-3-1:
 
-1.3.1. TruReputationToken Unit Tests
-''''''''''''''''''''''''''''''''''''''''
+3.1. TruReputationToken Unit Tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-----------------------+--------------------------------------------------------------------------+
 | **Name:**             | TruReputationToken Unit Tests                                            |
 +-----------------------+--------------------------------------------------------------------------+
-| **Path:**             | ./test/Unit_Tests_TruReputationToken.js                                  |
+| **Path:**             | :file:`./test/Unit_Tests_TruReputationToken.js`                          |
 +-----------------------+--------------------------------------------------------------------------+
 | **Detail:**           | Unit Tests covering the TruReputationToken.sol Smart Contract            |
 +-----------------------+--------------------------------------------------------------------------+
@@ -473,15 +466,15 @@ The following Unit Tests are defined for the **Tru Reputation Token** project:
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _testing-1-3-2:
+.. _testing-3-2:
 
-1.3.2. TruPreSale Unit Tests
-''''''''''''''''''''''''''''''''''''''''
+3.2. TruPreSale Unit Tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-----------------------+--------------------------------------------------------------------------+
 | **Name:**             | TruPreSale Unit Tests                                                    |
 +-----------------------+--------------------------------------------------------------------------+
-| **Path:**             | ./test/Unit_Tests_TruPreSale.js                                          |
+| **Path:**             | :file:`./test/Unit_Tests_TruPreSale.js`                                  |
 +-----------------------+--------------------------------------------------------------------------+
 | **Detail:**           | Unit Tests covering the TruPreSale.sol Smart Contract                    |
 +-----------------------+--------------------------------------------------------------------------+
@@ -566,15 +559,15 @@ The following Unit Tests are defined for the **Tru Reputation Token** project:
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _testing-1-3-3:
+.. _testing-3-3:
 
-1.3.3. TruCrowdSale Unit Tests
-''''''''''''''''''''''''''''''''''''''''
+3.3. TruCrowdSale Unit Tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-----------------------+--------------------------------------------------------------------------+
 | **Name:**             | TruCrowdSale Unit Tests                                                  |
 +-----------------------+--------------------------------------------------------------------------+
-| **Path:**             | ./test/Unit_Tests_TruCrowdSale.js                                        |
+| **Path:**             | :file:`./test/Unit_Tests_TruCrowdSale.js`                                |
 +-----------------------+--------------------------------------------------------------------------+
 | **Detail:**           | Unit Tests covering the TruCrowdSale.sol Smart Contract                  |
 +-----------------------+--------------------------------------------------------------------------+
@@ -661,10 +654,10 @@ The following Unit Tests are defined for the **Tru Reputation Token** project:
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _testing-1-4:
+.. _testing-4:
 
-1.4. Fuzzing Tests
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+4. Fuzzing Tests
+---------------------------------------
 
 To ensure a robust testing strategy to ensure code quality and predictability, using fuzzing testing
 can expose non-obvious exploits through testing non-obvious code paths and reactions to large numbers
@@ -679,15 +672,15 @@ network these tests can take up to an hour to execute.
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _testing-1-4-1:
+.. _testing-4-1:
 
-1.4.1. TruReputationToken Fuzzing Tests
-''''''''''''''''''''''''''''''''''''''''
+4.1. TruReputationToken Fuzzing Tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-----------------------+--------------------------------------------------------------------------+
 | **Name:**             | TruReputationToken Fuzzing Tests                                         |
 +-----------------------+--------------------------------------------------------------------------+
-| **Path:**             | ./test/Fuzzing_Tests_TruReputationToken.js                               |
+| **Path:**             | :file:`./test/Fuzzing_Tests_TruReputationToken.js`                       |
 +-----------------------+--------------------------------------------------------------------------+
 | **Detail:**           | Fuzzing Tests covering the TruReputationToken.sol Smart Contract         |
 +-----------------------+--------------------------------------------------------------------------+
@@ -758,15 +751,15 @@ network these tests can take up to an hour to execute.
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _testing-1-4-2:
+.. _testing-4-2:
 
-1.4.2. TruPreSale Fuzzing Tests
-''''''''''''''''''''''''''''''''''''''''
+4.2. TruPreSale Fuzzing Tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-----------------------+--------------------------------------------------------------------------+
 | **Name:**             | TruPreSale Fuzzing Tests                                                 |
 +-----------------------+--------------------------------------------------------------------------+
-| **Path:**             | ./test/Fuzzing_Tests_TruPreSale.js                                       |
+| **Path:**             | :file:`./test/Fuzzing_Tests_TruPreSale.js`                               |
 +-----------------------+--------------------------------------------------------------------------+
 | **Detail:**           | Fuzzing Tests covering the TruPreSale.sol Smart Contract                 |
 +-----------------------+--------------------------------------------------------------------------+
@@ -806,15 +799,15 @@ network these tests can take up to an hour to execute.
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _testing-1-4-3:
+.. _testing-4-3:
 
-1.4.3. TruCrowdSale Fuzzing Tests
-''''''''''''''''''''''''''''''''''''''''
+4.3. TruCrowdSale Fuzzing Tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-----------------------+--------------------------------------------------------------------------+
 | **Name:**             | TruCrowdSale Fuzzing Tests                                               |
 +-----------------------+--------------------------------------------------------------------------+
-| **Path:**             | ./test/Fuzzing_Tests_TruCrowdSale.js                                     |
+| **Path:**             | :file:`./test/Fuzzing_Tests_TruCrowdSale.js`                             |
 +-----------------------+--------------------------------------------------------------------------+
 | **Detail:**           | Fuzzing Tests covering the TruCrowdSale.sol Smart Contract               |
 +-----------------------+--------------------------------------------------------------------------+
@@ -853,25 +846,25 @@ network these tests can take up to an hour to execute.
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _testing-1-5:
+.. _testing-5:
 
-1.5. Edge Tests
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5. Edge Tests
+---------------------------------------
 
 To fully test edge cases, uncommon scenarios, or non conventional paths in code, Edge Tests have 
 been written to ensure all paths in code are tested fully and for all possible results.
 
 .. ------------------------------------------------------------------------------------------------
 
-.. _testing-1-5-1:
+.. _testing-5-1:
 
-1.5.1 Supporting Edge Tests
-''''''''''''''''''''''''''''''''''''''''
+5.1 Supporting Edge Tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +-----------------------+--------------------------------------------------------------------------+
 | **Name:**             | Supporting Edge Tests                                                    |
 +-----------------------+--------------------------------------------------------------------------+
-| **Path:**             | ./test/Edge_Tests_Supporting.js                                          |
+| **Path:**             | :file:`./test/Edge_Tests_Supporting.js`                                  |
 +-----------------------+--------------------------------------------------------------------------+
 | **Detail:**           | Edges Tests covering edge case & failure testing on Supporting Smart     |
 |                       | Contracts & Libraries                                                    |

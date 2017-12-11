@@ -1,6 +1,6 @@
 {
   "name": "tru-reputation-token",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Github repository for the Tru Reputation Token - part of the Tru Reputation Protocol",
   "main": "truffle.js",
   "directories": {
@@ -31,7 +31,9 @@
     "audit-mythril": "./scripts/audit.sh mythril",
     "pre": "./scripts/pre-commit.sh",
     "post": "./scripts/post-commit.sh",
-    "add-all": "git add . > git-add.log"
+    "patchver": "node_modules/.bin/versiony package.json --patch",
+    "minorver": "node_modules/.bin/versiony package.json --minor",
+    "majorver": "node_modules/.bin/versiony package.json --major"
   },
   "author": "Tru Ltd",
   "repository": {
@@ -77,9 +79,14 @@
     "zeppelin-solidity": "^1.3.0"
   },
   "pre-commit": {
-    "run": []
+    "run": [
+      "test",
+      "pre"
+    ]
   },
   "post-commit": {
-    "run": []
+    "run": [
+      "post"
+    ]
   }
 }

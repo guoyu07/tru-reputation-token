@@ -19,7 +19,7 @@ The `TruSale`_ Smart Contract acts a parent class for the :ref:`tru-presale` and
 +-----------------------+-------------------------------------------------------------------------+
 | **Solidity Version:** | ^0.4.18                                                                 |
 +-----------------------+-------------------------------------------------------------------------+
-| **Relative Path:**    | ./contracts/TruSale.sol                                                 |
+| **Relative Path:**    | :file:`./contracts/TruSale.sol`                                         |
 +-----------------------+-------------------------------------------------------------------------+
 | **License:**          | `Apache 2 License`_                                                     |
 +-----------------------+-------------------------------------------------------------------------+
@@ -469,7 +469,7 @@ buy
 +--------------------------+----------------------------------------------------------------------+
 | **Function Visibility:** | Public payable                                                       |
 +--------------------------+----------------------------------------------------------------------+
-| **Function Modifiers:**  | :ref:`stop-in-emergency`                                             |
+| **Function Modifiers:**  | :ref:`haltable-stop-in-emergency`                                    |
 +--------------------------+----------------------------------------------------------------------+
 | **Return Type:**         | N/A                                                                  |
 +--------------------------+----------------------------------------------------------------------+
@@ -483,6 +483,7 @@ The code for the `buy`_ function is as follows:
 
 .. code-block:: c
     :caption: **buy Code**
+
     function buy() public payable stopInEmergency {
         // Check that the Sale is still open and the Cap has not been reached
         require(checkSaleValid());
@@ -497,8 +498,8 @@ The code for the `buy`_ function is as follows:
 
 The `buy`_ function performs the following:
 
- - The modifier :ref:`stop-in-emergency` checks that the Sale has not been halted. If it has,
-   it will throw.
+ - The modifier :ref:`haltable-stop-in-emergency` checks that the Sale has not been halted. If it 
+   has, it will throw.
  - Checks the `checkSaleValid`_ function returns true. If not, it will throw.
  - executes the `validatePurchase`_ function.
 

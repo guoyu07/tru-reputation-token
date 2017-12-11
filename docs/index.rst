@@ -8,6 +8,8 @@
 
 .. ------------------------------------------------------------------------------------------------
 
+.. _tru-rep-token-index:
+
 Tru Reputation Token
 =====================
 
@@ -26,14 +28,21 @@ The contents of this Project can be used under the `Apache 2 License`_.
 
 .. ------------------------------------------------------------------------------------------------
 
+.. _tru-rep-token-project-toc:
+
 .. toctree::
    :maxdepth: 2
    :caption: Project Documentation
 
+   ProjectContents
    Requirements
    Testing
+   Auditing
+   Scripts
 
 .. ------------------------------------------------------------------------------------------------
+
+.. _tru-rep-token-contract-toc:
 
 .. toctree::
    :maxdepth: 1
@@ -45,6 +54,8 @@ The contents of this Project can be used under the `Apache 2 License`_.
    TruCrowdSale
 
 .. ------------------------------------------------------------------------------------------------
+
+.. _tru-rep-token-supporting-toc:
 
 .. toctree::
    :maxdepth: 1
@@ -64,6 +75,8 @@ The contents of this Project can be used under the `Apache 2 License`_.
    UpgradeAgent
 
 .. ------------------------------------------------------------------------------------------------
+
+.. _tru-rep-token-further-toc:
 
 .. toctree::
    :maxdepth: 1
