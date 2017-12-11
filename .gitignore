@@ -16,3 +16,4 @@ RUNBOOKS.md
 .node-xmlhttprequest-sync-*
 docs/build/**
 secret/**
+**.evm.**
