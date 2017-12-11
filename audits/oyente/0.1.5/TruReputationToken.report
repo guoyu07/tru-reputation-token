@@ -1,6 +1,6 @@
 WARNING:root:You are using an untested version of z3. 4.5.0 is the officially tested version
 WARNING:root:You are using solc version 0.4.18, The latest supported version is 0.4.17
-INFO:root:Contract src/0.1.5/TruReputationToken.sol:BasicToken:
+INFO:root:Contract src/0.1.5/TruReputationTokenFull.sol:BasicToken:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
 INFO:oyente.symExec: EVM code coverage: 99.5%
@@ -8,7 +8,7 @@ INFO:oyente.symExec: Callstack bug: False
 INFO:oyente.symExec: Money concurrency bug: False
 INFO:oyente.symExec: Time dependency bug: False
 INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract src/0.1.5/TruReputationToken.sol:Ownable:
+INFO:root:Contract src/0.1.5/TruReputationTokenFull.sol:Ownable:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
 INFO:oyente.symExec: EVM code coverage: 99.5%
@@ -16,7 +16,7 @@ INFO:oyente.symExec: Callstack bug: False
 INFO:oyente.symExec: Money concurrency bug: False
 INFO:oyente.symExec: Time dependency bug: False
 INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract src/0.1.5/TruReputationToken.sol:ReleasableToken:
+INFO:root:Contract src/0.1.5/TruReputationTokenFull.sol:ReleasableToken:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
 INFO:oyente.symExec: EVM code coverage: 99.9%
@@ -24,7 +24,7 @@ INFO:oyente.symExec: Callstack bug: False
 INFO:oyente.symExec: Money concurrency bug: False
 INFO:oyente.symExec: Time dependency bug: False
 INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract src/0.1.5/TruReputationToken.sol:SafeMath:
+INFO:root:Contract src/0.1.5/TruReputationTokenFull.sol:SafeMath:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
 INFO:oyente.symExec: EVM code coverage: 100.0%
@@ -32,7 +32,7 @@ INFO:oyente.symExec: Callstack bug: False
 INFO:oyente.symExec: Money concurrency bug: False
 INFO:oyente.symExec: Time dependency bug: False
 INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract src/0.1.5/TruReputationToken.sol:StandardToken:
+INFO:root:Contract src/0.1.5/TruReputationTokenFull.sol:StandardToken:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
 INFO:oyente.symExec: EVM code coverage: 99.9%
@@ -40,7 +40,7 @@ INFO:oyente.symExec: Callstack bug: False
 INFO:oyente.symExec: Money concurrency bug: False
 INFO:oyente.symExec: Time dependency bug: False
 INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract src/0.1.5/TruReputationToken.sol:TruAddress:
+INFO:root:Contract src/0.1.5/TruReputationTokenFull.sol:TruAddress:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
 INFO:oyente.symExec: EVM code coverage: 72.2%
@@ -48,7 +48,7 @@ INFO:oyente.symExec: Callstack bug: False
 INFO:oyente.symExec: Money concurrency bug: False
 INFO:oyente.symExec: Time dependency bug: False
 INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract src/0.1.5/TruReputationToken.sol:TruMintableToken:
+INFO:root:Contract src/0.1.5/TruReputationTokenFull.sol:TruMintableToken:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
 INFO:oyente.symExec: EVM code coverage: 99.8%
@@ -56,7 +56,7 @@ INFO:oyente.symExec: Callstack bug: False
 INFO:oyente.symExec: Money concurrency bug: False
 INFO:oyente.symExec: Time dependency bug: False
 INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract src/0.1.5/TruReputationToken.sol:TruReputationToken:
+INFO:root:Contract src/0.1.5/TruReputationTokenFull.sol:TruReputationToken:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
 INFO:oyente.symExec: EVM code coverage: 95.3%
@@ -64,7 +64,7 @@ INFO:oyente.symExec: Callstack bug: False
 INFO:oyente.symExec: Money concurrency bug: False
 INFO:oyente.symExec: Time dependency bug: False
 INFO:oyente.symExec: Reentrancy bug: False
-INFO:root:Contract src/0.1.5/TruReputationToken.sol:TruUpgradeableToken:
+INFO:root:Contract src/0.1.5/TruReputationTokenFull.sol:TruUpgradeableToken:
 INFO:oyente.symExec:Running, please wait...
 INFO:oyente.symExec: ============ Results ===========
 INFO:oyente.symExec: EVM code coverage: 99.0%

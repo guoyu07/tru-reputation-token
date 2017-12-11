@@ -12,7 +12,7 @@ else
   TESTNET_PORT="8546"
   TESTNET_LOG="testnet.log"
   TESTNET_NAME="testnet"
-  NO_LOOPS="10"
+  NO_LOOPS="4"
 fi
 
 check_state(){
@@ -93,7 +93,6 @@ stop() {
 
 test_tru(){
   stop;
-  rm -rf build/ > /dev/null 2>&1;
   start;
   local START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
   echo -e "\x1B[95mStarting Tests on Tru RPC Testnet \x1B[97m$START_TIME\x1B[0m";

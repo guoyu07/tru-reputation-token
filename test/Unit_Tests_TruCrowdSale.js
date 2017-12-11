@@ -1218,6 +1218,10 @@ contract('TruCrowdSale', function(accounts) {
     
     await TruCrowdSale.new(startTime, endTime, tempToken.address, execAcct, 0, 0).should.be.rejectedWith(EVMRevert);
 
+    await TruCrowdSale.new(startTime, endTime, tempToken.address, execAcct, -1, 0).should.be.rejectedWith(EVMRevert);
+
+    await TruCrowdSale.new(startTime, endTime, tempToken.address, execAcct, 0, -1).should.be.rejectedWith(EVMRevert);
+
   }).timeout(timeoutDuration);
 
   it('UNIT TESTS - TRUCROWDSALE - TEST CASE 36: Cannot create Crowdsale with invalid Token Address', async function(){

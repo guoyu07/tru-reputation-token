@@ -14,29 +14,29 @@ oyente_contracts(){
   rm audits/oyente/$CURRENTVER/* > /dev/null 2>&1;
   rm audits/oyente/current/* > /dev/null 2>&1;
 
-  echo "Generating Oyente Audit on TruAddress.sol..."
-  ADDRREP=$(oyente -s src/$CURRENTVER/TruAddress.sol 2>&1)
+  echo "Generating Oyente Audit on TruAddressFull.sol..."
+  ADDRREP=$(oyente -s src/$CURRENTVER/TruAddressFull.sol 2>&1)
   echo $ADDRREP > audits/oyente/$CURRENTVER/TruAddress.report
   sed -i -e 's/ WARNING/\'$'\nWARNING/g' audits/oyente/$CURRENTVER/TruAddress.report
   sed -i -e 's/ INFO/\'$'\nINFO/g' audits/oyente/$CURRENTVER/TruAddress.report
   rm audits/oyente/$CURRENTVER/TruAddress.report-e
 
-  echo "Generating Oyente Audit on TruReputationToken.sol..."
-  TOKENREP=$(oyente -s src/$CURRENTVER/TruReputationToken.sol 2>&1)
+  echo "Generating Oyente Audit on TruReputationTokenFull.sol..."
+  TOKENREP=$(oyente -s src/$CURRENTVER/TruReputationTokenFull.sol 2>&1)
   echo $TOKENREP > audits/oyente/$CURRENTVER/TruReputationToken.report
   sed -i -e 's/ WARNING/\'$'\nWARNING/g' audits/oyente/$CURRENTVER/TruReputationToken.report
   sed -i -e 's/ INFO/\'$'\nINFO/g' audits/oyente/$CURRENTVER/TruReputationToken.report
   rm audits/oyente/$CURRENTVER/TruReputationToken.report-e
 
-  echo "Generating Oyente Audit on TruPreSale.sol..."
-  PRESALEREP=$(oyente -s src/$CURRENTVER/TruPreSale.sol 2>&1)
+  echo "Generating Oyente Audit on TruPreSaleFull.sol..."
+  PRESALEREP=$(oyente -s src/$CURRENTVER/TruPreSaleFull.sol 2>&1)
   echo $PRESALEREP > audits/oyente/$CURRENTVER/TruPreSale.report
   sed -i -e 's/ WARNING/\'$'\nWARNING/g' audits/oyente/$CURRENTVER/TruPreSale.report
   sed -i -e 's/ INFO/\'$'\nINFO/g' audits/oyente/$CURRENTVER/TruPreSale.report
   rm audits/oyente/$CURRENTVER/TruPreSale.report-e
 
-  echo "Generating Oyente Audit on TruCrowdSale.sol..."
-  CROWDSALEREP=$(oyente -s src/$CURRENTVER/TruCrowdSale.sol 2>&1)
+  echo "Generating Oyente Audit on TruCrowdSaleFull.sol..."
+  CROWDSALEREP=$(oyente -s src/$CURRENTVER/TruCrowdSaleFull.sol 2>&1)
   echo $CROWDSALEREP > audits/oyente/$CURRENTVER/TruCrowdSale.report
   sed -i -e 's/ WARNING/\'$'\nWARNING/g' audits/oyente/$CURRENTVER/TruCrowdSale.report
   sed -i -e 's/ INFO/\'$'\nINFO/g' audits/oyente/$CURRENTVER/TruCrowdSale.report
@@ -54,33 +54,33 @@ mythril_contracts(){
   rm audits/mythril/$CURRENTVER/* > /dev/null 2>&1;
   rm audits/mythril/current/* > /dev/null 2>&1;
 
-  echo "Generating Mythril Audit on TruAddress.sol..."
+  echo "Generating Mythril Audit on TruAddressFull.sol..."
   echo "===================================================" > audits/mythril/$CURRENTVER/TruAddress.report
-  echo "src/$CURRENTVER/TruAddress.sol" >> audits/mythril/$CURRENTVER/TruAddress.report
+  echo "src/$CURRENTVER/TruAddressFull.sol" >> audits/mythril/$CURRENTVER/TruAddress.report
   echo "===================================================" >> audits/mythril/$CURRENTVER/TruAddress.report
-  myth -x src/$CURRENTVER/TruAddress.sol >> audits/mythril/$CURRENTVER/TruAddress.report
-  myth -g audits/mythril/$CURRENTVER/TruAddress.html src/$CURRENTVER/TruAddress.sol
+  myth -x src/$CURRENTVER/TruAddressFull.sol >> audits/mythril/$CURRENTVER/TruAddress.report
+  myth -g audits/mythril/$CURRENTVER/TruAddress.html src/$CURRENTVER/TruAddressFull.sol
 
-  echo "Generating Mythril Audit on TruReputationToken.sol..."
+  echo "Generating Mythril Audit on TruReputationTokenFull.sol..."
   echo "===================================================" > audits/mythril/$CURRENTVER/TruReputationToken.report
-  echo "src/$CURRENTVER/TruReputationToken.sol" >> audits/mythril/$CURRENTVER/TruReputationToken.report
+  echo "src/$CURRENTVER/TruReputationTokenFull.sol" >> audits/mythril/$CURRENTVER/TruReputationToken.report
   echo "===================================================" >> audits/mythril/$CURRENTVER/TruReputationToken.report
-  myth -x src/$CURRENTVER/TruReputationToken.sol >> audits/mythril/$CURRENTVER/TruReputationToken.report
-  myth -g audits/mythril/$CURRENTVER/TruReputationToken.html src/$CURRENTVER/TruReputationToken.sol
+  myth -x src/$CURRENTVER/TruReputationTokenFull.sol >> audits/mythril/$CURRENTVER/TruReputationToken.report
+  myth -g audits/mythril/$CURRENTVER/TruReputationToken.html src/$CURRENTVER/TruReputationTokenFull.sol
 
-  echo "Generating Mythril Audit on TruPreSale.sol..."
+  echo "Generating Mythril Audit on TruPreSaleFull.sol..."
   echo "===================================================" > audits/mythril/$CURRENTVER/TruPreSale.report
-  echo "src/$CURRENTVER/TruPreSale.sol" >> audits/mythril/$CURRENTVER/TruPreSale.report
+  echo "src/$CURRENTVER/TruPreSaleFull.sol" >> audits/mythril/$CURRENTVER/TruPreSale.report
   echo "===================================================" >> audits/mythril/$CURRENTVER/TruPreSale.report
-  myth -x src/$CURRENTVER/TruPreSale.sol >> audits/mythril/$CURRENTVER/TruPreSale.report
-  myth -g audits/mythril/$CURRENTVER/TruPreSale.html src/$CURRENTVER/TruPreSale.sol
+  myth -x src/$CURRENTVER/TruPreSaleFull.sol >> audits/mythril/$CURRENTVER/TruPreSale.report
+  myth -g audits/mythril/$CURRENTVER/TruPreSale.html src/$CURRENTVER/TruPreSaleFull.sol
 
-  echo "Generating Mythril Audit on TruCrowdSale.sol..."
+  echo "Generating Mythril Audit on TruCrowdSaleFull.sol..."
   echo "===================================================" > audits/mythril/$CURRENTVER/TruCrowdSale.report
-  echo "src/$CURRENTVER/TruCrowdSale.sol" >> audits/mythril/$CURRENTVER/TruCrowdSale.report
+  echo "src/$CURRENTVER/TruCrowdSaleFull.sol" >> audits/mythril/$CURRENTVER/TruCrowdSale.report
   echo "===================================================" >> audits/mythril/$CURRENTVER/TruCrowdSale.report
-  myth -x src/$CURRENTVER/TruCrowdSale.sol >> audits/mythril/$CURRENTVER/TruCrowdSale.report
-  myth -g audits/mythril/$CURRENTVER/TruCrowdSale.html src/$CURRENTVER/TruCrowdSale.sol
+  myth -x src/$CURRENTVER/TruCrowdSaleFull.sol >> audits/mythril/$CURRENTVER/TruCrowdSale.report
+  myth -g audits/mythril/$CURRENTVER/TruCrowdSale.html src/$CURRENTVER/TruCrowdSaleFull.sol
 
   cp audits/mythril/$CURRENTVER/* audits/mythril/current > /dev/null 2>&1;
 }

@@ -8,6 +8,7 @@ build/**
 allFiredEvents
 *.log
 coverage/**
+coverageEnv/**
 coverage.json
 .vscode/**
 security-audit/**
@@ -17,5 +18,6 @@ RUNBOOKS.md
 docs/build/**
 secret/**
 **.evm.**
+*.evm
 *.disasm
 src/current/TruReputationToken.sol:StandardToken.evm.disasm

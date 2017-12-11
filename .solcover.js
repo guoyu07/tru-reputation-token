@@ -9,6 +9,7 @@ module.exports = {
     'test-helpers/MockUpgradeableToken.sol', // Solely created for coverage testing; will never be used in active deployment
     'test-helpers/MockUpgradeAgent.sol', // Solely created for coverage testing; will never be used in active deployment
     'test-helpers/MockFailUpgradeAgent.sol', // Solely created for coverage testing; will never be used in active deployment
-    'test-helpers/MockFailUpgradeableToken.sol' // Solely created for coverage testing; will never be used in active deployment
+    'test-helpers/MockFailUpgradeableToken.sol', // Solely created for coverage testing; will never be used in active deployment
+    '*Full.sol'
   ]
 }

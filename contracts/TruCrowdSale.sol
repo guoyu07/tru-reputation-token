@@ -35,8 +35,6 @@ contract TruCrowdSale is TruSale {
         uint256 _currentSupply, 
         uint256 _currentRaise) public TruSale(_startTime, _endTime, _token, _saleWallet)
     {
-        require(_currentSupply >= 0);
-        require(_currentRaise >= 0);
         isPreSale = false;
         isCrowdSale = true;
         uint256 remainingCap = TOTAL_CAP.sub(_currentRaise);

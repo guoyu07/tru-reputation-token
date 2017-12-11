@@ -16,8 +16,8 @@ flatten_trt() {
 
     node_modules/.bin//truffle-flattener contracts/TruReputationToken.sol > src/$CURRENTVER/TempTRT.sol
     sed -i -e '/pragma solidity/d' src/$CURRENTVER/TempTRT.sol
-    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruReputationToken.sol
-    cat src/$CURRENTVER/TempTRT.sol >> src/$CURRENTVER/TruReputationToken.sol
+    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruReputationTokenFull.sol
+    cat src/$CURRENTVER/TempTRT.sol >> src/$CURRENTVER/TruReputationTokenFull.sol
     rm src/$CURRENTVER/TempTRT.* > /dev/null 2>&1;
     rm src/$CURRENTVER/*.sol-e > /dev/null 2>&1;
     cp src/$CURRENTVER/* src/current > /dev/null 2>&1;
@@ -28,8 +28,8 @@ flatten_tps() {
 
     node_modules/.bin//truffle-flattener contracts/TruPreSale.sol > src/$CURRENTVER/TempTPS.sol
     sed -i -e '/pragma solidity/d' src/$CURRENTVER/TempTPS.sol
-    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruPreSale.sol
-    cat src/$CURRENTVER/TempTPS.sol >> src/$CURRENTVER/TruPreSale.sol
+    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruPreSaleFull.sol
+    cat src/$CURRENTVER/TempTPS.sol >> src/$CURRENTVER/TruPreSaleFull.sol
     rm src/$CURRENTVER/TempTPS.* > /dev/null 2>&1;
     rm src/$CURRENTVER/*.sol-e > /dev/null 2>&1;
     cp src/$CURRENTVER/* src/current > /dev/null 2>&1;
@@ -40,8 +40,8 @@ flatten_tcs() {
     
     node_modules/.bin//truffle-flattener contracts/TruCrowdSale.sol > src/$CURRENTVER/TempTCS.sol
     sed -i -e '/pragma solidity/d' src/$CURRENTVER/TempTCS.sol
-    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruCrowdSale.sol
-    cat src/$CURRENTVER/TempTCS.sol >> src/$CURRENTVER/TruCrowdSale.sol
+    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruCrowdSaleFull.sol
+    cat src/$CURRENTVER/TempTCS.sol >> src/$CURRENTVER/TruCrowdSaleFull.sol
     rm src/$CURRENTVER/TempTCS.* > /dev/null 2>&1;
     rm src/$CURRENTVER/*.sol-e > /dev/null 2>&1;
     cp src/$CURRENTVER/* src/current > /dev/null 2>&1;
@@ -51,8 +51,8 @@ flatten_truaddress() {
     project_root
     node_modules/.bin//truffle-flattener contracts/supporting/TruAddress.sol > src/$CURRENTVER/TempAddr.sol
     sed -i -e '/pragma solidity/d' src/$CURRENTVER/TempAddr.sol
-    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruAddress.sol
-    cat src/$CURRENTVER/TempAddr.sol >> src/$CURRENTVER/TruAddress.sol
+    echo "pragma solidity ^0.4.18;" > src/$CURRENTVER/TruAddressFull.sol
+    cat src/$CURRENTVER/TempAddr.sol >> src/$CURRENTVER/TruAddressFull.sol
     rm src/$CURRENTVER/TempAddr.* > /dev/null 2>&1;
     rm src/$CURRENTVER/*.sol-e > /dev/null 2>&1;
     cp src/$CURRENTVER/* src/current > /dev/null 2>&1;
