@@ -17,3 +17,5 @@ RUNBOOKS.md
 docs/build/**
 secret/**
 **.evm.**
+*.disasm
+src/current/TruReputationToken.sol:StandardToken.evm.disasm
