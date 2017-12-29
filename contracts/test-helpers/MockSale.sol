@@ -1,7 +1,6 @@
 pragma solidity ^0.4.18;
 
 import "../supporting/SafeMath.sol";
-import "../supporting/TruAddress.sol";
 import "../TruReputationToken.sol";
 import "../TruSale.sol";
 

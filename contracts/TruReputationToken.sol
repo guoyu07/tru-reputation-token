@@ -4,7 +4,6 @@
 pragma solidity 0.4.18;
 
 import "./supporting/SafeMath.sol";
-import "./supporting/TruAddress.sol";
 import "./supporting/TruMintableToken.sol";
 import "./supporting/TruUpgradeableToken.sol";
 
@@ -50,7 +49,7 @@ contract TruReputationToken is TruMintableToken, TruUpgradeableToken {
     /// @dev Can only be executed by the Current Tru Advisory Board
     /// @param _newAddress New address of the Tru Advisory Board
     function changeBoardAddress(address _newAddress) public onlyExecBoard {
-        require(TruAddress.isValid(_newAddress));
+        require(_newAddress != address(0));
         require(_newAddress != execBoard);
         address oldAddress = execBoard;
         execBoard = _newAddress;

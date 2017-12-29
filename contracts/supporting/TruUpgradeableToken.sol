@@ -8,7 +8,6 @@ pragma solidity 0.4.18;
 
 import "./SafeMath.sol";
 import "./StandardToken.sol";
-import "./TruAddress.sol";
 import "./UpgradeAgent.sol";
 
 
@@ -72,7 +71,7 @@ contract TruUpgradeableToken is StandardToken {
     */
     function TruUpgradeableToken(address _upgradeMaster) public {
 
-        require(TruAddress.isValid(_upgradeMaster));
+        require(_upgradeMaster != address(0));
         upgradeMaster = _upgradeMaster;
     }
 
@@ -103,7 +102,7 @@ contract TruUpgradeableToken is StandardToken {
      * Set an upgrade agent that handles
     */
     function setUpgradeAgent(address _agent) public onlyUpgradeMaster {
-        require(TruAddress.isValid(_agent));
+        require(_agent != address(0));
         require(canUpgrade());
         require(getUpgradeState() != UpgradeState.Upgrading);
 
@@ -137,7 +136,7 @@ contract TruUpgradeableToken is StandardToken {
      * This allows us to set a new owner for the upgrade mechanism.
     */
     function setUpgradeMaster(address _master) public onlyUpgradeMaster {
-        require(TruAddress.isValid(_master) == true);
+        require(_master != address(0));
         upgradeMaster = _master;
     }
 

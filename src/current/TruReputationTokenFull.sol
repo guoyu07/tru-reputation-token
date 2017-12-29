@@ -36,47 +36,6 @@ library SafeMath {
     }
 }
 
-// File: contracts/supporting/TruAddress.sol
-
-/// @title TruAddress
-/// @dev Tru Address - Library of helper functions surrounding the Address type in Solidity
-/// @author Ian Bray
-
-
-
-
-library TruAddress {
-    
-    using SafeMath for uint256;
-    using SafeMath for uint;
-
-    /// @dev Function to validate that a supplied Address is valid 
-    /// (that is is 20 bytes long and it is not empty or 0x0)
-    /// @return Returns true if the address is structurally a valid ethereum address and not 0x0; 
-    /// returns false otherwise
-    function isValid(address input) public pure returns (bool) {
-        uint addrLength = addressLength(address(input));
-        return ((addrLength == 20) && (input != address(0)));
-    }
-
-    /// @dev Function convert a Address to a String
-    /// @return Address as a string
-    function toString(address input) internal pure returns (string) {
-        bytes memory byteArray = new bytes(20);
-        for (uint i = 0; i < 20; i++) {
-            byteArray[i] = byte(uint8(uint(input) / (2**(8*(19 - i)))));
-        }
-        return string(byteArray);
-    }
-
-    /// @dev Function to return the length of a given Address
-    /// @return Length of the address as a uint
-    function addressLength(address input) internal pure returns (uint) {
-        string memory addressStr = toString(input);
-        return bytes(addressStr).length;
-    }
-}
-
 // File: contracts/supporting/Ownable.sol
 
 /**
@@ -398,7 +357,6 @@ contract ReleasableToken is StandardToken, Ownable {
 
 
 
-
 contract TruMintableToken is ReleasableToken {
     
     using SafeMath for uint256;
@@ -429,7 +387,7 @@ contract TruMintableToken is ReleasableToken {
     /// @return A boolean that indicates if the operation was successful.
     function mint(address _to, uint256 _amount) public onlyOwner canMint returns (bool) {
         require(_amount > 0);
-        require(TruAddress.isValid(_to));
+        require(_to != address(0));
     
         totalSupply = totalSupply.add(_amount);
         balances[_to] = balances[_to].add(_amount);
@@ -501,7 +459,6 @@ contract UpgradeAgent {
 
 
 
-
 contract TruUpgradeableToken is StandardToken {
 
     using SafeMath for uint256;
@@ -562,7 +519,7 @@ contract TruUpgradeableToken is StandardToken {
     */
     function TruUpgradeableToken(address _upgradeMaster) public {
 
-        require(TruAddress.isValid(_upgradeMaster));
+        require(_upgradeMaster != address(0));
         upgradeMaster = _upgradeMaster;
     }
 
@@ -593,7 +550,7 @@ contract TruUpgradeableToken is StandardToken {
      * Set an upgrade agent that handles
     */
     function setUpgradeAgent(address _agent) public onlyUpgradeMaster {
-        require(TruAddress.isValid(_agent));
+        require(_agent != address(0));
         require(canUpgrade());
         require(getUpgradeState() != UpgradeState.Upgrading);
 
@@ -627,7 +584,7 @@ contract TruUpgradeableToken is StandardToken {
      * This allows us to set a new owner for the upgrade mechanism.
     */
     function setUpgradeMaster(address _master) public onlyUpgradeMaster {
-        require(TruAddress.isValid(_master) == true);
+        require(_master != address(0));
         upgradeMaster = _master;
     }
 
@@ -644,7 +601,6 @@ contract TruUpgradeableToken is StandardToken {
 /// @title Tru Reputation Token
 /// @notice Tru Reputation Protocol ERC20 compliant Token
 /// @author Ian Bray
-
 
 
 
@@ -692,7 +648,7 @@ contract TruReputationToken is TruMintableToken, TruUpgradeableToken {
     /// @dev Can only be executed by the Current Tru Advisory Board
     /// @param _newAddress New address of the Tru Advisory Board
     function changeBoardAddress(address _newAddress) public onlyExecBoard {
-        require(TruAddress.isValid(_newAddress));
+        require(_newAddress != address(0));
         require(_newAddress != execBoard);
         address oldAddress = execBoard;
         execBoard = _newAddress;

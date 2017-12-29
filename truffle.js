@@ -6,15 +6,21 @@ var fs = require("fs"),
     HDWalletProvider = require("truffle-hdwallet-provider"),
     infuraRinkeby = "https://rinkeby.infura.io/",
     infuraMainNet = "https://mainnet.infura.io/",
+    infuraRopsten = "https://ropsten.infura.io/",
     rinkebyMnemonicFile = "./secret/rinkeby.mnemonic",
     mainNetMnemonicFile = "./secret/mainnet.mnemonic",
+    ropstenMnemonicFile = "./secret/ropsten.mnemonic",
     rinkebyTokenFile = "./secret/rinkeby.infuratoken",
-    mainNetTokenFile = "./secret/rinkeby.infuratoken",
+    mainNetTokenFile = "./secret/mainnet.infuratoken",
+    ropstenTokenFile = "./secret/ropsten.infuratoken",
     rinkebyMnemonic,
     rinkebyToken,
     mainNetMnemonic,
     mainNetToken,
+    ropstenMnemonic,
+    ropstenToken,
     rinkebyUrl,
+    ropstenUrl,
     mainNetUrl;
 
 // Setup Rinkeby Variables
@@ -27,6 +33,18 @@ if (fs.existsSync(rinkebyTokenFile)) {
     rinkebyUrl = infuraRinkeby + rinkebyToken;
   }
 }
+
+// Setup Ropsten Variables
+if (fs.existsSync(ropstenMnemonicFile)) {
+  ropstenMnemonic = fs.readFileSync(ropstenMnemonicFile, "utf8");
+}
+if (fs.existsSync(ropstenTokenFile)) {
+  ropstenToken = fs.readFileSync(ropstenTokenFile, "utf8");
+  if (ropstenToken != null) {
+    ropstenUrl = infuraRopsten + ropstenToken;
+  }
+}
+
 
 // Setup MainNet Variables
 if (fs.existsSync(rinkebyMnemonicFile)) {
@@ -75,6 +93,12 @@ module.exports = {
         return new HDWalletProvider(rinkebyMnemonic, rinkebyUrl);
       },
       network_id: 4  // Network ID for Rinkeby is 4
+    },
+    ropsten: {
+      provider: function() {
+        return new HDWalletProvider(ropstenMnemonic, ropstenUrl);
+      },
+      network_id: 3  // Network ID for Ropsten is 3
     },
     coverage: {
       host: 'localhost',

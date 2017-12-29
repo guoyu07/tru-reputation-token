@@ -9,7 +9,6 @@ pragma solidity 0.4.18;
 import "./supporting/Haltable.sol";
 import "./supporting/Ownable.sol";
 import "./supporting/SafeMath.sol";
-import "./supporting/TruAddress.sol";
 import "./TruReputationToken.sol";
 
 
@@ -119,7 +118,7 @@ contract TruSale is Ownable, Haltable {
         address _saleWallet) public {
 
         // _token must be valid
-        require(TruAddress.isValid(_token) == true);
+        require(_token != address(0));
 
         // Only the owner of the _token can construct a sale of it
         TruReputationToken tToken = TruReputationToken(_token);
@@ -144,7 +143,7 @@ contract TruSale is Ownable, Haltable {
     /// @param _status the Status for the purchaser on the WhiteList- 0 for disabled, 
     /// 1 for enabled
     function updateWhitelist(address _purchaser, uint _status) public onlyOwner {
-        require(TruAddress.isValid(_purchaser) == true);
+        require(_purchaser != address(0));
         bool boolStatus = false;
         if (_status == 0) {
             boolStatus = false;
@@ -194,7 +193,7 @@ contract TruSale is Ownable, Haltable {
     function validatePurchase(address _purchaser) internal stopInEmergency {
     
         // _purchaser must be valid
-        require(TruAddress.isValid(_purchaser));
+        require(_purchaser != address(0));
     
         // Value must be greater than 0
         require(msg.value > 0);
@@ -224,7 +223,7 @@ contract TruSale is Ownable, Haltable {
         require(_endTime >= _startTime);
     
         // _salletWallet must be valid
-        require(TruAddress.isValid(_saleWallet));
+        require(_saleWallet != address(0));
 
         truToken = TruReputationToken(_token);
         multiSigWallet = _saleWallet;

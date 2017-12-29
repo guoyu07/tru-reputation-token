@@ -11,7 +11,6 @@
 pragma solidity ^0.4.18;
 
 import "./SafeMath.sol";
-import "./TruAddress.sol";
 import "./ReleasableToken.sol";
 
 
@@ -45,7 +44,7 @@ contract TruMintableToken is ReleasableToken {
     /// @return A boolean that indicates if the operation was successful.
     function mint(address _to, uint256 _amount) public onlyOwner canMint returns (bool) {
         require(_amount > 0);
-        require(TruAddress.isValid(_to));
+        require(_to != address(0));
     
         totalSupply = totalSupply.add(_amount);
         balances[_to] = balances[_to].add(_amount);

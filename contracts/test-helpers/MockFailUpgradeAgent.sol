@@ -2,7 +2,6 @@ pragma solidity ^0.4.18;
 
 import "../supporting/SafeMath.sol";
 import "../supporting/UpgradeAgent.sol";
-import "../supporting/TruAddress.sol";
 import "../supporting/TruUpgradeableToken.sol";
 import "../TruReputationToken.sol";
 

@@ -1,6 +1,5 @@
 pragma solidity ^0.4.18;
 import "../supporting/TruUpgradeableToken.sol";
-import "../supporting/TruAddress.sol";
 
 
 contract MockUpgradeableToken is TruUpgradeableToken {
