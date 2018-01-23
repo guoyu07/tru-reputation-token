@@ -40,6 +40,13 @@ Table of Contents
 
 The following instances of the **TruReputationToken**, **TruPreSale** or **TruCrowdSale** Smart Contracts are deployed in the following networks.
 
+### MainNet Instances
+
+| **Contract** | **Address** | **EtherScan Verified?** |
+| ---- | --- | --- |
+| **TruReputationToken** | [0x9d8571a8f168251851748cbc98b0e7168d249c7d](https://etherscan.io/address/0x9d8571a8f168251851748cbc98b0e7168d249c7d) | **Yes** |
+| **TruPreSale** | [0x19662C22eaaB9FB69Add72ef54B296C5a72593B5](https://etherscan.io/address/0x19662C22eaaB9FB69Add72ef54B296C5a72593B5) | **Yes** |
+
 ### Rinkeby Testnet Instances
 
 | **Contract** | **Address** | **EtherScan Verified?** |
@@ -171,6 +178,8 @@ Please feel free to fork and modify the code as per the [Apache 2.0 License](htt
 ## Contact Information
 
 Feel free to contact us directly using the following channels:
+
+[Tru Reputation Network BitcoinTalk ANN Thread](https://bitcointalk.org/index.php?topic=2712535.0)
 
 [Tru Reputation Protocol Sub-Reddit](https://reddit.com/r/truprotocol)
 

@@ -359,7 +359,7 @@ contract ReleasableToken is StandardToken, Ownable {
         Released();
         released = true;
     }
-
+w
     /// @notice override of StandardToken transfer function to include canTransfer modifier
     /// @param _to address to send _value of tokens to
     /// @param _value Value of tokens to send to _to address
